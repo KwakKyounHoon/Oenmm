@@ -11,6 +11,7 @@ import com.onemeter.omm.onemm.fragment.TabRankFragment;
 import com.onemeter.omm.onemm.fragment.TabSearchFragment;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        tabs = (TabLayout)findViewById(R.id.tabs);
+        ButterKnife.bind(this);
 
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

@@ -14,7 +14,7 @@ import com.onemeter.omm.onemm.R;
 
 public class TabMyFragment extends Fragment {
 
-    public static String TAG_MY;
+    public static String TAG_MY = "my";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
