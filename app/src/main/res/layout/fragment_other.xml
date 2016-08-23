@@ -2,12 +2,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.onemeter.omm.oenmm.fragment.OtherFragment">
+    tools:context="com.onemeter.omm.onemm.fragment.OtherFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="다른 사용자 페이지"
+        android:id="@+id/textView"
+        android:layout_gravity="left|top" />
 </FrameLayout>
