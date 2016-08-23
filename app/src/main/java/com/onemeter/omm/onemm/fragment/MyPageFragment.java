@@ -3,6 +3,7 @@ package com.onemeter.omm.onemm.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,10 +23,13 @@ public class MyPageFragment extends Fragment {
 
     @BindView(R.id.list)
     RecyclerView list;
+    FragmentManager manager;
 
     public MyPageFragment() {
         // Required empty public constructor
     }
+
+
 
     MyAdapter mAdatper;
 
@@ -35,7 +39,8 @@ public class MyPageFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_page, container, false);
         ButterKnife.bind(this, view);
-        mAdatper = new MyAdapter(getChildFragmentManager());
+        manager = getChildFragmentManager();
+        mAdatper = new MyAdapter(manager);
         list.setAdapter(mAdatper);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         list.setLayoutManager(manager);
