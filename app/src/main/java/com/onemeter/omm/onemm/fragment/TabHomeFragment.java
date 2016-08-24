@@ -14,10 +14,10 @@ import com.onemeter.omm.onemm.R;
 
 public class TabHomeFragment extends Fragment {
 
-    public static String TAG_POST = "post";
+    public static String TAG_OTHER = "other";
     public static String TAG_FOLLOWER = "follower";
     public static String TAG_FOLLOWING = "following";
-    public static String TAG_DONATION = "donation";
+    public static String TAG_POST = "post";
 
 
     public TabHomeFragment() {
@@ -33,7 +33,7 @@ public class TabHomeFragment extends Fragment {
             FragmentTransaction ft = getChildFragmentManager()
                     .beginTransaction();
             PostFragment f = new PostFragment();
-            ft.replace(R.id.container,f , TAG_POST);
+            ft.add(R.id.container,f , TAG_POST);
             ft.commit();
         }
     }
@@ -47,11 +47,11 @@ public class TabHomeFragment extends Fragment {
         return view;
     }
 
-    public void showUserInfo(){
+    public void showOther(){
         FragmentTransaction ft = getChildFragmentManager()
                 .beginTransaction();
         OtherFragment f = new OtherFragment();
-        ft.replace(R.id.container,f , TAG_POST);
+        ft.replace(R.id.container,f , TAG_OTHER).addToBackStack(null);
         ft.commit();
     }
 
@@ -59,8 +59,7 @@ public class TabHomeFragment extends Fragment {
         FragmentTransaction ft = getChildFragmentManager()
                 .beginTransaction();
         FollowerFragment f = new FollowerFragment();
-        ft.replace(R.id.container,f , TAG_FOLLOWER).addToBackStack(TAG_FOLLOWER);
-        ft.addToBackStack(TAG_FOLLOWER);
+        ft.replace(R.id.container,f , TAG_FOLLOWER).addToBackStack(null);
         ft.commit();
     }
 
@@ -68,8 +67,7 @@ public class TabHomeFragment extends Fragment {
         FragmentTransaction ft = getChildFragmentManager()
                 .beginTransaction();
         FollowingFragment f = new FollowingFragment();
-        ft.replace(R.id.container,f , TAG_FOLLOWING).addToBackStack(TAG_FOLLOWING);
-        ft.addToBackStack(TAG_FOLLOWING);
+        ft.replace(R.id.container,f , TAG_FOLLOWING).addToBackStack(null);
         ft.commit();
     }
 

@@ -15,6 +15,9 @@ import com.onemeter.omm.onemm.R;
 public class TabRankFragment extends Fragment {
 
     public static String TAG_RANK = "rank";
+    public static String TAG_FOLLOWING = "following";
+    public static String TAG_FOLLOWER = "follower";
+    public static String TAG_OTHER = "other";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,6 +44,30 @@ public class TabRankFragment extends Fragment {
         setHasOptionsMenu(true);
         ((MainActivity) (getActivity())).changeHomeAsUp(false);
         return view;
+    }
+
+    public void showOther(){
+        FragmentTransaction ft = getChildFragmentManager()
+                .beginTransaction();
+        OtherFragment f = new OtherFragment();
+        ft.replace(R.id.container,f , TAG_OTHER).addToBackStack(TAG_OTHER);
+        ft.commit();
+    }
+
+    public void showFollwer(){
+        FragmentTransaction ft = getChildFragmentManager()
+                .beginTransaction();
+        FollowerFragment f = new FollowerFragment();
+        ft.replace(R.id.container,f , TAG_FOLLOWER).addToBackStack(TAG_FOLLOWER);
+        ft.commit();
+    }
+
+    public void showFollwing(){
+        FragmentTransaction ft = getChildFragmentManager()
+                .beginTransaction();
+        FollowingFragment f = new FollowingFragment();
+        ft.replace(R.id.container,f , TAG_FOLLOWING).addToBackStack(TAG_FOLLOWING);
+        ft.commit();
     }
 
     public void popFragment(){

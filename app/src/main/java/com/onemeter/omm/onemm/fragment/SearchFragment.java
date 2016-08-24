@@ -36,4 +36,5 @@ public class SearchFragment extends Fragment {
     public void resultClick(View view){
         ((TabSearchFragment)getParentFragment()).showSearchResult();
     }
+
 }

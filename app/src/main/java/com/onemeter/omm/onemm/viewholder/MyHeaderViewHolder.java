@@ -82,16 +82,6 @@ public class MyHeaderViewHolder extends RecyclerView.ViewHolder {
         this.mydata = myData;
     }
 
-//    public interface OnDonateItemClickListener {
-//        public void onDonateItemClick(View view, MyData mydata, int position);
-//    }
-//
-//    OnDonateItemClickListener listener;
-//
-//    public void setOnDonateItemClickListener(OnDonateItemClickListener listener) {
-//        this.listener = listener;
-//    }
-
     public interface OnMyDataItemClickListener {
         public void onDonateItemClick(View view, MyData myData, int position);
         public void onFollowingItemClick(View view, MyData myData, int position);

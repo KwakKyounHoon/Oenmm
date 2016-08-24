@@ -74,4 +74,7 @@ public class RankFragment extends Fragment {
         return view;
     }
 
+    public void showOther(){
+        ((TabRankFragment)getParentFragment()).showOther();
+    }
 }

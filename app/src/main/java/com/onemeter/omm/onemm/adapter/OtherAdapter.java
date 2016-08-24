@@ -18,7 +18,7 @@ import com.onemeter.omm.onemm.viewholder.OtherTabViewHolder;
 /**
  * Created by Tacademy on 2016-08-24.
  */
-public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements OtherHeaderViewHolder.OnMyDataItemClickListener {
+public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements OtherHeaderViewHolder.OnOtherDataItemClickListener {
     OtherPageData otherPageData;
     FragmentManager manager;
 
@@ -61,19 +61,19 @@ public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case VIEW_TYPE_HEADER: {
-                View headerView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_my_header, parent, false);
+                View headerView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_other_header, parent, false);
                 return new OtherHeaderViewHolder(headerView);
             }
             case VIEW_TYPE_TAP: {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_my_tab, parent, false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_tab, parent, false);
                 return new OtherTabViewHolder(view);
             }
             case VIEW_TYPE_CTEGORY: {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_my_category, parent, false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_category, parent, false);
                 return new OtherCategoryViewHolder(view);
             }
             case VIEW_TYPE_POST: {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_my_post, parent, false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_post, parent, false);
                 return new OtherPostViewHolder(view);
             }
         }
@@ -84,7 +84,7 @@ public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (position == 0) {
             OtherHeaderViewHolder othvh = (OtherHeaderViewHolder) holder;
-            othvh.setOnMyDataItemClickListener(this);
+            othvh.setOnOtherDataItemClickListener(this);
             othvh.setOtherInof(otherPageData.getOtherData());
             return;
         }
@@ -118,49 +118,31 @@ public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         return otherPageData.getPostDatas().size() + 3;
     }
 
-    @Override
-    public void onDonateItemClick(View view, OtherData otherData, int position) {
-
-    }
 
     @Override
     public void onFollowingItemClick(View view, OtherData otherData, int position) {
-
+        listener.onAdapterFollowingClick(view,otherData,position);
     }
 
     @Override
     public void onFollowerItemClick(View view, OtherData otherData, int position) {
-
+        listener.onAdapterFollowerClick(view,otherData,position);
     }
 
     @Override
     public void onSoundItemClick(View view, OtherData otherData, int position) {
-
+        listener.onAdapterSoundClick(view, otherData, position);
     }
 
-    @Override
-    public void onPhotoItemClick(View view, OtherData otherData, int position) {
-
-    }
-
-    @Override
-    public void onProfileItemClick(View view, OtherData otherData, int position) {
-
-    }
 
 
     public interface OnAdapterItemClickLIstener {
-        public void onAdapterDonateClick(View view, OtherData otherData, int position);
 
         public void onAdapterFollowingClick(View view, OtherData otherData, int position);
 
         public void onAdapterFollowerClick(View view, OtherData otherData, int position);
 
         public void onAdapterSoundClick(View view, OtherData otherData, int position);
-
-        public void onAdapterPhotoClick(View view, OtherData otherData, int position);
-
-        public void onAdapterProfileClick(View view, OtherData otherData, int position);
 
     }
 

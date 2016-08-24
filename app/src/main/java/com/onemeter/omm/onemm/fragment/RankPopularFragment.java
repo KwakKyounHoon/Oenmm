@@ -9,6 +9,9 @@ import android.view.ViewGroup;
 
 import com.onemeter.omm.onemm.R;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -24,7 +27,14 @@ public class RankPopularFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_rank_popular, container, false);
+        View view = inflater.inflate(R.layout.fragment_rank_popular, container, false);
+        ButterKnife.bind(this,view);
+        return view;
+    }
+
+    @OnClick(R.id.btn_user)
+    public void onUserClick(){
+        ((RankFragment) (getParentFragment())).showOther();
     }
 
 }

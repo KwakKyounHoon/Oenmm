@@ -7,9 +7,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.onemeter.omm.onemm.MainActivity;
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.adapter.OtherAdapter;
 import com.onemeter.omm.onemm.data.OtherData;
@@ -44,6 +46,8 @@ public class OtherFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_other, container, false);
         ButterKnife.bind(this, view);
+        setHasOptionsMenu(true);
+        ((MainActivity) (getActivity())).changeHomeAsUp(true);
         manager = getChildFragmentManager();
         mAdatper = new OtherAdapter(manager);
         list.setAdapter(mAdatper);
@@ -51,19 +55,32 @@ public class OtherFragment extends Fragment {
         list.setLayoutManager(manager);
         mAdatper.setOnAdapterItemClickListener(new OtherAdapter.OnAdapterItemClickLIstener() {
 
-            @Override
-            public void onAdapterDonateClick(View view, OtherData otherData, int position) {
-
-            }
 
             @Override
             public void onAdapterFollowingClick(View view, OtherData otherData, int position) {
-
+                if(getParentFragment() instanceof TabMyFragment){
+                    ((TabMyFragment) (getParentFragment())).showFollwing();
+                }else if(getParentFragment() instanceof TabHomeFragment){
+                    ((TabHomeFragment)getParentFragment()).showFollwing();
+                }else if(getParentFragment() instanceof TabRankFragment){
+                    ((TabRankFragment) (getParentFragment())).showFollwing();
+                }else{
+                    ((TabSearchFragment) (getParentFragment())).showFollwing();
+                }
             }
 
             @Override
             public void onAdapterFollowerClick(View view, OtherData otherData, int position) {
 
+                if(getParentFragment() instanceof TabMyFragment){
+                    ((TabMyFragment) (getParentFragment())).showFollwer();
+                }else if(getParentFragment() instanceof TabHomeFragment){
+                    ((TabHomeFragment)getParentFragment()).showFollwer();
+                }else if(getParentFragment() instanceof TabRankFragment){
+                    ((TabRankFragment) (getParentFragment())).showFollwer();
+                }else{
+                    ((TabSearchFragment) (getParentFragment())).showFollwer();
+                }
             }
 
             @Override
@@ -71,15 +88,6 @@ public class OtherFragment extends Fragment {
 
             }
 
-            @Override
-            public void onAdapterPhotoClick(View view, OtherData otherData, int position) {
-
-            }
-
-            @Override
-            public void onAdapterProfileClick(View view, OtherData otherData, int position) {
-
-            }
         });
 
         init();
@@ -98,6 +106,24 @@ public class OtherFragment extends Fragment {
         otherPageData.setPostDatas(postDatas);
 
         mAdatper.addOtherData(otherPageData);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            if(getParentFragment() instanceof TabMyFragment){
+                ((TabMyFragment) (getParentFragment())).popFragment();
+            }else if(getParentFragment() instanceof TabHomeFragment){
+                ((TabHomeFragment) (getParentFragment())).popFragment();
+            }else if(getParentFragment() instanceof TabRankFragment){
+                ((TabRankFragment) (getParentFragment())).popFragment();
+            }else{
+                ((TabSearchFragment) (getParentFragment())).popFragment();
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

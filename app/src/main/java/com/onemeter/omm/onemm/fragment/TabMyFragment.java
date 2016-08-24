@@ -20,6 +20,7 @@ public class TabMyFragment extends Fragment {
     public static String TAG_FOLLOWING = "following";
     public static String TAG_FOLLOWER = "follower";
     public static String TAG_PROFILE = "profile";
+    public static String TAG_OTHER = "other";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,7 +57,7 @@ public class TabMyFragment extends Fragment {
         DonatingPlaceFragment f = new DonatingPlaceFragment();
         ft.replace(R.id.container,f , TAG_DONATION);
 //        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        ft.addToBackStack(null);
+        ft.addToBackStack(TAG_DONATION);
         ft.commit();
     }
 
@@ -65,7 +66,6 @@ public class TabMyFragment extends Fragment {
                 .beginTransaction();
         FollowerFragment f = new FollowerFragment();
         ft.replace(R.id.container,f , TAG_FOLLOWER).addToBackStack(TAG_FOLLOWER);
-        ft.addToBackStack(TAG_FOLLOWER);
         ft.commit();
     }
 
@@ -74,7 +74,6 @@ public class TabMyFragment extends Fragment {
                 .beginTransaction();
         FollowingFragment f = new FollowingFragment();
         ft.replace(R.id.container,f , TAG_FOLLOWING).addToBackStack(TAG_FOLLOWING);
-        ft.addToBackStack(TAG_FOLLOWING);
         ft.commit();
     }
 
@@ -83,7 +82,6 @@ public class TabMyFragment extends Fragment {
                 .beginTransaction();
         ProfileModifyFragment f = new ProfileModifyFragment();
         ft.replace(R.id.container,f , TAG_PROFILE).addToBackStack(TAG_PROFILE);
-        ft.addToBackStack(null);
         ft.commit();
     }
 
@@ -92,7 +90,14 @@ public class TabMyFragment extends Fragment {
                 .beginTransaction();
         MyPageFragment f = new MyPageFragment();
         ft.replace(R.id.container,f , TAG_MY).addToBackStack(TAG_MY);
-        ft.addToBackStack(null);
+        ft.commit();
+    }
+
+    public void showOther(){
+        FragmentTransaction ft = getChildFragmentManager()
+                .beginTransaction();
+        OtherFragment f = new OtherFragment();
+        ft.replace(R.id.container,f , TAG_OTHER).addToBackStack(TAG_OTHER);
         ft.commit();
     }
 

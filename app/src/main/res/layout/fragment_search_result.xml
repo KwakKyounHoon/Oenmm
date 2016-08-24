@@ -8,6 +8,13 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:text="검색 결과 페이지" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="유저 정보 보기"
+        android:id="@+id/btn_user"
+        android:layout_gravity="right|top" />
 
 </FrameLayout>

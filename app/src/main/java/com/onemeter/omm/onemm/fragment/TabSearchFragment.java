@@ -19,6 +19,7 @@ public class TabSearchFragment extends Fragment {
     public static String TAG_FOLLOWING = "following";
     public static String TAG_DONATION = "donation";
     public static String TAG_SEARCH_RESULT = "searchresult";
+    public static String TAG_OTHER = "other";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,7 +54,6 @@ public class TabSearchFragment extends Fragment {
                 .beginTransaction();
         FollowerFragment f = new FollowerFragment();
         ft.replace(R.id.container,f , TAG_FOLLOWER).addToBackStack(TAG_FOLLOWER);
-        ft.addToBackStack(TAG_FOLLOWER);
         ft.commit();
     }
 
@@ -62,7 +62,6 @@ public class TabSearchFragment extends Fragment {
                 .beginTransaction();
         FollowingFragment f = new FollowingFragment();
         ft.replace(R.id.container,f , TAG_FOLLOWING).addToBackStack(TAG_FOLLOWING);
-        ft.addToBackStack(TAG_FOLLOWING);
         ft.commit();
     }
 
@@ -71,7 +70,14 @@ public class TabSearchFragment extends Fragment {
                 .beginTransaction();
         SearchResultFragment f = new SearchResultFragment();
         ft.replace(R.id.container,f , TAG_SEARCH_RESULT).addToBackStack(TAG_SEARCH_RESULT);
-        ft.addToBackStack(TAG_FOLLOWING);
+        ft.commit();
+    }
+
+    public void showOther(){
+        FragmentTransaction ft = getChildFragmentManager()
+                .beginTransaction();
+        OtherFragment f = new OtherFragment();
+        ft.replace(R.id.container,f , TAG_OTHER).addToBackStack(TAG_OTHER);
         ft.commit();
     }
 

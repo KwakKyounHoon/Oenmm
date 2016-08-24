@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="팔로워"
+        android:id="@+id/text_follower"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/text_donate"
+        android:layout_toEndOf="@+id/text_donate"
+        android:layout_margin="10dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="팔로잉"
+        android:id="@+id/text_following"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/text_follower"
+        android:layout_toEndOf="@+id/text_follower"
+        android:layout_margin="10dp"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="음성"
+        android:id="@+id/btn_sound"
+        android:layout_below="@+id/text_follower"
+        android:layout_toRightOf="@+id/btn_profile"
+        android:layout_toEndOf="@+id/btn_profile" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="프사"
+        android:id="@+id/btn_photo"
+        android:layout_alignTop="@+id/btn_sound"
+        android:layout_toRightOf="@+id/btn_sound"
+        android:layout_toEndOf="@+id/btn_sound" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="프로필수정"
+        android:id="@+id/btn_profile"
+        android:layout_alignTop="@+id/btn_sound"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+</RelativeLayout>

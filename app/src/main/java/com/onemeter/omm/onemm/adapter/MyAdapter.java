@@ -66,15 +66,15 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
                 return new MyHeaderViewHolder(headerView);
             }
             case VIEW_TYPE_TAP : {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_my_tab, parent, false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_tab, parent, false);
                 return new MyTabViewHolder(view);
             }
             case VIEW_TYPE_CTEGORY :{
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_my_category, parent, false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_category, parent, false);
                 return new MyCategoryViewHolder(view);
             }
             case VIEW_TYPE_POST :{
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_my_post, parent, false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_post, parent, false);
                 return new MyPostViewHolder(view);
             }
         }

@@ -33,8 +33,16 @@ public class PostFragment extends Fragment {
         return view;
     }
 
-    @OnClick(R.id.btn_gouser)
-    public void onClick(View view){
-        ((TabHomeFragment)getParentFragment()).showUserInfo();
+    @OnClick(R.id.btn_user)
+    public void onUserClick(){
+        if(getParentFragment() instanceof TabMyFragment){
+            ((TabMyFragment) (getParentFragment())).showOther();
+        }else if(getParentFragment() instanceof TabHomeFragment){
+            ((TabHomeFragment) (getParentFragment())).showOther();
+        }else if(getParentFragment() instanceof TabRankFragment){
+            ((TabRankFragment) (getParentFragment())).showOther();
+        }else{
+            ((TabSearchFragment) (getParentFragment())).showOther();
+        }
     }
 }
