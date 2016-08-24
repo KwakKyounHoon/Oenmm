@@ -92,4 +92,13 @@ public class MainActivity extends AppCompatActivity {
         tabs.addTab(tabs.newTab().setText("RANK").setTag(TAB_TAG_RANK));
         tabs.addTab(tabs.newTab().setText("MY").setTag(TAB_TAG_MY));
     }
+
+    public void changeHomeAsUp(boolean isBack) {
+        if (isBack) {
+            getSupportActionBar().setHomeAsUpIndicator(android.R.drawable.ic_input_add);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        } else {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
+    }
 }

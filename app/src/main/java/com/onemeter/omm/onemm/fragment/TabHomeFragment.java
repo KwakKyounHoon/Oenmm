@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.onemeter.omm.onemm.MainActivity;
 import com.onemeter.omm.onemm.R;
 
 public class TabHomeFragment extends Fragment {
@@ -41,7 +42,8 @@ public class TabHomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tab_item, container, false);
-
+        setHasOptionsMenu(true);
+        ((MainActivity) (getActivity())).changeHomeAsUp(false);
         return view;
     }
 

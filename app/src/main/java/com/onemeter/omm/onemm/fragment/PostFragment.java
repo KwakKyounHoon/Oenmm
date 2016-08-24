@@ -34,7 +34,7 @@ public class PostFragment extends Fragment {
     }
 
     @OnClick(R.id.btn_gouser)
-    public void onClikc(View view){
+    public void onClick(View view){
         ((TabHomeFragment)getParentFragment()).showUserInfo();
     }
 }

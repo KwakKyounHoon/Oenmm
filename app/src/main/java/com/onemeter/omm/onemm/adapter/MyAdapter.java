@@ -14,7 +14,7 @@ import com.onemeter.omm.onemm.viewholder.MyTabViewHolder;
 /**
  * Created by Tacademy on 2016-08-23.
  */
-public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements MyHeaderViewHolder.OnMyDataItemClickListener{
 
     MyData myData;
     FragmentManager manager;
@@ -60,6 +60,7 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (position == 0){
             MyHeaderViewHolder mhvh = (MyHeaderViewHolder)holder;
+            mhvh.setOnMyDataItemClickListener(this);
             mhvh.setUserInof(myData);
             return;
         }
@@ -74,5 +75,67 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public int getItemCount() {
         return 2;
+    }
+
+//    @Override
+//    public void onDonateItemClick(View view, MyData mydata, int position) {
+//
+//    }
+
+    @Override
+    public void onDonateItemClick(View view, MyData myData, int position) {
+        if(listener != null){
+            listener.onAdapterDonateClick(view,myData,position);
+        }
+    }
+
+    @Override
+    public void onFollowingItemClick(View view, MyData myData, int position) {
+        if(listener != null){
+            listener.onAdapterFollowingClick(view,myData,position);
+        }
+    }
+
+    @Override
+    public void onFollowerItemClick(View view, MyData myData, int position) {
+        if(listener != null){
+            listener.onAdapterFollowerClick(view,myData,position);
+        }
+    }
+
+    @Override
+    public void onSoundItemClick(View view, MyData myData, int position) {
+        if(listener != null){
+            listener.onAdapterSoundClick(view,myData,position);
+        }
+    }
+
+    @Override
+    public void onPhotoItemClick(View view, MyData myData, int position) {
+        if(listener != null){
+            listener.onAdapterPhotoClick(view,myData,position);
+        }
+    }
+
+    @Override
+    public void onProfileItemClick(View view, MyData myData, int position) {
+        if(listener != null){
+            listener.onAdapterProfileClick(view,myData,position);
+        }
+    }
+
+    public interface OnAdapterItemClickLIstener {
+        public void onAdapterDonateClick(View view, MyData myData, int position);
+        public void onAdapterFollowingClick(View view, MyData myData, int position);
+        public void onAdapterFollowerClick(View view, MyData myData, int position);
+        public void onAdapterSoundClick(View view, MyData myData, int position);
+        public void onAdapterPhotoClick(View view, MyData myData, int position);
+        public void onAdapterProfileClick(View view, MyData myData, int position);
+
+    }
+
+    OnAdapterItemClickLIstener listener;
+    public void setOnAdapterItemClickListener(OnAdapterItemClickLIstener listener) {
+        this.listener = listener;
     }
 }
