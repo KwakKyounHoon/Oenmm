@@ -55,28 +55,25 @@ public class TabHomeFragment extends Fragment {
         ft.commit();
     }
 
-    public void showFollower(){
+    public void showFollwer(){
         FragmentTransaction ft = getChildFragmentManager()
                 .beginTransaction();
         FollowerFragment f = new FollowerFragment();
-        ft.replace(R.id.container,f , TAG_FOLLOWER);
+        ft.replace(R.id.container,f , TAG_FOLLOWER).addToBackStack(TAG_FOLLOWER);
+        ft.addToBackStack(TAG_FOLLOWER);
         ft.commit();
     }
 
-    public void showFollowing(){
+    public void showFollwing(){
         FragmentTransaction ft = getChildFragmentManager()
                 .beginTransaction();
         FollowingFragment f = new FollowingFragment();
-        ft.replace(R.id.container,f , TAG_FOLLOWING);
+        ft.replace(R.id.container,f , TAG_FOLLOWING).addToBackStack(TAG_FOLLOWING);
+        ft.addToBackStack(TAG_FOLLOWING);
         ft.commit();
     }
 
-    public void showDonation(){
-        FragmentTransaction ft = getChildFragmentManager()
-                .beginTransaction();
-        RankDonationFragment f = new RankDonationFragment();
-        ft.replace(R.id.container,f , TAG_DONATION);
-        ft.commit();
+    public void popFragment(){
+        getChildFragmentManager().popBackStack();
     }
-
 }

@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.onemeter.omm.onemm.MainActivity;
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.adapter.MyAdapter;
 import com.onemeter.omm.onemm.data.MyData;
@@ -101,5 +102,11 @@ public class MyPageFragment extends Fragment {
         myPageData.setPostDatas(postDatas);
 
         mAdatper.addMyData(myPageData);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity) (getActivity())).changeHomeAsUp(false);
     }
 }

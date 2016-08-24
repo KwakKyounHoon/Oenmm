@@ -20,6 +20,7 @@ import com.onemeter.omm.onemm.viewholder.MyTabViewHolder;
 public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements MyHeaderViewHolder.OnMyDataItemClickListener, MyTabViewHolder.OnTabItemClickListener{
 
     MyPageData myPageData;
+
     FragmentManager manager;
     boolean categoryFlag = true;
 

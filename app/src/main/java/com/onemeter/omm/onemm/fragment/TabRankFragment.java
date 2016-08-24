@@ -42,4 +42,8 @@ public class TabRankFragment extends Fragment {
         ((MainActivity) (getActivity())).changeHomeAsUp(false);
         return view;
     }
+
+    public void popFragment(){
+        getChildFragmentManager().popBackStack();
+    }
 }

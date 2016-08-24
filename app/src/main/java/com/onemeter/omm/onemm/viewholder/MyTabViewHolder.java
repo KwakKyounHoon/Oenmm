@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.onemeter.omm.onemm.R;
+import com.onemeter.omm.onemm.data.MyPageData;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,10 +65,13 @@ public class MyTabViewHolder extends RecyclerView.ViewHolder {
         tabs.addTab(tabs.newTab().setText("LISTEN").setTag(TAB_TAG_LISTEN_RANK));
     }
 
+
     public interface OnTabItemClickListener {
         public void onCategory(View view, boolean flag);
+//        public void onCreatePost(View view, MyPageData myPageData);
     }
 
+    MyPageData myPageData;
     OnTabItemClickListener listener;
 
     public void setOnTabClickListener(OnTabItemClickListener listener) {

@@ -35,7 +35,15 @@ public class FollowerFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            ((TabMyFragment) (getParentFragment())).popFragment();
+            if(getParentFragment() instanceof TabMyFragment){
+                ((TabMyFragment) (getParentFragment())).popFragment();
+            }else if(getParentFragment() instanceof TabHomeFragment){
+                ((TabHomeFragment) (getParentFragment())).popFragment();
+            }else if(getParentFragment() instanceof TabRankFragment){
+                ((TabRankFragment) (getParentFragment())).popFragment();
+            }else{
+                ((TabSearchFragment) (getParentFragment())).popFragment();
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);

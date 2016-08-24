@@ -15,6 +15,10 @@ import com.onemeter.omm.onemm.R;
 public class TabSearchFragment extends Fragment {
 
     public static String TAG_SEARCH = "search";
+    public static String TAG_FOLLOWER = "follower";
+    public static String TAG_FOLLOWING = "following";
+    public static String TAG_DONATION = "donation";
+    public static String TAG_SEARCH_RESULT = "searchresult";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,4 +48,34 @@ public class TabSearchFragment extends Fragment {
         return view;
     }
 
+    public void showFollwer(){
+        FragmentTransaction ft = getChildFragmentManager()
+                .beginTransaction();
+        FollowerFragment f = new FollowerFragment();
+        ft.replace(R.id.container,f , TAG_FOLLOWER).addToBackStack(TAG_FOLLOWER);
+        ft.addToBackStack(TAG_FOLLOWER);
+        ft.commit();
+    }
+
+    public void showFollwing(){
+        FragmentTransaction ft = getChildFragmentManager()
+                .beginTransaction();
+        FollowingFragment f = new FollowingFragment();
+        ft.replace(R.id.container,f , TAG_FOLLOWING).addToBackStack(TAG_FOLLOWING);
+        ft.addToBackStack(TAG_FOLLOWING);
+        ft.commit();
+    }
+
+    public void showSearchResult(){
+        FragmentTransaction ft = getChildFragmentManager()
+                .beginTransaction();
+        SearchResultFragment f = new SearchResultFragment();
+        ft.replace(R.id.container,f , TAG_SEARCH_RESULT).addToBackStack(TAG_SEARCH_RESULT);
+        ft.addToBackStack(TAG_FOLLOWING);
+        ft.commit();
+    }
+
+    public void popFragment(){
+        getChildFragmentManager().popBackStack();
+    }
 }

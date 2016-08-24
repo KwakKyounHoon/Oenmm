@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -94,10 +95,17 @@ public class MainActivity extends AppCompatActivity {
 
     public void changeHomeAsUp(boolean isBack) {
         if (isBack) {
+            getSupportActionBar().show();
             getSupportActionBar().setHomeAsUpIndicator(android.R.drawable.ic_input_add);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         } else {
+            getSupportActionBar().show();
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
+    }
+
+    public void actionBarHide(){
+        getSupportActionBar().setShowHideAnimationEnabled(false);
+        getSupportActionBar().hide();
     }
 }
