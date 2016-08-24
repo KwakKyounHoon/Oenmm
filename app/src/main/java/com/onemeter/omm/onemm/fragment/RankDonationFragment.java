@@ -14,7 +14,6 @@ import com.onemeter.omm.onemm.R;
  */
 public class RankDonationFragment extends Fragment {
 
-
     public RankDonationFragment() {
         // Required empty public constructor
     }
