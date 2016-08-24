@@ -11,11 +11,13 @@ import android.view.ViewGroup;
 import com.onemeter.omm.onemm.MainActivity;
 import com.onemeter.omm.onemm.R;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class DonatingPlaceFragment extends Fragment {
-
 
     public DonatingPlaceFragment() {
         // Required empty public constructor
@@ -25,10 +27,13 @@ public class DonatingPlaceFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_donating_place, container, false);
+        ButterKnife.bind(this,view);
         setHasOptionsMenu(true);
         ((MainActivity) (getActivity())).changeHomeAsUp(true);
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_donating_place, container, false);
+        return view;
     }
 
     @Override
@@ -39,5 +44,10 @@ public class DonatingPlaceFragment extends Fragment {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @OnClick(R.id.btn_ok)
+    public void okClick(View view){
+        ((TabMyFragment)getParentFragment()).showMy();
     }
 }

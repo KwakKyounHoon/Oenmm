@@ -86,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
         tabs.addTab(tabs.newTab().setText("HOME").setTag(TAB_TAG_HOME));
         tabs.addTab(tabs.newTab().setText("SEARCH").setTag(TAB_TAG_SEARCH));
         tabs.addTab(tabs.newTab().setText("RANK").setTag(TAB_TAG_RANK));

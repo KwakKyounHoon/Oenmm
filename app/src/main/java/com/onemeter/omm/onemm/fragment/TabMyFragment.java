@@ -30,7 +30,7 @@ public class TabMyFragment extends Fragment {
             FragmentTransaction ft = getChildFragmentManager()
                     .beginTransaction();
             MyPageFragment f = new MyPageFragment();
-            ft.replace(R.id.container,f , TAG_MY);
+            ft.add(R.id.container,f , TAG_MY).addToBackStack(TAG_MY);
             ft.commit();
         }
     }
@@ -55,8 +55,8 @@ public class TabMyFragment extends Fragment {
                 .beginTransaction();
         DonatingPlaceFragment f = new DonatingPlaceFragment();
         ft.replace(R.id.container,f , TAG_DONATION);
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        ft.addToBackStack(TAG_DONATION);
+//        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ft.addToBackStack(null);
         ft.commit();
     }
 
@@ -64,7 +64,8 @@ public class TabMyFragment extends Fragment {
         FragmentTransaction ft = getChildFragmentManager()
                 .beginTransaction();
         FollowerFragment f = new FollowerFragment();
-        ft.replace(R.id.container,f , TAG_FOLLOWER).addToBackStack(TAG_FOLLOWER);;
+        ft.replace(R.id.container,f , TAG_FOLLOWER).addToBackStack(TAG_FOLLOWER);
+        ft.addToBackStack(TAG_FOLLOWER);
         ft.commit();
     }
 
@@ -72,7 +73,8 @@ public class TabMyFragment extends Fragment {
         FragmentTransaction ft = getChildFragmentManager()
                 .beginTransaction();
         FollowingFragment f = new FollowingFragment();
-        ft.replace(R.id.container,f , TAG_FOLLOWING).addToBackStack(TAG_FOLLOWING);;
+        ft.replace(R.id.container,f , TAG_FOLLOWING).addToBackStack(TAG_FOLLOWING);
+        ft.addToBackStack(TAG_FOLLOWING);
         ft.commit();
     }
 
@@ -81,6 +83,16 @@ public class TabMyFragment extends Fragment {
                 .beginTransaction();
         ProfileModifyFragment f = new ProfileModifyFragment();
         ft.replace(R.id.container,f , TAG_PROFILE).addToBackStack(TAG_PROFILE);
+        ft.addToBackStack(null);
+        ft.commit();
+    }
+
+    public void showMy(){
+        FragmentTransaction ft = getChildFragmentManager()
+                .beginTransaction();
+        MyPageFragment f = new MyPageFragment();
+        ft.replace(R.id.container,f , TAG_MY).addToBackStack(TAG_MY);
+        ft.addToBackStack(null);
         ft.commit();
     }
 
