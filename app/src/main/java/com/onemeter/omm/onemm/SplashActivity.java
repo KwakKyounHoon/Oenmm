@@ -1,9 +1,9 @@
 package com.onemeter.omm.onemm;
 
-import android.os.Handler;
-import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -12,13 +12,16 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        Handler handler = new Handler() {
+        Handler mHandler = new Handler();
+        mHandler.postDelayed(new Runnable() {
             @Override
-            public void handleMessage(Message msg) {
+            public void run() {
+                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                startActivity(intent);
                 finish();
             }
-        };
-        handler.sendEmptyMessageDelayed(0, 2000);
+        }, 2000);
+
     }
 }
 

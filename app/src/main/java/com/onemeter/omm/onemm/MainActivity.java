@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
@@ -34,40 +35,39 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 
-                String tag = (String)tab.getTag();
+                String tag = (String) tab.getTag();
 
-                if (tag.equals(TAB_TAG_HOME)){
+                if (tag.equals(TAB_TAG_HOME)) {
                     Fragment f = new TabHomeFragment();
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.container, f , (String)tab.getTag())
+                            .replace(R.id.container, f, (String) tab.getTag())
                             .commit();
 
-                }else if(tag.equals(TAB_TAG_MY)){
+                } else if (tag.equals(TAB_TAG_MY)) {
                     Fragment f = new TabMyFragment();
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.container, f , (String)tab.getTag())
+                            .replace(R.id.container, f, (String) tab.getTag())
                             .commit();
 
-                }else if(tag.equals(TAB_TAG_SEARCH)){
+                } else if (tag.equals(TAB_TAG_SEARCH)) {
                     Fragment f = new TabSearchFragment();
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.container, f , (String)tab.getTag())
+                            .replace(R.id.container, f, (String) tab.getTag())
                             .commit();
 
-                }else if(tag.equals(TAB_TAG_RANK)){
+                } else if (tag.equals(TAB_TAG_RANK)) {
                     Fragment f = new TabRankFragment();
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.container, f , (String)tab.getTag())
+                            .replace(R.id.container, f, (String) tab.getTag())
                             .commit();
                 }
             }
 
 
-
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
                 if (tab == null) return;
-                String tag = (String)tab.getTag();
+                String tag = (String) tab.getTag();
                 Fragment f = getSupportFragmentManager().findFragmentByTag(tag);
                 if (f != null) {
                     getSupportFragmentManager().beginTransaction()
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                String tag = (String)tab.getTag();
+                String tag = (String) tab.getTag();
                 Fragment f = getSupportFragmentManager().findFragmentByTag(tag);
                 if (f != null) {
                     getSupportFragmentManager().beginTransaction()
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void actionBarHide(){
+    public void actionBarHide() {
         getSupportActionBar().setShowHideAnimationEnabled(false);
         getSupportActionBar().hide();
     }
