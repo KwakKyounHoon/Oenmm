@@ -22,10 +22,7 @@ public class MainActivity extends AppCompatActivity {
     public static String TAB_TAG_SEARCH = "search";
     public static String TAB_TAG_RANK = "rank";
     public static String TAB_TAG_MY = "my";
-    boolean homeFlag = true;
-    boolean myFlag = true;
-    boolean searchFlag = true;
-    boolean rankFlag = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                                 .add(R.id.container, f , (String)tab.getTag())
                                 .commit();
                     }
-                }else if(tag.equals(TAB_TAG_MY) && myFlag){
+                }else if(tag.equals(TAB_TAG_MY)){
                     Fragment f = getSupportFragmentManager().findFragmentByTag(tag);
                     if (f != null) {
                         getSupportFragmentManager().beginTransaction()
@@ -63,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
                                 .replace(R.id.container, f, (String) tab.getTag())
                                 .commit();
                     }
-                }else if(tag.equals(TAB_TAG_SEARCH) && searchFlag){
+                }else if(tag.equals(TAB_TAG_SEARCH)){
                     Fragment f = getSupportFragmentManager().findFragmentByTag(tag);
                     if (f != null) {
                         getSupportFragmentManager().beginTransaction()
@@ -75,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                                 .replace(R.id.container, f, (String) tab.getTag())
                                 .commit();
                     }
-                }else if(tag.equals(TAB_TAG_RANK) && rankFlag){
+                }else if(tag.equals(TAB_TAG_RANK)){
                     Fragment f = getSupportFragmentManager().findFragmentByTag(tag);
                     if (f != null) {
                         getSupportFragmentManager().beginTransaction()

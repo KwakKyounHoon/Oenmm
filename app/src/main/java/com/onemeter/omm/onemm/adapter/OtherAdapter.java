@@ -69,7 +69,7 @@ public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 return new OtherTabViewHolder(view);
             }
             case VIEW_TYPE_CTEGORY: {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_category, parent, false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_other_category, parent, false);
                 return new OtherCategoryViewHolder(view);
             }
             case VIEW_TYPE_POST: {

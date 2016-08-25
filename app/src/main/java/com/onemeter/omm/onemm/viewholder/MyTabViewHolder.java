@@ -1,7 +1,6 @@
 package com.onemeter.omm.onemm.viewholder;
 
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -18,7 +17,9 @@ public class MyTabViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.tabs)
     TabLayout tabs;
-    FragmentManager fragmentManager;
+    TabLayout.Tab receiveTab;
+    TabLayout.Tab sendTab;
+    TabLayout.Tab listenTab;
 
     public static String TAB_TAG_MY_RECEIVE = "receive";
     public static String TAB_TAG_MY_SEND = "send";
@@ -37,14 +38,17 @@ public class MyTabViewHolder extends RecyclerView.ViewHolder {
                 if (tag.equals(TAB_TAG_MY_RECEIVE)){
                     if(listener != null){
                         listener.onCategory(itemView, true);
+                        listener.onTabType(itemView, 1);
                     }
                 }else if(tag.equals(TAB_TAG_MY_SEND)){
                     if(listener != null){
                         listener.onCategory(itemView, true);
+                        listener.onTabType(itemView, 2);
                     }
                 }else if(tag.equals(TAB_TAG_LISTEN_RANK)){
                     if(listener != null){
                         listener.onCategory(itemView, false);
+                        listener.onTabType(itemView, 3);
                     }
                 }
             }
@@ -59,16 +63,19 @@ public class MyTabViewHolder extends RecyclerView.ViewHolder {
 
             }
         });
+        receiveTab = tabs.newTab().setText("RECEIVE").setTag(TAB_TAG_MY_RECEIVE);
+        sendTab = tabs.newTab().setText("SEND").setTag(TAB_TAG_MY_SEND);
+        listenTab = tabs.newTab().setText("LISTEN").setTag(TAB_TAG_LISTEN_RANK);
+        tabs.addTab(receiveTab);
+        tabs.addTab(sendTab);
+        tabs.addTab(listenTab);
 
-        tabs.addTab(tabs.newTab().setText("RECEIVE").setTag(TAB_TAG_MY_RECEIVE));
-        tabs.addTab(tabs.newTab().setText("SEND").setTag(TAB_TAG_MY_SEND));
-        tabs.addTab(tabs.newTab().setText("LISTEN").setTag(TAB_TAG_LISTEN_RANK));
     }
 
 
     public interface OnTabItemClickListener {
         public void onCategory(View view, boolean flag);
-//        public void onCreatePost(View view, MyPageData myPageData);
+        public void onTabType(View view, int num);
     }
 
     MyPageData myPageData;
@@ -78,4 +85,13 @@ public class MyTabViewHolder extends RecyclerView.ViewHolder {
         this.listener = listener;
     }
 
+    public void setTabPosition(int position){
+        if(position == 1){
+            receiveTab.select();
+        }else if(position == 2){
+            sendTab.select();
+        }else {
+            listenTab.select();
+        }
+    }
 }

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.data.MyData;
 import com.onemeter.omm.onemm.data.MyPageData;
+import com.onemeter.omm.onemm.data.PostData;
 import com.onemeter.omm.onemm.viewholder.MyCategoryViewHolder;
 import com.onemeter.omm.onemm.viewholder.MyHeaderViewHolder;
 import com.onemeter.omm.onemm.viewholder.MyPostViewHolder;
@@ -17,12 +18,15 @@ import com.onemeter.omm.onemm.viewholder.MyTabViewHolder;
 /**
  * Created by Tacademy on 2016-08-23.
  */
-public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements MyHeaderViewHolder.OnMyDataItemClickListener, MyTabViewHolder.OnTabItemClickListener{
+public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements MyHeaderViewHolder.OnMyDataItemClickListener
+        ,MyTabViewHolder.OnTabItemClickListener,MyCategoryViewHolder.OnMyCategoryItemClickListener ,MyPostViewHolder.OnMyPostItemClickListener{
 
     MyPageData myPageData;
-
     FragmentManager manager;
     boolean categoryFlag = true;
+
+    int tabPosition;
+    boolean isCom;
 
     public MyAdapter(FragmentManager manager){
         this.manager = manager;
@@ -62,7 +66,7 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case VIEW_TYPE_HEADER : {
-                    View headerView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_my_header, parent, false);
+                View headerView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_my_header, parent, false);
                 return new MyHeaderViewHolder(headerView);
             }
             case VIEW_TYPE_TAP : {
@@ -70,7 +74,7 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
                 return new MyTabViewHolder(view);
             }
             case VIEW_TYPE_CTEGORY :{
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_category, parent, false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_my_category, parent, false);
                 return new MyCategoryViewHolder(view);
             }
             case VIEW_TYPE_POST :{
@@ -93,19 +97,25 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
         if(position == 0) {
             MyTabViewHolder mtvh = (MyTabViewHolder)holder;
             mtvh.setOnTabClickListener(this);
+//            mtvh.setTabPosition(position);
             return;
         }
         position--;
         if(categoryFlag) {
             if (position == 0) {
                 MyCategoryViewHolder mcvh = (MyCategoryViewHolder) holder;
+                mcvh.setOnMyCategoryItemClickListener(this);
+//                mcvh.setCategory(isCom);
                 return;
             }
+            position--;
         }
-        position--;
+
         if (myPageData.getPostDatas().size() > 0) {
             if (position < myPageData.getPostDatas().size()) {
                 MyPostViewHolder mpvh = (MyPostViewHolder)holder;
+                mpvh.setPost(myPageData.getPostDatas().get(position));
+                mpvh.setOnMyPostItemClickListener(this);
                 return;
             }
             position -= myPageData.getPostDatas().size();
@@ -168,7 +178,27 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
     @Override
     public void onCategory(View view, boolean flag) {
         categoryFlag = flag;
-        notifyDataSetChanged();
+    }
+
+    @Override
+    public void onTabType(View view, int num) {
+        if(listener != null){
+            listener.onAdapterTabType(view, num);
+        }
+    }
+
+    @Override
+    public void onCategoryItemClick(Boolean flag) {
+        if(listener != null){
+            listener.onAdapterCategory(flag);
+        }
+    }
+
+    @Override
+    public void onPostItemClick(View view, PostData postData, int position) {
+        if(listener != null){
+            listener.onAdapterPostItemClick(view, postData, position);
+        }
     }
 
 
@@ -179,11 +209,18 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
         public void onAdapterSoundClick(View view, MyData myData, int position);
         public void onAdapterPhotoClick(View view, MyData myData, int position);
         public void onAdapterProfileClick(View view, MyData myData, int position);
-
+        public void onAdapterCategory(boolean flag);
+        public void onAdapterTabType(View view, int num);
+        public void onAdapterPostItemClick(View view, PostData postData, int position);
     }
 
     OnAdapterItemClickLIstener listener;
     public void setOnAdapterItemClickListener(OnAdapterItemClickLIstener listener) {
         this.listener = listener;
+    }
+
+    public void setAdatperPosition(int tabPosition, boolean isCom){
+        this.tabPosition = tabPosition;
+        this.isCom = isCom;
     }
 }

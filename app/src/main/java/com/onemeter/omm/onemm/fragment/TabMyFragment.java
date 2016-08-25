@@ -101,6 +101,14 @@ public class TabMyFragment extends Fragment {
         ft.commit();
     }
 
+    public void showReply(){
+        FragmentTransaction ft = getChildFragmentManager()
+                .beginTransaction();
+         ReplyFragment f = new ReplyFragment();
+        ft.replace(R.id.container,f , TAG_OTHER).addToBackStack(TAG_OTHER);
+        ft.commit();
+    }
+
     public void popFragment(){
         getChildFragmentManager().popBackStack();
     }
