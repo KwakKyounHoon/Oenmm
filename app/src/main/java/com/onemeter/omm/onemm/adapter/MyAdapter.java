@@ -97,7 +97,7 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
         if(position == 0) {
             MyTabViewHolder mtvh = (MyTabViewHolder)holder;
             mtvh.setOnTabClickListener(this);
-//            mtvh.setTabPosition(position);
+//            mtvh.setTabPosition(tabPosition);
             return;
         }
         position--;
@@ -114,8 +114,8 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
         if (myPageData.getPostDatas().size() > 0) {
             if (position < myPageData.getPostDatas().size()) {
                 MyPostViewHolder mpvh = (MyPostViewHolder)holder;
-                mpvh.setPost(myPageData.getPostDatas().get(position));
                 mpvh.setOnMyPostItemClickListener(this);
+                mpvh.setPost(myPageData.getPostDatas().get(position));
                 return;
             }
             position -= myPageData.getPostDatas().size();
