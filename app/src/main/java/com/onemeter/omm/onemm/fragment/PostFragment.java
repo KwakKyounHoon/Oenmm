@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.onemeter.omm.onemm.MainActivity;
 import com.onemeter.omm.onemm.R;
 
 import butterknife.ButterKnife;
@@ -44,5 +45,11 @@ public class PostFragment extends Fragment {
         }else{
             ((TabSearchFragment) (getParentFragment())).showOther();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity) (getActivity())).changeHomeAsUp(false);
     }
 }

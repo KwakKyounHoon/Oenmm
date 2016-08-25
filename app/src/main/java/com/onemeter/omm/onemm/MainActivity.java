@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 
 import com.onemeter.omm.onemm.fragment.TabHomeFragment;
 import com.onemeter.omm.onemm.fragment.TabMyFragment;
@@ -18,6 +20,9 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.tabs)
     TabLayout tabs;
 
+    @BindView(R.id.toolbar_name)
+    TextView toolbarView;
+
     public static String TAB_TAG_HOME = "home";
     public static String TAB_TAG_SEARCH = "search";
     public static String TAB_TAG_RANK = "rank";
@@ -28,7 +33,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
+        setSupportActionBar((Toolbar)findViewById(R.id.toolbar));
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -96,8 +103,8 @@ public class MainActivity extends AppCompatActivity {
     public void changeHomeAsUp(boolean isBack) {
         if (isBack) {
             getSupportActionBar().show();
-            getSupportActionBar().setHomeAsUpIndicator(android.R.drawable.ic_input_add);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.back);
         } else {
             getSupportActionBar().show();
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -105,7 +112,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void actionBarHide(){
-        getSupportActionBar().setShowHideAnimationEnabled(false);
+//        getSupportActionBar().setShowHideAnimationEnabled(false);
         getSupportActionBar().hide();
+    }
+
+    public void setToolbarText(String name){
+        toolbarView.setText(name);
     }
 }

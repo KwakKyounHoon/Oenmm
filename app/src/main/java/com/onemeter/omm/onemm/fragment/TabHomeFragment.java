@@ -19,6 +19,8 @@ public class TabHomeFragment extends Fragment {
     public static String TAG_FOLLOWING = "following";
     public static String TAG_POST = "post";
 
+    boolean isFirst = true;
+
 
     public TabHomeFragment() {
         // Required empty public constructor
@@ -27,14 +29,16 @@ public class TabHomeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Fragment old = getChildFragmentManager()
-                .findFragmentByTag(TAG_POST);
-        if(old == null){
-            FragmentTransaction ft = getChildFragmentManager()
-                    .beginTransaction();
-            PostFragment f = new PostFragment();
-            ft.add(R.id.container,f , TAG_POST);
-            ft.commit();
+        if(isFirst) {
+            Fragment old = getChildFragmentManager()
+                    .findFragmentByTag(TAG_POST);
+            if (old == null) {
+                FragmentTransaction ft = getChildFragmentManager()
+                        .beginTransaction();
+                PostFragment f = new PostFragment();
+                ft.add(R.id.container, f, TAG_POST);
+                ft.commit();
+            }
         }
     }
 

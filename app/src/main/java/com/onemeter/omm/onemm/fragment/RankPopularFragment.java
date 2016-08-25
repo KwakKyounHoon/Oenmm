@@ -35,6 +35,7 @@ public class RankPopularFragment extends Fragment {
     @OnClick(R.id.btn_user)
     public void onUserClick(){
         ((RankFragment) (getParentFragment())).showOther();
+        ((RankFragment)(getParentFragment())).setTab(false);
     }
 
 }

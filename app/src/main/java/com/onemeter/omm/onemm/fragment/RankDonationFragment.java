@@ -3,7 +3,6 @@ package com.onemeter.omm.onemm.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,8 +34,6 @@ public class RankDonationFragment extends Fragment {
     @OnClick(R.id.btn_user)
     public void onUserClick(){
         ((RankFragment) (getParentFragment())).showOther();
-        Log.i("tag",getParentFragment()+"");
+        ((RankFragment)(getParentFragment())).setTab(true);
     }
-
-
 }
