@@ -40,6 +40,7 @@ public class TabHomeFragment extends Fragment {
                 ft.commit();
             }
         }
+        isFirst = false;
     }
 
     @Override

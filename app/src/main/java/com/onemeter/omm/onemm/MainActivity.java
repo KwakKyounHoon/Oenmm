@@ -22,7 +22,10 @@ public class MainActivity extends AppCompatActivity {
     public static String TAB_TAG_SEARCH = "search";
     public static String TAB_TAG_RANK = "rank";
     public static String TAB_TAG_MY = "my";
-
+    boolean homeFlag = true;
+    boolean myFlag = true;
+    boolean searchFlag = true;
+    boolean rankFlag = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,28 +40,53 @@ public class MainActivity extends AppCompatActivity {
                 String tag = (String)tab.getTag();
 
                 if (tag.equals(TAB_TAG_HOME)){
-                    Fragment f = new TabHomeFragment();
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.container, f , (String)tab.getTag())
-                            .commit();
-
-                }else if(tag.equals(TAB_TAG_MY)){
-                    Fragment f = new TabMyFragment();
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.container, f , (String)tab.getTag())
-                            .commit();
-
-                }else if(tag.equals(TAB_TAG_SEARCH)){
-                    Fragment f = new TabSearchFragment();
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.container, f , (String)tab.getTag())
-                            .commit();
-
-                }else if(tag.equals(TAB_TAG_RANK)){
-                    Fragment f = new TabRankFragment();
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.container, f , (String)tab.getTag())
-                            .commit();
+                    Fragment f = getSupportFragmentManager().findFragmentByTag(tag);
+                    if (f != null) {
+                        getSupportFragmentManager().beginTransaction()
+                                .attach(f)
+                                .commit();
+                    }else{
+                        f = new TabHomeFragment();
+                        getSupportFragmentManager().beginTransaction()
+                                .add(R.id.container, f , (String)tab.getTag())
+                                .commit();
+                    }
+                }else if(tag.equals(TAB_TAG_MY) && myFlag){
+                    Fragment f = getSupportFragmentManager().findFragmentByTag(tag);
+                    if (f != null) {
+                        getSupportFragmentManager().beginTransaction()
+                                .attach(f)
+                                .commit();
+                    }else {
+                        f = new TabMyFragment();
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.container, f, (String) tab.getTag())
+                                .commit();
+                    }
+                }else if(tag.equals(TAB_TAG_SEARCH) && searchFlag){
+                    Fragment f = getSupportFragmentManager().findFragmentByTag(tag);
+                    if (f != null) {
+                        getSupportFragmentManager().beginTransaction()
+                                .attach(f)
+                                .commit();
+                    }else {
+                        f = new TabSearchFragment();
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.container, f, (String) tab.getTag())
+                                .commit();
+                    }
+                }else if(tag.equals(TAB_TAG_RANK) && rankFlag){
+                    Fragment f = getSupportFragmentManager().findFragmentByTag(tag);
+                    if (f != null) {
+                        getSupportFragmentManager().beginTransaction()
+                                .attach(f)
+                                .commit();
+                    }else {
+                        f = new TabRankFragment();
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.container, f, (String) tab.getTag())
+                                .commit();
+                    }
                 }
             }
 

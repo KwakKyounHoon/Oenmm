@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.onemeter.omm.onemm.MainActivity;
 import com.onemeter.omm.onemm.R;
 
 import butterknife.ButterKnife;
@@ -30,7 +29,6 @@ public class SearchFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         ButterKnife.bind(this,view);
-        ((MainActivity) (getActivity())).setToolbarText("검색");
         return view;
     }
 
@@ -39,9 +37,5 @@ public class SearchFragment extends Fragment {
         ((TabSearchFragment)getParentFragment()).showSearchResult();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
 
 }
