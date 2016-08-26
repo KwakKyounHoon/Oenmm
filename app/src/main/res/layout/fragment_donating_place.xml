@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,7 +15,6 @@
         android:layout_width="wrap_content"
         layout="@layout/view_donating_place_toolbar"
         android:background="@color/colorWhite"/>
-
     </android.support.v7.widget.Toolbar>
 
     <Button
@@ -23,12 +22,19 @@
         android:layout_height="wrap_content"
         android:text="OK"
         android:id="@+id/btn_ok"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/textView6"
+        android:layout_toStartOf="@+id/textView6" />
 
     <TextView
         android:layout_width="123dp"
         android:layout_height="80dp"
         android:text="기부처 리스트 페이지"
-        android:layout_gravity="right|center_vertical" />
+        android:layout_gravity="right|center_vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="83dp"
+        android:id="@+id/textView6" />
 
-</FrameLayout>
+</RelativeLayout>
