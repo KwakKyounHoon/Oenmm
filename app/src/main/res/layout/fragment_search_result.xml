@@ -1,20 +1,38 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.onemeter.omm.onemm.fragment.SearchResultFragment">
 
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:id="@+id/toolbar">
+
+        <include
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            layout="@layout/view_search_result_toolbar"
+            android:background="@color/colorWhite"/>
+    </android.support.v7.widget.Toolbar>
+
     <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="검색 결과 페이지" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="검색 결과 페이지"
+        android:layout_below="@+id/toolbar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="유저 정보 보기"
         android:id="@+id/btn_user"
-        android:layout_gravity="right|top" />
+        android:layout_gravity="right|top"
+        android:layout_below="@+id/toolbar"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
-</FrameLayout>
+</RelativeLayout>

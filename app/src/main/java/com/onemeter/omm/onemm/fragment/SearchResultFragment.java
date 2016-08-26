@@ -66,4 +66,17 @@ public class SearchResultFragment extends Fragment {
             ((TabSearchFragment) (getParentFragment())).showOther();
         }
     }
+
+    @OnClick(R.id.btn_back)
+    public void backClick(View view){
+        if(getParentFragment() instanceof TabMyFragment){
+            ((TabMyFragment) (getParentFragment())).popFragment();
+        }else if(getParentFragment() instanceof TabHomeFragment){
+            ((TabHomeFragment) (getParentFragment())).popFragment();
+        }else if(getParentFragment() instanceof TabRankFragment){
+            ((TabRankFragment) (getParentFragment())).popFragment();
+        }else{
+            ((TabSearchFragment) (getParentFragment())).popFragment();
+        }
+    }
 }

@@ -2,7 +2,7 @@
     <string name="app_name">1mm</string>
 
     <string name="user_name">user name</string>
-    <string name="user_serch">serch</string>
+    <string name="user_search">search</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

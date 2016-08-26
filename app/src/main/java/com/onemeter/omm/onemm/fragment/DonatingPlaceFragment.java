@@ -58,4 +58,17 @@ public class DonatingPlaceFragment extends Fragment {
     public void okClick(View view){
         ((TabMyFragment)getParentFragment()).showMy();
     }
+
+    @OnClick(R.id.btn_cancel)
+    public void backClick(View view){
+        if(getParentFragment() instanceof TabMyFragment){
+            ((TabMyFragment) (getParentFragment())).popFragment();
+        }else if(getParentFragment() instanceof TabHomeFragment){
+            ((TabHomeFragment) (getParentFragment())).popFragment();
+        }else if(getParentFragment() instanceof TabRankFragment){
+            ((TabRankFragment) (getParentFragment())).popFragment();
+        }else{
+            ((TabSearchFragment) (getParentFragment())).popFragment();
+        }
+    }
 }

@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/toolbar_underline"
     >
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:src="@drawable/ic_back"
         android:id="@+id/btn_back"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/back"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -19,18 +16,20 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/user_name"
+        android:text="검색중.."
         android:textColor="@color/toolbar_text_color"
         android:textSize="@dimen/toolbar_text_size"
-        android:layout_gravity="center_vertical"
-        android:layout_centerVertical="true"
+        android:id="@+id/textView5"
+        android:layout_centerInParent="true"
         android:layout_toRightOf="@+id/btn_back"
         android:layout_toEndOf="@+id/btn_back" />
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/home"
-        android:layout_centerVertical="true"
+        android:src="@drawable/ic_id_check_no"
+        android:id="@+id/imageView2"
+        android:layout_centerInParent="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 </RelativeLayout>

@@ -7,7 +7,9 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_id_check_no"/>
+        android:src="@drawable/ic_id_check_no"
+        android:id="@+id/btn_cancel"
+        />
 
     <TextView
         android:layout_width="wrap_content"
