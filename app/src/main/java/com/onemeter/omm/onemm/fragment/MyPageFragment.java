@@ -7,11 +7,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.onemeter.omm.onemm.MainActivity;
 import com.onemeter.omm.onemm.R;
@@ -45,6 +43,8 @@ public class MyPageFragment extends Fragment {
     int tabType = 1;
     boolean isCom = true;
 
+    boolean firstFlag = true;
+
     public MyPageFragment() {
         // Required empty public constructor
     }
@@ -54,6 +54,12 @@ public class MyPageFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (firstFlag) {
+            manager = getChildFragmentManager();
+            mAdatper = new MyAdapter(manager);
+            mAdatper.setAdatperPosition(tabType, isCom);
+        }
+        firstFlag = false;
     }
 
     @Override
@@ -61,9 +67,6 @@ public class MyPageFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_my_page, container, false);
         ButterKnife.bind(this, view);
-        manager = getChildFragmentManager();
-        mAdatper = new MyAdapter(manager);
-        mAdatper.setAdatperPosition(tabType,isCom);
         list.setAdapter(mAdatper);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         list.setLayoutManager(manager);
@@ -123,8 +126,22 @@ public class MyPageFragment extends Fragment {
         init();
         return view;
     }
+    void init1(){
+        MyPageData myPageData = new MyPageData();
+        MyData myData = new MyData();
+        myPageData.setMyData(myData);
 
-    void init(){
+        List<PostData> postDatas = new ArrayList<>();
+        for(int i = 0; i < 5; i++){
+            PostData postData = new PostData();
+            postData.setName("받은 질문, 답변 완료 "+i);
+            postDatas.add(postData);
+        }
+        myPageData.setPostDatas(postDatas);
+        mAdatper.addMyData(myPageData);
+    }
+
+    void  init(){
         if(tabType == 1){
             if(isCom){
                 MyPageData myPageData = new MyPageData();
@@ -132,7 +149,7 @@ public class MyPageFragment extends Fragment {
                 myPageData.setMyData(myData);
 
                 List<PostData> postDatas = new ArrayList<>();
-                for(int i = 0; i < 20; i++){
+                for(int i = 0; i < 5; i++){
                     PostData postData = new PostData();
                     postData.setName("받은 질문, 답변 완료 "+i);
                     postDatas.add(postData);
@@ -145,7 +162,7 @@ public class MyPageFragment extends Fragment {
                 myPageData.setMyData(myData);
 
                 List<PostData> postDatas = new ArrayList<>();
-                for(int i = 0; i < 20; i++){
+                for(int i = 0; i < 5; i++){
                     PostData postData = new PostData();
                     postData.setName("받은 질문, 답변 미완료 "+i);
                     postDatas.add(postData);
@@ -160,7 +177,7 @@ public class MyPageFragment extends Fragment {
                 myPageData.setMyData(myData);
 
                 List<PostData> postDatas = new ArrayList<>();
-                for(int i = 0; i < 20; i++){
+                for(int i = 0; i < 5; i++){
                     PostData postData = new PostData();
                     postData.setName("보낸 질문, 답변 완료 "+i);
                     postDatas.add(postData);
@@ -173,7 +190,7 @@ public class MyPageFragment extends Fragment {
                 myPageData.setMyData(myData);
 
                 List<PostData> postDatas = new ArrayList<>();
-                for(int i = 0; i < 20; i++){
+                for(int i = 0; i < 5; i++){
                     PostData postData = new PostData();
                     postData.setName("보낸 질문, 답변 미완료 "+i);
                     postDatas.add(postData);
@@ -187,7 +204,7 @@ public class MyPageFragment extends Fragment {
             myPageData.setMyData(myData);
 
             List<PostData> postDatas = new ArrayList<>();
-            for(int i = 0; i < 20; i++){
+            for(int i = 0; i < 5; i++){
                 PostData postData = new PostData();
                 postData.setName("나도 듣기 보관함"+i);
                 postDatas.add(postData);
@@ -201,8 +218,9 @@ public class MyPageFragment extends Fragment {
     public void onResume() {
         super.onResume();
         ((MainActivity) (getActivity())).changeHomeAsUp(false);
-        Toast.makeText(getActivity(),"ggg",Toast.LENGTH_SHORT).show();
-        Log.i("MyPage",tabType + " " + isCom + "");
+//        Toast.makeText(getActivity(),"ggg",Toast.LENGTH_SHORT).show();
+//        Log.i("MyPage",tabType + " " + isCom + "");
+
     }
 
     @Override
