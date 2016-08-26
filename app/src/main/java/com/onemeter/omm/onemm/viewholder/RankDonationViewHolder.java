@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.data.DonationRank;
 
@@ -42,12 +43,12 @@ public class RankDonationViewHolder extends RecyclerView.ViewHolder {
         this.donationRank = donationRank;
         userNameView.setText(donationRank.getName());
         placeNameView.setText(donationRank.getDonationName());
-//        Glide.with(plcaeView.getContext())
-//                .load(donationRank.getDonationPhoto())
-//                .into(plcaeView);
-//        Glide.with(profileView.getContext())
-//                .load(donationRank.getPhoto())
-//                .into(profileView);
+        Glide.with(plcaeView.getContext())
+                .load(donationRank.getDonationPhoto())
+                .into(plcaeView);
+        Glide.with(profileView.getContext())
+                .load(donationRank.getPhoto())
+                .into(profileView);
     }
 
     public interface OnRankDonationItemClickListener {
