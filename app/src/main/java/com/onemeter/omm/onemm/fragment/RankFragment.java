@@ -132,8 +132,8 @@ public class RankFragment extends Fragment {
         }else populTab.select();
     }
 
-    public void showOther(){
-        ((TabRankFragment)getParentFragment()).showOther();
+    public void showOther(String userId){
+        ((TabRankFragment)getParentFragment()).showOther(userId);
     }
 
     public void setTab(boolean flag){

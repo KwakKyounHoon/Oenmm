@@ -46,7 +46,7 @@ public class TabRankFragment extends BackKeyFragment {
         return view;
     }
 
-    public void showOther(){
+    public void showOther(String userId){
         FragmentTransaction ft = getChildFragmentManager()
                 .beginTransaction();
         OtherFragment f = new OtherFragment();

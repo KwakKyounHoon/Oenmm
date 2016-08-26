@@ -2,6 +2,7 @@ package com.onemeter.omm.onemm.fragment;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,6 +32,10 @@ import butterknife.OnClick;
  */
 public class OtherFragment extends Fragment {
 
+    public static String OTHER_ID = "id";
+    private String id;
+
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -46,6 +51,21 @@ public class OtherFragment extends Fragment {
     }
     OtherAdapter mAdatper;
 
+    public static OtherFragment newInstance(String message) {
+        OtherFragment fragment = new OtherFragment();
+        Bundle args = new Bundle();
+        args.putString(OTHER_ID, message);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            id = getArguments().getString(OTHER_ID);
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,8 +82,6 @@ public class OtherFragment extends Fragment {
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         list.setLayoutManager(manager);
         mAdatper.setOnAdapterItemClickListener(new OtherAdapter.OnAdapterItemClickLIstener() {
-
-
             @Override
             public void onAdapterFollowingClick(View view, OtherData otherData, int position) {
                 if(getParentFragment() instanceof TabMyFragment){
@@ -93,9 +111,7 @@ public class OtherFragment extends Fragment {
 
             @Override
             public void onAdapterSoundClick(View view, OtherData otherData, int position) {
-
             }
-
         });
 
         init();

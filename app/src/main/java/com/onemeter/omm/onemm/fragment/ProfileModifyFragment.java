@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.onemeter.omm.onemm.MainActivity;
 import com.onemeter.omm.onemm.R;
 
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -28,9 +29,11 @@ public class ProfileModifyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_profile_modify, container, false);
+        ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
         ((MainActivity) (getActivity())).changeHomeAsUp(true);
-        return inflater.inflate(R.layout.fragment_profile_modify, container, false);
+        return view;
     }
 
     @Override
@@ -51,7 +54,7 @@ public class ProfileModifyFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick(R.id.btn_back)
+    @OnClick(R.id.btn_cancel)
     public void backClick(View view){
         if(getParentFragment() instanceof TabMyFragment){
             ((TabMyFragment) (getParentFragment())).popFragment();

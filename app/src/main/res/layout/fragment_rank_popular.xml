@@ -4,15 +4,7 @@
     android:layout_height="match_parent"
     tools:context="com.onemeter.omm.onemm.fragment.RankPopularFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="인기 질문"
-        android:id="@+id/textView2" />
-
     <android.support.v7.widget.RecyclerView
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/list"
@@ -21,15 +13,6 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/btn_user" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="showUser"
-        android:id="@+id/btn_user"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentTop="true" />
 
 </RelativeLayout>

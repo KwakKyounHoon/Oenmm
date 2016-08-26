@@ -24,7 +24,6 @@ public class FollowingFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -43,7 +42,7 @@ public class FollowingFragment extends Fragment {
         }else if(getParentFragment() instanceof TabHomeFragment){
             ((TabHomeFragment) (getParentFragment())).showOther();
         }else if(getParentFragment() instanceof TabRankFragment){
-            ((TabRankFragment) (getParentFragment())).showOther();
+            ((TabRankFragment) (getParentFragment())).showOther("test");
         }else{
             ((TabSearchFragment) (getParentFragment())).showOther();
         }

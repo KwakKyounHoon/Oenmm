@@ -15,7 +15,7 @@ import butterknife.ButterKnife;
  */
 
 public class MyPostViewHolder extends RecyclerView.ViewHolder {
-    @BindView(R.id.text_name)
+    @BindView(R.id.text_question)
     TextView nameView;
     public MyPostViewHolder(View itemView) {
         super(itemView);

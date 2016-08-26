@@ -61,7 +61,7 @@ public class SearchResultFragment extends Fragment {
         }else if(getParentFragment() instanceof TabHomeFragment){
             ((TabHomeFragment) (getParentFragment())).showOther();
         }else if(getParentFragment() instanceof TabRankFragment){
-            ((TabRankFragment) (getParentFragment())).showOther();
+            ((TabRankFragment) (getParentFragment())).showOther("test");
         }else{
             ((TabSearchFragment) (getParentFragment())).showOther();
         }
