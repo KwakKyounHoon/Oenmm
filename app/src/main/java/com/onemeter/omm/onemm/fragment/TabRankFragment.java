@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import com.onemeter.omm.onemm.MainActivity;
 import com.onemeter.omm.onemm.R;
 
-public class TabRankFragment extends Fragment {
+public class TabRankFragment extends BackKeyFragment {
 
     public static String TAG_RANK = "rank";
     public static String TAG_FOLLOWING = "following";

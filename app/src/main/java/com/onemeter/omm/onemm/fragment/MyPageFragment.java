@@ -60,6 +60,8 @@ public class MyPageFragment extends Fragment {
             mAdatper.setAdatperPosition(tabType, isCom);
         }
         firstFlag = false;
+
+        init1();
     }
 
     @Override
@@ -123,7 +125,6 @@ public class MyPageFragment extends Fragment {
 
         });
 
-        init();
         return view;
     }
     void init1(){

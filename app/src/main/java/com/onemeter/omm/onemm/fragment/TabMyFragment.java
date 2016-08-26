@@ -13,7 +13,7 @@ import com.onemeter.omm.onemm.MainActivity;
 import com.onemeter.omm.onemm.R;
 
 
-public class TabMyFragment extends Fragment {
+public class TabMyFragment extends BackKeyFragment {
 
     public static String TAG_MY = "my";
     public static String TAG_DONATION ="donation";
