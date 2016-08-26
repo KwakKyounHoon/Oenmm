@@ -3,18 +3,22 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
 >
-
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/btn_search_result"
-        android:src="@drawable/ic_serch"/>
+        android:src="@drawable/ic_serch"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/btn_search_result"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/user_search"
+        android:text="검색"
         android:textColor="@color/toolbar_text_color"
         android:textSize="@dimen/toolbar_text_size"
+        android:id="@+id/textView4"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/btn_search_result"
         android:layout_toEndOf="@+id/btn_search_result" />

@@ -68,7 +68,7 @@ public class FollowingFragment extends Fragment {
     }
 
     @OnClick(R.id.btn_back)
-    public void backClick(View view){
+    public void backclick(View view){
         if(getParentFragment() instanceof TabMyFragment){
             ((TabMyFragment) (getParentFragment())).popFragment();
         }else if(getParentFragment() instanceof TabHomeFragment){

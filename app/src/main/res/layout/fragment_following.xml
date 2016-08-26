@@ -9,11 +9,10 @@
         android:layout_height="@dimen/toolbar_height"
         android:id="@+id/toolbar">
 
-
         <include
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            layout="@layout/view_follower_toolbar"
+            android:layout_width="match_parent"
+            layout="@layout/view_following_toolbar"
             android:background="@color/colorWhite"/>
 
     </android.support.v7.widget.Toolbar>

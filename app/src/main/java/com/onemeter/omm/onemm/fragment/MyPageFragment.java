@@ -214,6 +214,8 @@ public class MyPageFragment extends Fragment {
         }
     }
 
+
+
     @Override
     public void onResume() {
         super.onResume();

@@ -32,8 +32,6 @@ public class AgreeActivity extends AppCompatActivity {
         });
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-
-
         toolbar.inflateMenu(R.menu.toolbar_profile);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
