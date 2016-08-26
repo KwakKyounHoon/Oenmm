@@ -6,12 +6,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
-import com.onemeter.omm.onemm.MainActivity;
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.adapter.OtherAdapter;
 import com.onemeter.omm.onemm.data.OtherData;
@@ -23,16 +24,22 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class OtherFragment extends Fragment {
 
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @BindView(R.id.list)
     RecyclerView list;
     FragmentManager manager;
+
+    @BindView(R.id.btn_back)
+    ImageView backView;
 
     public OtherFragment() {
         // Required empty public constructor
@@ -46,8 +53,9 @@ public class OtherFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_other, container, false);
         ButterKnife.bind(this, view);
+
         setHasOptionsMenu(true);
-        ((MainActivity) (getActivity())).changeHomeAsUp(true);
+//        changeHomeAsUp(true);
         manager = getChildFragmentManager();
         mAdatper = new OtherAdapter(manager);
         list.setAdapter(mAdatper);
@@ -124,6 +132,19 @@ public class OtherFragment extends Fragment {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @OnClick(R.id.btn_back)
+    public void backClick(View view){
+        if(getParentFragment() instanceof TabMyFragment){
+            ((TabMyFragment) (getParentFragment())).popFragment();
+        }else if(getParentFragment() instanceof TabHomeFragment){
+            ((TabHomeFragment) (getParentFragment())).popFragment();
+        }else if(getParentFragment() instanceof TabRankFragment){
+            ((TabRankFragment) (getParentFragment())).popFragment();
+        }else{
+            ((TabSearchFragment) (getParentFragment())).popFragment();
+        }
     }
 
 }

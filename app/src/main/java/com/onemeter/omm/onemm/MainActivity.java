@@ -119,14 +119,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void changeHomeAsUp(boolean isBack) {
-//        if (isBack) {
+        if (isBack) {
 //            getSupportActionBar().show();
+//            setSupportActionBar((Toolbar)findViewById(R.id.toolbar));
 //            getSupportActionBar().setHomeAsUpIndicator(android.R.drawable.ic_input_add);
 //            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        } else {
+        } else {
 //            getSupportActionBar().show();
 //            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-//        }
+        }
     }
 
     public void actionBarHide(){
