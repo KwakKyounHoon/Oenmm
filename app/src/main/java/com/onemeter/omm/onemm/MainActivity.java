@@ -5,6 +5,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
+import com.onemeter.omm.onemm.fragment.BackKeyFragment;
 import com.onemeter.omm.onemm.fragment.TabHomeFragment;
 import com.onemeter.omm.onemm.fragment.TabMyFragment;
 import com.onemeter.omm.onemm.fragment.TabRankFragment;
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     public static String TAB_TAG_RANK = "rank";
     public static String TAB_TAG_MY = "my";
 
+    BackKeyFragment currentFragment = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,11 +44,13 @@ public class MainActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction()
                                 .attach(f)
                                 .commit();
+                        currentFragment = (TabHomeFragment) f;
                     }else{
                         f = new TabHomeFragment();
                         getSupportFragmentManager().beginTransaction()
                                 .add(R.id.container, f , (String)tab.getTag())
                                 .commit();
+                        currentFragment = (TabHomeFragment) f;
                     }
                 }else if(tag.equals(TAB_TAG_MY)){
                     Fragment f = getSupportFragmentManager().findFragmentByTag(tag);
@@ -54,11 +58,13 @@ public class MainActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction()
                                 .attach(f)
                                 .commit();
+                        currentFragment = (TabMyFragment) f;
                     }else {
                         f = new TabMyFragment();
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.container, f, (String) tab.getTag())
                                 .commit();
+                        currentFragment = (TabMyFragment) f;
                     }
                 }else if(tag.equals(TAB_TAG_SEARCH)){
                     Fragment f = getSupportFragmentManager().findFragmentByTag(tag);
@@ -66,11 +72,13 @@ public class MainActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction()
                                 .attach(f)
                                 .commit();
+                        currentFragment = (TabSearchFragment) f;
                     }else {
                         f = new TabSearchFragment();
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.container, f, (String) tab.getTag())
                                 .commit();
+                        currentFragment = (TabSearchFragment) f;
                     }
                 }else if(tag.equals(TAB_TAG_RANK)){
                     Fragment f = getSupportFragmentManager().findFragmentByTag(tag);
@@ -78,11 +86,13 @@ public class MainActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction()
                                 .attach(f)
                                 .commit();
+                        currentFragment = (TabRankFragment) f;
                     }else {
                         f = new TabRankFragment();
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.container, f, (String) tab.getTag())
                                 .commit();
+                        currentFragment = (TabRankFragment) f;
                     }
                 }
             }
@@ -128,6 +138,15 @@ public class MainActivity extends AppCompatActivity {
 //            getSupportActionBar().show();
 //            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (currentFragment != null) {
+            boolean isProcessed = currentFragment.onBackPressed();
+            if (isProcessed) return;
+        }
+        super.onBackPressed();
     }
 
     public void actionBarHide(){

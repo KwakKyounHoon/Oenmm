@@ -28,6 +28,7 @@ public class RankFragment extends Fragment {
     public static String TAG_RANK_POPUL = "popul";
     boolean tabFlag = true;
 
+
     public RankFragment() {
         // Required empty public constructor
     }
@@ -49,44 +50,45 @@ public class RankFragment extends Fragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 String tag = (String)tab.getTag();
-
-//                if (tag.equals(TAG_RANK_DOATE)){
-//                    Fragment f = new RankDonationFragment();
-//                    getChildFragmentManager().beginTransaction()
-//                            .replace(R.id.container, f , (String)tab.getTag())
-//                            .commit();
-//                }else if(tag.equals(TAG_RANK_POPUL)){
-//                    Fragment f = new RankPopularFragment();
-//                    getChildFragmentManager().beginTransaction()
-//                            .replace(R.id.container, f , (String)tab.getTag())
-//                            .commit();
-//                }
-
-                if (tag.equals(TAG_RANK_DOATE)){
-                    Fragment f = getChildFragmentManager().findFragmentByTag(tag);
-                    if (f != null) {
+                    if (tag.equals(TAG_RANK_DOATE)) {
+                        Fragment f = new RankDonationFragment();
                         getChildFragmentManager().beginTransaction()
-                                .attach(f)
+                                .replace(R.id.container, f, (String) tab.getTag())
                                 .commit();
-                    }else{
-                        f = new RankDonationFragment();
-                        getChildFragmentManager().beginTransaction()
-                                .replace(R.id.container, f , (String)tab.getTag())
-                                .commit();
-                    }
-                }else if(tag.equals(TAG_RANK_POPUL)){
-                    Fragment f = getChildFragmentManager().findFragmentByTag(tag);
-                    if (f != null) {
-                        getChildFragmentManager().beginTransaction()
-                                .attach(f)
-                                .commit();
-                    }else {
-                        f = new RankPopularFragment();
+                    } else if (tag.equals(TAG_RANK_POPUL)) {
+                        Fragment f = new RankPopularFragment();
                         getChildFragmentManager().beginTransaction()
                                 .replace(R.id.container, f, (String) tab.getTag())
                                 .commit();
                     }
-                }
+
+//                if (tag.equals(TAG_RANK_DOATE)){
+//                    Fragment f = getChildFragmentManager().findFragmentByTag(tag);
+//                    if (f != null) {
+//                        getChildFragmentManager().beginTransaction()
+//                                .attach(f)
+//                                .commit();
+//                    }else{
+//                        f = new RankDonationFragment();
+//                        getChildFragmentManager().beginTransaction()
+//                                .replace(R.id.container, f , (String)tab.getTag())
+//                                .commit();
+//                    }
+//                    tabFlag = true;
+//                }else if(tag.equals(TAG_RANK_POPUL)){
+//                    Fragment f = getChildFragmentManager().findFragmentByTag(tag);
+//                    if (f != null) {
+//                        getChildFragmentManager().beginTransaction()
+//                                .attach(f)
+//                                .commit();
+//                    }else {
+//                        f = new RankPopularFragment();
+//                        getChildFragmentManager().beginTransaction()
+//                                .replace(R.id.container, f, (String) tab.getTag())
+//                                .commit();
+//                    }
+//                    tabFlag = false;
+//                }
             }
 
 

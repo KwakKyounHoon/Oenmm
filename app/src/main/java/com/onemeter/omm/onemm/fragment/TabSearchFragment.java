@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import com.onemeter.omm.onemm.MainActivity;
 import com.onemeter.omm.onemm.R;
 
-public class TabSearchFragment extends Fragment {
+public class TabSearchFragment extends BackKeyFragment {
 
     public static String TAG_SEARCH = "search";
     public static String TAG_FOLLOWER = "follower";

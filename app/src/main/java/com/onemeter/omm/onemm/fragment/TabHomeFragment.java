@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.onemeter.omm.onemm.R;
 
-public class TabHomeFragment extends Fragment {
+public class TabHomeFragment extends BackKeyFragment {
 
     public static String TAG_OTHER = "other";
     public static String TAG_FOLLOWER = "follower";
