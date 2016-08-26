@@ -1,21 +1,36 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.onemeter.omm.onemm.fragment.PostFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:id="@+id/toolbar">
+
+
+        <include
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            layout="@layout/view_main_toolbar"
+            android:background="@color/colorWhite"/>
+
+    </android.support.v7.widget.Toolbar>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="PostFragment" />
+        android:text="PostFragment"
+        android:layout_below="@+id/toolbar"
+        android:id="@+id/textView3" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="OtherUser"
         android:id="@+id/btn_user"
-        android:layout_gravity="center_horizontal|top" />
+        android:layout_gravity="center_horizontal|top"
+        android:layout_below="@+id/toolbar"
+        android:layout_centerHorizontal="true" />
 
-
-</FrameLayout>
+</RelativeLayout>

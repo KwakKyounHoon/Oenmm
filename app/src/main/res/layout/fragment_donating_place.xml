@@ -4,17 +4,31 @@
     android:layout_height="match_parent"
     tools:context="com.onemeter.omm.onemm.fragment.DonatingPlaceFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="기부처 리스트 페이지" />
+        android:layout_height="@dimen/toolbar_height"
+        android:id="@+id/toolbar">
+
+    <include
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        layout="@layout/view_donating_place"
+        android:background="@color/colorWhite"/>
+
+    </android.support.v7.widget.Toolbar>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="OK"
         android:id="@+id/btn_ok"
-        android:layout_gravity="center_horizontal|top" />
+        android:layout_gravity="center" />
+
+    <TextView
+        android:layout_width="123dp"
+        android:layout_height="80dp"
+        android:text="기부처 리스트 페이지"
+        android:layout_gravity="right|center_vertical" />
 
 </FrameLayout>

@@ -4,10 +4,27 @@
     android:layout_height="match_parent"
     tools:context="com.onemeter.omm.onemm.fragment.ReplyFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:id="@+id/toolbar">
+
+
+        <include
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            layout="@layout/view_reply"
+            android:background="@color/colorWhite"/>
+
+    </android.support.v7.widget.Toolbar>
+    <!-- TODO: Update blank fragment layout -->
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="답변하기 페이지" />
 
 </FrameLayout>

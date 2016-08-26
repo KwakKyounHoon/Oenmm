@@ -4,17 +4,32 @@
     android:layout_height="match_parent"
     tools:context="com.onemeter.omm.onemm.fragment.FollowerFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="팔로워 페이지" />
+        android:layout_height="@dimen/toolbar_height"
+        android:id="@+id/toolbar">
+
+
+        <include
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            layout="@layout/view_follower_toolbar"
+            android:background="@color/colorWhite"/>
+
+    </android.support.v7.widget.Toolbar>
+    <!-- TODO: Update blank fragment layout -->
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="유저 저보 보기"
+        android:text="유저 정보 보기"
         android:id="@+id/btn_user"
-        android:layout_gravity="right|top" />
+        android:layout_gravity="right|center_vertical" />
+
+    <TextView
+        android:layout_width="59dp"
+        android:layout_height="50dp"
+        android:text="팔로워 페이지"
+        android:layout_gravity="center" />
 
 </FrameLayout>
