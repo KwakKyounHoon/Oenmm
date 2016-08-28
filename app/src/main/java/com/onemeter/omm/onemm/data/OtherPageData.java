@@ -7,22 +7,22 @@ import java.util.List;
  * Created by Tacademy on 2016-08-24.
  */
 public class OtherPageData {
-    OtherData otherData;
-    List<PostData> postDatas = new ArrayList<>();
-
-    public OtherData getOtherData() {
-        return otherData;
+    public OtherInfo getOtherInfo() {
+        return otherInfo;
     }
 
-    public void setOtherData(OtherData otherData) {
-        this.otherData = otherData;
+    public void setOtherInfo(OtherInfo otherInfo) {
+        this.otherInfo = otherInfo;
     }
 
-    public List<PostData> getPostDatas() {
+    OtherInfo otherInfo;
+    List<Post> postDatas = new ArrayList<>();
+
+    public List<Post> getPostDatas() {
         return postDatas;
     }
 
-    public void setPostDatas(List<PostData> postDatas) {
+    public void setPostDatas(List<Post> postDatas) {
         this.postDatas = postDatas;
     }
 }

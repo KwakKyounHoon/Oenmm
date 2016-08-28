@@ -4,7 +4,6 @@ package com.onemeter.omm.onemm.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -13,15 +12,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.adapter.OtherAdapter;
-import com.onemeter.omm.onemm.data.OtherData;
-import com.onemeter.omm.onemm.data.OtherPageData;
-import com.onemeter.omm.onemm.data.PostData;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.onemeter.omm.onemm.data.OtherInfo;
+import com.onemeter.omm.onemm.data.Post;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,7 +37,6 @@ public class OtherFragment extends Fragment {
 
     @BindView(R.id.list)
     RecyclerView list;
-    FragmentManager manager;
 
     @BindView(R.id.btn_back)
     ImageView backView;
@@ -49,7 +44,7 @@ public class OtherFragment extends Fragment {
     public OtherFragment() {
         // Required empty public constructor
     }
-    OtherAdapter mAdatper;
+    OtherAdapter mAdapter;
 
     public static OtherFragment newInstance(String message) {
         OtherFragment fragment = new OtherFragment();
@@ -73,17 +68,15 @@ public class OtherFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_other, container, false);
         ButterKnife.bind(this, view);
-
         setHasOptionsMenu(true);
 //        changeHomeAsUp(true);
-        manager = getChildFragmentManager();
-        mAdatper = new OtherAdapter(manager);
-        list.setAdapter(mAdatper);
+        mAdapter = new OtherAdapter();
+        list.setAdapter(mAdapter);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         list.setLayoutManager(manager);
-        mAdatper.setOnAdapterItemClickListener(new OtherAdapter.OnAdapterItemClickLIstener() {
+        mAdapter.setOnAdapterItemClickListener(new OtherAdapter.OnAdapterItemClickLIstener() {
             @Override
-            public void onAdapterFollowingClick(View view, OtherData otherData, int position) {
+            public void onAdapterFollowingClick(View view, OtherInfo otherInfo, int position) {
                 if(getParentFragment() instanceof TabMyFragment){
                     ((TabMyFragment) (getParentFragment())).showFollwing();
                 }else if(getParentFragment() instanceof TabHomeFragment){
@@ -96,7 +89,7 @@ public class OtherFragment extends Fragment {
             }
 
             @Override
-            public void onAdapterFollowerClick(View view, OtherData otherData, int position) {
+            public void onAdapterFollowerClick(View view, OtherInfo otherInfo, int position) {
 
                 if(getParentFragment() instanceof TabMyFragment){
                     ((TabMyFragment) (getParentFragment())).showFollwer();
@@ -110,26 +103,79 @@ public class OtherFragment extends Fragment {
             }
 
             @Override
-            public void onAdapterSoundClick(View view, OtherData otherData, int position) {
+            public void onAdapterSoundClick(View view, OtherInfo otherInfo, int position) {
+            }
+
+            @Override
+            public void onAdapterCategoryItemClick(boolean flag) {
+                if(flag){
+                    mAdapter.clearPost();
+                    init();
+                }else{
+                    mAdapter.clearPost();
+                    init2();
+                }
+            }
+
+            @Override
+            public void onAdapterItemClick(View view, Post post, int position) {
+                Toast.makeText(getContext(),post.getAnswernerId(),Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdapterPlayClick(View view, Post post, int position) {
+                Toast.makeText(getContext(),post.getVoiceContent(),Toast.LENGTH_SHORT).show();
             }
         });
 
+        initOtherInfo();
         init();
         return view;
     }
 
+    void initOtherInfo(){
+        OtherInfo otherInfo = new OtherInfo();
+        otherInfo.setUserId(id);
+        otherInfo.setName(id+"dd");
+        otherInfo.setDonationName(id+"gg");
+        otherInfo.setFollowCheck(id+"1");
+        otherInfo.setFollower(id+"2");
+        otherInfo.setStateMessage(id+"good");
+        otherInfo.setFollowing(id+"3");
+        otherInfo.setVoiceMessage(id+"Hi");
+        otherInfo.setPhoto("");
+        otherInfo.setFollowCheck("true");
+        mAdapter.addOtherInfo(otherInfo);
+    }
+
     void init(){
-        OtherPageData otherPageData = new OtherPageData();
-        OtherData otherData = new OtherData();
-        otherPageData.setOtherData(otherData);
+        for(int i = 0; i < 5; i++){
+            Post post = new Post();
+            post.setAnswernerId(i+"1");
+            post.setAnswernerPhoto("");
+            post.setLength(i+"5");
+            post.setPrice(i+"10");
+            post.setQuestionerContent("GOOD"+i);
+            post.setQuestionerId(i+"2");
+            post.setQuestionerPhoto("");
+            post.setVoiceContent("yes"+i);
+            mAdapter.addPost(post);
+        }
+    }
 
-        List<PostData> postDatas = new ArrayList<>();
-        PostData postData = new PostData();
-        postDatas.add(postData);
-
-        otherPageData.setPostDatas(postDatas);
-
-        mAdatper.addOtherData(otherPageData);
+    void init2(){
+        for(int i = 5; i < 11; i++){
+            Post post = new Post();
+            post.setAnswernerId(i+"1");
+            post.setAnswernerPhoto("");
+            post.setLength(i+"5");
+            post.setPrice(i+"10");
+            post.setQuestionerContent("GOOD"+i);
+            post.setQuestionerId(i+"2");
+            post.setQuestionerPhoto("");
+            post.setVoiceContent("yes"+i);
+            mAdapter.addPost(post);
+        }
     }
 
     @Override

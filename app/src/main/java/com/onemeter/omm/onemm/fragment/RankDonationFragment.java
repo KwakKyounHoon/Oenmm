@@ -55,6 +55,7 @@ public class RankDonationFragment extends Fragment {
     public void init(){
         for(int i = 0; i < 5; i++) {
             DonationRank donationRank = new DonationRank();
+            donationRank.setUserId(i+"id");
             donationRank.setName("name"+i);
             donationRank.setDonationName("PlaceNmae"+i);
             mAdatper.addDonationRank(donationRank);

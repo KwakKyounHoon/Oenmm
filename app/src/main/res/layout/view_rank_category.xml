@@ -13,14 +13,14 @@
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/radio_btn_listen"
+            android:text="@string/radio_btn_rank_listen"
             android:checked="true"
             android:id="@+id/btn_listen" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/radio_btn_cost"
+            android:text="@string/radio_btn_rank_listen"
             android:id="@+id/btn_cost"/>
     </RadioGroup>
 

@@ -13,13 +13,14 @@
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="답변완료"
-            android:id="@+id/radioButton" />
+            android:text="@string/radio_btn_other_listen"
+            android:checked="true"
+            android:id="@+id/btn_listen" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="답변미완료"
-            android:id="@+id/radioButton2"/>
+            android:text="@string/radio_btn_other_new"
+            android:id="@+id/btn_new"/>
     </RadioGroup>
 </RelativeLayout>

@@ -14,9 +14,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * Created by Tacademy on 2016-08-24.
+ * Created by Kwak on 2016-08-28.
  */
-public class OtherPostViewHolder extends RecyclerView.ViewHolder {
+public class PostViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.image_questioner)
     ImageView questionerImgView;
     @BindView(R.id.image_answer)
@@ -30,13 +30,13 @@ public class OtherPostViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.text_cost)
     TextView costView;
 
-    public OtherPostViewHolder(View itemView) {
+    public PostViewHolder(View itemView) {
         super(itemView);
-        ButterKnife.bind(this,itemView);
+        ButterKnife.bind(this, itemView);
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(listener != null){
+                if (listener != null) {
                     listener.onPostItemClick(view, post, getAdapterPosition());
                 }
             }
@@ -65,6 +65,7 @@ public class OtherPostViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
+
     public interface OnOtherItemClickListener {
         public void onPostItemClick(View view, Post post, int position);
         public void onPlayClick(View view, Post post, int position);
@@ -76,4 +77,3 @@ public class OtherPostViewHolder extends RecyclerView.ViewHolder {
         this.listener = listener;
     }
 }
-

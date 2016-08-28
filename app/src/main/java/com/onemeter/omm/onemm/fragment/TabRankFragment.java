@@ -49,7 +49,7 @@ public class TabRankFragment extends BackKeyFragment {
     public void showOther(String userId){
         FragmentTransaction ft = getChildFragmentManager()
                 .beginTransaction();
-        OtherFragment f = new OtherFragment();
+        OtherFragment f = OtherFragment.newInstance(userId);
         ft.replace(R.id.container,f , TAG_OTHER).addToBackStack(TAG_OTHER);
         ft.commit();
     }

@@ -51,10 +51,10 @@ public class TabHomeFragment extends BackKeyFragment {
         return view;
     }
 
-    public void showOther(){
+    public void showOther(String id){
         FragmentTransaction ft = getChildFragmentManager()
                 .beginTransaction();
-        OtherFragment f = new OtherFragment();
+        OtherFragment f = OtherFragment.newInstance(id);
         ft.replace(R.id.container,f , TAG_OTHER).addToBackStack(null);
         ft.commit();
     }

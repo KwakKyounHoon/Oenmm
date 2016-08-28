@@ -57,13 +57,13 @@ public class FollowerFragment extends Fragment {
     @OnClick(R.id.btn_user)
     public void onUserClick(){
         if(getParentFragment() instanceof TabMyFragment){
-            ((TabMyFragment) (getParentFragment())).showOther();
+            ((TabMyFragment) (getParentFragment())).showOther("test");
         }else if(getParentFragment() instanceof TabHomeFragment){
-            ((TabHomeFragment) (getParentFragment())).showOther();
+            ((TabHomeFragment) (getParentFragment())).showOther("test");
         }else if(getParentFragment() instanceof TabRankFragment){
             ((TabRankFragment) (getParentFragment())).showOther("test");
         }else{
-            ((TabSearchFragment) (getParentFragment())).showOther();
+            ((TabSearchFragment) (getParentFragment())).showOther("test");
         }
     }
 

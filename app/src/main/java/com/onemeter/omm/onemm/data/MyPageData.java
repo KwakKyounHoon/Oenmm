@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class MyPageData {
     private MyData myData;
-    private List<PostData> postDatas = new ArrayList<>();
+    private List<Post> posts = new ArrayList<>();
 
     public MyData getMyData() {
         return myData;
@@ -18,11 +18,11 @@ public class MyPageData {
         this.myData = myData;
     }
 
-    public List<PostData> getPostDatas() {
-        return postDatas;
+    public List<Post> getPosts() {
+        return posts;
     }
 
-    public void setPostDatas(List<PostData> postDatas) {
-        this.postDatas = postDatas;
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
     }
 }

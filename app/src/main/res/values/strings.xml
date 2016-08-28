@@ -6,7 +6,12 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="radio_btn_listen">나도 듣기순</string>
-    <string name="radio_btn_cost">질문비용순</string>
+    <string name="radio_btn_rank_listen">나도 듣기순</string>
+    <string name="radio_btn_rank_cost">질문비용순</string>
     <string name="post_btn_listen">답변듣기</string>
+    <string name="radio_btn_other_listen">나도 듣기순</string>
+    <string name="radio_btn_other_new">최신순</string>
+    <string name="radio_btn_my_complete">답변완료</string>
+    <string name="radio_btn_my_incomplete">답변미완료</string>
+    <string name="btn_modify_profile">프로필 수정</string>
 </resources>

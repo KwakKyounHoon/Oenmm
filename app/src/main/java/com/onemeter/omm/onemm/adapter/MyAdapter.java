@@ -1,6 +1,5 @@
 package com.onemeter.omm.onemm.adapter;
 
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +8,7 @@ import android.view.ViewGroup;
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.data.MyData;
 import com.onemeter.omm.onemm.data.MyPageData;
-import com.onemeter.omm.onemm.data.PostData;
+import com.onemeter.omm.onemm.data.Post;
 import com.onemeter.omm.onemm.viewholder.MyCategoryViewHolder;
 import com.onemeter.omm.onemm.viewholder.MyHeaderViewHolder;
 import com.onemeter.omm.onemm.viewholder.MyPostViewHolder;
@@ -19,21 +18,27 @@ import com.onemeter.omm.onemm.viewholder.MyTabViewHolder;
  * Created by Tacademy on 2016-08-23.
  */
 public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements MyHeaderViewHolder.OnMyDataItemClickListener
-        ,MyTabViewHolder.OnTabItemClickListener,MyCategoryViewHolder.OnMyCategoryItemClickListener ,MyPostViewHolder.OnMyPostItemClickListener{
+        ,MyTabViewHolder.OnTabItemClickListener,MyCategoryViewHolder.OnMyCategoryItemClickListener ,MyPostViewHolder.OnMyItemClickListener{
 
-    MyPageData myPageData;
-    FragmentManager manager;
+    MyPageData myPageData = new MyPageData();
     boolean categoryFlag = true;
 
     int tabPosition;
-    boolean isCom;
+    boolean comFlag;
 
-    public MyAdapter(FragmentManager manager){
-        this.manager = manager;
+
+    public void addMyData(MyData myData){
+        myPageData.setMyData(myData);
+        notifyDataSetChanged();
     }
 
-    public void addMyData(MyPageData myPageData){
-        this.myPageData = myPageData;
+    public void addPost(Post post){
+        myPageData.getPosts().add(post);
+        notifyDataSetChanged();
+    }
+
+    public void clearPost(){
+        myPageData.getPosts().clear();
         notifyDataSetChanged();
     }
 
@@ -52,11 +57,11 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
             if(position == 0) return VIEW_TYPE_CTEGORY;
             position--;
         }
-        if (myPageData.getPostDatas().size() > 0) {
-            if (position < myPageData.getPostDatas().size()) {
+        if (myPageData.getPosts().size() > 0) {
+            if (position < myPageData.getPosts().size()) {
                 return VIEW_TYPE_POST;
             }
-            position -= myPageData.getPostDatas().size();
+            position -= myPageData.getPosts().size();
         }
 
         throw new IllegalArgumentException("invalid position");
@@ -111,14 +116,15 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
             position--;
         }
 
-        if (myPageData.getPostDatas().size() > 0) {
-            if (position < myPageData.getPostDatas().size()) {
+        if (myPageData.getPosts().size() > 0) {
+            if (position < myPageData.getPosts().size()) {
                 MyPostViewHolder mpvh = (MyPostViewHolder)holder;
-                mpvh.setOnMyPostItemClickListener(this);
-                mpvh.setPost(myPageData.getPostDatas().get(position));
+                mpvh.setOnMyItemClickListener(this);
+                mpvh.setPost(myPageData.getPosts().get(position));
+                mpvh.setComFlag(comFlag, tabPosition);
                 return;
             }
-            position -= myPageData.getPostDatas().size();
+            position -= myPageData.getPosts().size();
         }
         throw new IllegalArgumentException("invalid position");
     }
@@ -130,7 +136,7 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
         if(categoryFlag) {
             ctn++;
         }
-        return myPageData.getPostDatas().size()+ctn;
+        return myPageData.getPosts().size()+ctn;
     }
 
     @Override
@@ -169,11 +175,12 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
     }
 
     @Override
-    public void onProfileItemClick(View view, MyData myData, int position) {
+    public void onModifyClick(View view, MyData myData, int position) {
         if(listener != null){
-            listener.onAdapterProfileClick(view,myData,position);
+            listener.onAdatperModyfiyClick(view,myData,position);
         }
     }
+
 
     @Override
     public void onCategory(View view, boolean flag) {
@@ -184,6 +191,7 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
     public void onTabType(View view, int num) {
         if(listener != null){
             listener.onAdapterTabType(view, num);
+            tabPosition = num;
         }
     }
 
@@ -191,13 +199,22 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
     public void onCategoryItemClick(Boolean flag) {
         if(listener != null){
             listener.onAdapterCategory(flag);
+            comFlag = flag;
+        }
+    }
+
+
+    @Override
+    public void onPostItemClick(View view, Post post, int position) {
+        if(listener != null){
+            listener.onAdapterItemClick(view, post, position);
         }
     }
 
     @Override
-    public void onPostItemClick(View view, PostData postData, int position) {
+    public void onPlayClick(View view, Post post, int position) {
         if(listener != null){
-            listener.onAdapterPostItemClick(view, postData, position);
+            listener.onAdapterPlayItemClick(view, post, position);
         }
     }
 
@@ -208,10 +225,11 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
         public void onAdapterFollowerClick(View view, MyData myData, int position);
         public void onAdapterSoundClick(View view, MyData myData, int position);
         public void onAdapterPhotoClick(View view, MyData myData, int position);
-        public void onAdapterProfileClick(View view, MyData myData, int position);
+        public void onAdatperModyfiyClick(View view, MyData myData, int position);
         public void onAdapterCategory(boolean flag);
         public void onAdapterTabType(View view, int num);
-        public void onAdapterPostItemClick(View view, PostData postData, int position);
+        public void onAdapterItemClick(View view, Post post, int position);
+        public void onAdapterPlayItemClick(View view, Post post, int position);
     }
 
     OnAdapterItemClickLIstener listener;
@@ -221,6 +239,6 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
 
     public void setAdatperPosition(int tabPosition, boolean isCom){
         this.tabPosition = tabPosition;
-        this.isCom = isCom;
+        this.comFlag = isCom;
     }
 }

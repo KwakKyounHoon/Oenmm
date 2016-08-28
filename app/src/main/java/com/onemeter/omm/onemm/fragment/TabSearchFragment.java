@@ -73,10 +73,10 @@ public class TabSearchFragment extends BackKeyFragment {
         ft.commit();
     }
 
-    public void showOther(){
+    public void showOther(String id){
         FragmentTransaction ft = getChildFragmentManager()
                 .beginTransaction();
-        OtherFragment f = new OtherFragment();
+        OtherFragment f = OtherFragment.newInstance(id);
         ft.replace(R.id.container,f , TAG_OTHER).addToBackStack(TAG_OTHER);
         ft.commit();
     }

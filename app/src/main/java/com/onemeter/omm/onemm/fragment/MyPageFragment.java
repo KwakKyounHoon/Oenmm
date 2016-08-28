@@ -4,7 +4,6 @@ package com.onemeter.omm.onemm.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,11 +14,7 @@ import com.onemeter.omm.onemm.MainActivity;
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.adapter.MyAdapter;
 import com.onemeter.omm.onemm.data.MyData;
-import com.onemeter.omm.onemm.data.MyPageData;
-import com.onemeter.omm.onemm.data.PostData;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.onemeter.omm.onemm.data.Post;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,7 +26,6 @@ public class MyPageFragment extends Fragment {
 
     @BindView(R.id.list)
     RecyclerView list;
-    FragmentManager manager;
 
     //    public static final int POST_TYPE_RECEIVE_COM = 1;
 //    public static final int POST_TYPE_RECEIVE_INCOM = 2;
@@ -41,7 +35,7 @@ public class MyPageFragment extends Fragment {
 //
 //    int type;
     int tabType = 1;
-    boolean isCom = true;
+    boolean comFlag = true;
 
     boolean firstFlag = true;
 
@@ -49,19 +43,17 @@ public class MyPageFragment extends Fragment {
         // Required empty public constructor
     }
 
-    MyAdapter mAdatper;
+    MyAdapter mAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (firstFlag) {
-            manager = getChildFragmentManager();
-            mAdatper = new MyAdapter(manager);
-            mAdatper.setAdatperPosition(tabType, isCom);
+            mAdapter = new MyAdapter();
+            mAdapter.setAdatperPosition(tabType, comFlag);
         }
         firstFlag = false;
 
-        init1();
     }
 
     @Override
@@ -69,10 +61,10 @@ public class MyPageFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_my_page, container, false);
         ButterKnife.bind(this, view);
-        list.setAdapter(mAdatper);
+        list.setAdapter(mAdapter);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         list.setLayoutManager(manager);
-        mAdatper.setOnAdapterItemClickListener(new MyAdapter.OnAdapterItemClickLIstener() {
+        mAdapter.setOnAdapterItemClickListener(new MyAdapter.OnAdapterItemClickLIstener() {
             @Override
             public void onAdapterDonateClick(View view, MyData myData, int position) {
                 ((TabMyFragment)getParentFragment()).showDonate();
@@ -98,120 +90,105 @@ public class MyPageFragment extends Fragment {
             }
 
             @Override
-            public void onAdapterProfileClick(View view, MyData myData, int position){
+            public void onAdatperModyfiyClick(View view, MyData myData, int position) {
                 ((TabMyFragment)getParentFragment()).showProfile();
             }
 
             @Override
             public void onAdapterCategory(boolean flag) {
-                isCom = flag;
-                init();
+                comFlag = flag;
+                if (comFlag){
+                    mAdapter.clearPost();
+                    init();
+                }else{
+                    mAdapter.clearPost();
+                    init2();
+                }
             }
 
             @Override
             public void onAdapterTabType(View view, int num) {
                 tabType = num;
-                if(num == 3) isCom = true;
-                init();
+                if(num == 1){
+                    mAdapter.clearPost();
+                    init();
+                }else if(num == 2){
+                    mAdapter.clearPost();
+                    init2();
+                }else if(num == 3){
+                    mAdapter.clearPost();
+                    init3();
+                }
+
             }
 
             @Override
-            public void onAdapterPostItemClick(View view, PostData postData, int position) {
-                if(!isCom){
-                    ((TabMyFragment)getParentFragment()).showReply();
-                }
+            public void onAdapterItemClick(View view, Post post, int position) {
+
+            }
+
+            @Override
+            public void onAdapterPlayItemClick(View view, Post post, int position) {
+
             }
 
 
         });
 
+        initInfo();
+        mAdapter.clearPost();
+        init();
         return view;
     }
-    void init1(){
-        MyPageData myPageData = new MyPageData();
+    void initInfo(){
         MyData myData = new MyData();
-        myPageData.setMyData(myData);
-
-        List<PostData> postDatas = new ArrayList<>();
-        for(int i = 0; i < 5; i++){
-            PostData postData = new PostData();
-            postData.setName("받은 질문, 답변 완료 "+i);
-            postDatas.add(postData);
-        }
-        myPageData.setPostDatas(postDatas);
-        mAdatper.addMyData(myPageData);
+        myData.setDonationName("유니세프");
+        myData.setFollower("100");
+        myData.setFollowing("140");
+        myData.setName("곽견훈");
+        myData.setNickname("곽곽곽");
+        myData.setStateMessage("시작!");
+        myData.setUserId("me");
+        myData.setVoiceMessage("good");
+        mAdapter.addMyData(myData);
     }
 
-    void  init(){
-        if(tabType == 1){
-            if(isCom){
-                MyPageData myPageData = new MyPageData();
-                MyData myData = new MyData();
-                myPageData.setMyData(myData);
+    void init(){
+        for(int i = 0; i < 5; i++){
+            Post post = new Post();
+            post.setAnswernerId(i+"1");
+            post.setLength(i+"5");
+            post.setPrice(i+"10");
+            post.setQuestionerContent("GOOD"+i);
+            post.setQuestionerId(i+"2");
+            post.setVoiceContent("yes"+i);
+            mAdapter.addPost(post);
+        }
+    }
 
-                List<PostData> postDatas = new ArrayList<>();
-                for(int i = 0; i < 5; i++){
-                    PostData postData = new PostData();
-                    postData.setName("받은 질문, 답변 완료 "+i);
-                    postDatas.add(postData);
-                }
-                myPageData.setPostDatas(postDatas);
-                mAdatper.addMyData(myPageData);
-            }else{
-                MyPageData myPageData = new MyPageData();
-                MyData myData = new MyData();
-                myPageData.setMyData(myData);
+    void init2(){
+        for(int i = 5; i < 11; i++){
+            Post post = new Post();
+            post.setAnswernerId(i+"1");
+            post.setLength(i+"5");
+            post.setPrice(i+"10");
+            post.setQuestionerContent("GOOD"+i);
+            post.setQuestionerId(i+"2");
+            post.setVoiceContent("yes"+i);
+            mAdapter.addPost(post);
+        }
+    }
 
-                List<PostData> postDatas = new ArrayList<>();
-                for(int i = 0; i < 5; i++){
-                    PostData postData = new PostData();
-                    postData.setName("받은 질문, 답변 미완료 "+i);
-                    postDatas.add(postData);
-                }
-                myPageData.setPostDatas(postDatas);
-                mAdatper.addMyData(myPageData);
-            }
-        }else if(tabType == 2){
-            if(isCom){
-                MyPageData myPageData = new MyPageData();
-                MyData myData = new MyData();
-                myPageData.setMyData(myData);
-
-                List<PostData> postDatas = new ArrayList<>();
-                for(int i = 0; i < 5; i++){
-                    PostData postData = new PostData();
-                    postData.setName("보낸 질문, 답변 완료 "+i);
-                    postDatas.add(postData);
-                }
-                myPageData.setPostDatas(postDatas);
-                mAdatper.addMyData(myPageData);
-            }else{
-                MyPageData myPageData = new MyPageData();
-                MyData myData = new MyData();
-                myPageData.setMyData(myData);
-
-                List<PostData> postDatas = new ArrayList<>();
-                for(int i = 0; i < 5; i++){
-                    PostData postData = new PostData();
-                    postData.setName("보낸 질문, 답변 미완료 "+i);
-                    postDatas.add(postData);
-                }
-                myPageData.setPostDatas(postDatas);
-                mAdatper.addMyData(myPageData);
-            }
-        }else if(tabType == 3){
-            MyPageData myPageData = new MyPageData();
-            MyData myData = new MyData();
-            myPageData.setMyData(myData);
-
-            List<PostData> postDatas = new ArrayList<>();
-            for(int i = 0; i < 5; i++){
-                PostData postData = new PostData();
-                postData.setName("나도 듣기 보관함"+i);
-                postDatas.add(postData);
-            }
-            myPageData.setPostDatas(postDatas);
-            mAdatper.addMyData(myPageData);
+    void init3(){
+        for(int i = 12; i < 20; i++){
+            Post post = new Post();
+            post.setAnswernerId(i+"1");
+            post.setLength(i+"5");
+            post.setPrice(i+"10");
+            post.setQuestionerContent("GOOD"+i);
+            post.setQuestionerId(i+"2");
+            post.setVoiceContent("yes"+i);
+            mAdapter.addPost(post);
         }
     }
 
@@ -222,7 +199,6 @@ public class MyPageFragment extends Fragment {
         super.onResume();
         ((MainActivity) (getActivity())).changeHomeAsUp(false);
 //        Toast.makeText(getActivity(),"ggg",Toast.LENGTH_SHORT).show();
-//        Log.i("MyPage",tabType + " " + isCom + "");
 
     }
 
