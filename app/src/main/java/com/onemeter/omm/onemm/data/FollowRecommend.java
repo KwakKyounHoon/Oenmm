@@ -1,6 +1,6 @@
 package com.onemeter.omm.onemm.data;
 
-public class FollowPersonResult {
+public class FollowRecommend {
     private String nickname;
     private String name;
     private String photo;

@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.onemeter.omm.onemm.R;
-import com.onemeter.omm.onemm.data.FollowPersonResult;
+import com.onemeter.omm.onemm.data.FollowPerson;
 import com.onemeter.omm.onemm.viewholder.FollowPersonViewHolder;
 
 import java.util.ArrayList;
@@ -17,9 +17,9 @@ import java.util.List;
  */
 public class FollowPersonAdapter extends RecyclerView.Adapter<FollowPersonViewHolder> {
 
-    List<FollowPersonResult> items = new ArrayList<>();
+    List<FollowPerson> items = new ArrayList<>();
 
-    public void add(FollowPersonResult p) {
+    public void add(FollowPerson p) {
         items.add(p);
         notifyDataSetChanged();
     }

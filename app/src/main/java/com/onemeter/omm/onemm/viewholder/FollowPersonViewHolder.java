@@ -6,7 +6,6 @@ import android.widget.TextView;
 
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.data.FollowPerson;
-import com.onemeter.omm.onemm.data.FollowPersonResult;
 
 /**
  * Created by Tacademy on 2016-08-29.
@@ -24,10 +23,9 @@ public class FollowPersonViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-    FollowPersonResult followPerson;
-    FollowPerson followPersons;
+    FollowPerson followPerson;
 
-    public void setFollowPerson(FollowPersonResult followPerson) {
+    public void setFollowPerson(FollowPerson followPerson) {
         this.followPerson = followPerson;
         photoView.setText(followPerson.getPhoto());
         nameView.setText(followPerson.getName());

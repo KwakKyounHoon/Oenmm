@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.onemeter.omm.onemm.adapter.FollowPersonAdapter;
-import com.onemeter.omm.onemm.data.FollowPersonResult;
+import com.onemeter.omm.onemm.data.FollowPerson;
 
 import java.util.Random;
 
@@ -64,7 +64,7 @@ public class FollowActivity extends AppCompatActivity {
     private void initData() {
         Random r = new Random();
         for (int i = 0; i < 27; i++) {
-            FollowPersonResult p = new FollowPersonResult();
+            FollowPerson p = new FollowPerson();
             p.setName("name ::" + i);
             p.setPhoto("photo :: " + i);
             mAdapter.add(p);
