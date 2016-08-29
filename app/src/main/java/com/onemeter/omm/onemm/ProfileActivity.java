@@ -2,42 +2,41 @@ package com.onemeter.omm.onemm;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.ImageView;
 
-public class ProfileActivity extends ActionBarActivity {
-    Toolbar toolbar;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
+public class ProfileActivity extends AppCompatActivity {
+
+    @BindView(R.id.back)
+    ImageView back;
+    @BindView(R.id.check)
+    ImageView check;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        ButterKnife.bind(this);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-
-
-        toolbar.inflateMenu(R.menu.toolbar_profile);
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+        back.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onMenuItemClick(MenuItem item) {
+            public void onClick(View view) {
+                Intent intent = new Intent(ProfileActivity.this, AgreeActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
-                int id = item.getItemId();
-                if (id == R.id.tool_check){
-
-                    Intent intent = new Intent(ProfileActivity.this, FollowActivity.class);
-                    startActivity(intent);
-                    finish();
-
-                } else if (id == R.id.tool_back) {
-
-                    Intent intent = new Intent(ProfileActivity.this, AgreeActivity.class);
-                    startActivity(intent);
-                    finish();
-
-                }
-                return true;
+        check.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ProfileActivity.this, FollowActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
     }
