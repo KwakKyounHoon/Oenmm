@@ -128,7 +128,8 @@ public class OtherFragment extends Fragment {
             }
         });
 
-        initOtherInfo();
+//        initOtherInfo();
+
         init();
         return view;
     }

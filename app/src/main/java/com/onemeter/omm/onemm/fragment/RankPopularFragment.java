@@ -12,7 +12,11 @@ import android.widget.Toast;
 
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.adapter.RankPopularAdapter;
+import com.onemeter.omm.onemm.data.NetWorkResultType;
 import com.onemeter.omm.onemm.data.RankPopular;
+import com.onemeter.omm.onemm.manager.NetworkManager;
+import com.onemeter.omm.onemm.manager.NetworkRequest;
+import com.onemeter.omm.onemm.request.PopularPostListRequest;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,43 +61,50 @@ public class RankPopularFragment extends Fragment {
             public void onAdapterCategoryItemClick(Boolean flag) {
                 if(flag){
                     mAdapter.clearRankPopular();
-                    init();
+                    PopularPostListRequest request = new PopularPostListRequest(getContext(), "1","20");
+                    NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<RankPopular[]>>() {
+                        @Override
+                        public void onSuccess(NetworkRequest<NetWorkResultType<RankPopular[]>> request, NetWorkResultType<RankPopular[]> result) {
+                            mAdapter.addAll(result.getResult());
+                        }
+
+                        @Override
+                        public void onFail(NetworkRequest<NetWorkResultType<RankPopular[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                        }
+                    });
                 }else{
                     mAdapter.clearRankPopular();
-                    init2();
+                    PopularPostListRequest request = new PopularPostListRequest(getContext(), "1","20");
+                    NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<RankPopular[]>>() {
+                        @Override
+                        public void onSuccess(NetworkRequest<NetWorkResultType<RankPopular[]>> request, NetWorkResultType<RankPopular[]> result) {
+                            mAdapter.addAll(result.getResult());
+                        }
+
+                        @Override
+                        public void onFail(NetworkRequest<NetWorkResultType<RankPopular[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                        }
+                    });
                 }
             }
         });
 
-        init();
+        PopularPostListRequest request = new PopularPostListRequest(getContext(), "1","20");
+        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<RankPopular[]>>() {
+            @Override
+            public void onSuccess(NetworkRequest<NetWorkResultType<RankPopular[]>> request, NetWorkResultType<RankPopular[]> result) {
+                mAdapter.addAll(result.getResult());
+            }
+
+            @Override
+            public void onFail(NetworkRequest<NetWorkResultType<RankPopular[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+            }
+        });
+
         return view;
     }
 
-    public void init(){
-        for(int i = 0; i < 5; i++){
-            RankPopular rankPopular = new RankPopular();
-            rankPopular.setLength(i+"1");
-            rankPopular.setListenCount(i+"2");
-            rankPopular.setPrice(i+"00000");
-            rankPopular.setQuestionerContent("I can do it"+i);
-            rankPopular.setQuestionerId(""+i);
-            rankPopular.setQuestionerId("1"+i);
-            rankPopular.setVoiceContent("Good Play"+i);
-            mAdapter.addRankPopular(rankPopular);
-        }
-    }
-
-    public void init2(){
-        for(int i = 5; i < 11; i++){
-            RankPopular rankPopular = new RankPopular();
-            rankPopular.setLength(i+"1");
-            rankPopular.setListenCount(i+"2");
-            rankPopular.setPrice(i+"00000");
-            rankPopular.setQuestionerContent("I can do it"+i);
-            rankPopular.setQuestionerId(""+i);
-            rankPopular.setQuestionerId("1"+i);
-            rankPopular.setVoiceContent("Good Play"+i);
-            mAdapter.addRankPopular(rankPopular);
-        }
-    }
 }

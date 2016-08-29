@@ -10,6 +10,7 @@ import com.onemeter.omm.onemm.data.Post;
 import com.onemeter.omm.onemm.viewholder.PostViewHolder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -22,6 +23,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> implements
         posts.add(post);
         notifyDataSetChanged();
     }
+
+    public void addAll(Post[] items) {
+        this.posts.addAll(Arrays.asList(items));
+        notifyDataSetChanged();
+    }
+
+//    public void addAll(PostData2[] items) {
+//        this.posts.addAll(Arrays.asList(items));
+//        notifyDataSetChanged();
+//    }
 
     @Override
     public PostViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

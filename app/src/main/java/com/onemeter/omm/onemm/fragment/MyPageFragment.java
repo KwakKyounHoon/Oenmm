@@ -14,7 +14,11 @@ import com.onemeter.omm.onemm.MainActivity;
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.adapter.MyAdapter;
 import com.onemeter.omm.onemm.data.MyData;
+import com.onemeter.omm.onemm.data.NetWorkResultType;
 import com.onemeter.omm.onemm.data.Post;
+import com.onemeter.omm.onemm.manager.NetworkManager;
+import com.onemeter.omm.onemm.manager.NetworkRequest;
+import com.onemeter.omm.onemm.request.MyDataReqeust;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -135,7 +139,18 @@ public class MyPageFragment extends Fragment {
 
         });
 
-        initInfo();
+        MyDataReqeust reqeust = new MyDataReqeust(getContext());
+        NetworkManager.getInstance().getNetworkData(reqeust, new NetworkManager.OnResultListener<NetWorkResultType<MyData>>() {
+            @Override
+            public void onSuccess(NetworkRequest<NetWorkResultType<MyData>> request, NetWorkResultType<MyData> result) {
+                mAdapter.addMyData(result.getResult());
+            }
+
+            @Override
+            public void onFail(NetworkRequest<NetWorkResultType<MyData>> request, int errorCode, String errorMessage, Throwable e) {
+
+            }
+        });
         mAdapter.clearPost();
         init();
         return view;

@@ -11,6 +11,7 @@ import com.onemeter.omm.onemm.viewholder.RankCategoryViewHolder;
 import com.onemeter.omm.onemm.viewholder.RankPostViewHolder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -27,6 +28,11 @@ public class RankPopularAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public void addRankPopular(RankPopular rankPopular){
         this.rankPopulars.add(rankPopular);
+        notifyDataSetChanged();
+    }
+
+    public void addAll(RankPopular[] populars){
+        this.rankPopulars.addAll(Arrays.asList(populars));
         notifyDataSetChanged();
     }
 
@@ -84,7 +90,7 @@ public class RankPopularAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemCount() {
-        return rankPopulars.size();
+        return rankPopulars.size()+1;
     }
 
     @Override

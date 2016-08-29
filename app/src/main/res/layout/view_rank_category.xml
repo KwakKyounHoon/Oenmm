@@ -20,8 +20,9 @@
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/radio_btn_rank_listen"
-            android:id="@+id/btn_cost"/>
+            android:text="@string/radio_btn_rank_cost"
+            android:id="@+id/btn_cost"
+            android:checked="false" />
     </RadioGroup>
 
 </RelativeLayout>

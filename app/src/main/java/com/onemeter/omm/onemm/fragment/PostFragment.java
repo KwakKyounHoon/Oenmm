@@ -13,7 +13,11 @@ import android.widget.Toast;
 import com.onemeter.omm.onemm.MainActivity;
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.adapter.PostAdapter;
+import com.onemeter.omm.onemm.data.NetWorkResultType;
 import com.onemeter.omm.onemm.data.Post;
+import com.onemeter.omm.onemm.manager.NetworkManager;
+import com.onemeter.omm.onemm.manager.NetworkRequest;
+import com.onemeter.omm.onemm.request.FollowPostListRequest;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,7 +56,19 @@ public class PostFragment extends Fragment {
             }
         });
 
-        init();
+//        init();
+        FollowPostListRequest request = new FollowPostListRequest(getContext(), "to", "1","20");
+        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+            @Override
+            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                mAdapter.addAll(result.getResult());
+            }
+
+            @Override
+            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+            }
+        });
         return view;
     }
 
