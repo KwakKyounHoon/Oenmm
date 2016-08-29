@@ -9,26 +9,49 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.onemeter.omm.onemm.FollowActivity">
 
+    <!--<android.support.v7.widget.Toolbar-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/toolbar"-->
+        <!--android:paddingBottom="0dp"-->
+        <!--android:paddingLeft="0dp"-->
+        <!--android:paddingRight="0dp"-->
+        <!--android:paddingTop="0dp"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentStart="true">-->
+
+    <!--</android.support.v7.widget.Toolbar>-->
+
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
+        <!--android:text="팔로우"-->
+        <!--android:id="@+id/textView"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_centerHorizontal="true" />-->
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/toolbar"
-        android:paddingBottom="0dp"
-        android:paddingLeft="0dp"
-        android:paddingRight="0dp"
-        android:paddingTop="0dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_height="@dimen/toolbar_height"
+        android:id="@+id/toolbar">
+
+        <include
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            layout="@layout/view_follow_toolbar"
+            android:background="@color/colorWhite"/>
 
     </android.support.v7.widget.Toolbar>
 
-    <TextView
+    <android.support.v7.widget.RecyclerView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="팔로우"
-        android:id="@+id/textView"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:id="@+id/follow_list"
+        android:layout_below="@+id/toolbar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+    </android.support.v7.widget.RecyclerView>
+
+
 </RelativeLayout>
