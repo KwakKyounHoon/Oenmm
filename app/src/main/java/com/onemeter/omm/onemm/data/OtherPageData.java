@@ -7,15 +7,17 @@ import java.util.List;
  * Created by Tacademy on 2016-08-24.
  */
 public class OtherPageData {
-    public OtherInfo getOtherInfo() {
-        return otherInfo;
+
+
+    public OtherData getOtherData() {
+        return otherData;
     }
 
-    public void setOtherInfo(OtherInfo otherInfo) {
-        this.otherInfo = otherInfo;
+    public void setOtherData(OtherData otherData) {
+        this.otherData = otherData;
     }
 
-    OtherInfo otherInfo;
+    OtherData otherData;
     List<Post> postDatas = new ArrayList<>();
 
     public List<Post> getPostDatas() {

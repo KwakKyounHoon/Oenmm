@@ -12,16 +12,16 @@ import okhttp3.HttpUrl;
 import okhttp3.Request;
 
 /**
- * Created by Tacademy on 2016-08-29.
+ * Created by Tacademy on 2016-08-30.
  */
-public class FollowPostListRequest extends AbstractRequest<NetWorkResultType<Post[]>> {
+public class OtherPostRequest extends AbstractRequest<NetWorkResultType<Post[]>> {
     Request request;
-
-    public FollowPostListRequest(Context context, String pageNo, String count){
+    public OtherPostRequest(Context context, String id, String direction, String answer, String pageNo, String count){
         HttpUrl url = getHttpsBaseUrlBuilder()
                 .addPathSegment("questions")
-                .addQueryParameter("direction", "to")
-                .addQueryParameter("celebrity", "true")
+                .addPathSegment(id)
+                .addQueryParameter("direction", direction)
+                .addQueryParameter("answer", answer)
                 .addQueryParameter("pageNo", pageNo)
                 .addQueryParameter("count", count)
                 .build();
@@ -31,16 +31,13 @@ public class FollowPostListRequest extends AbstractRequest<NetWorkResultType<Pos
                 .tag(context)
                 .build();
     }
-
-    @Override
-    public Request getRequest() {
-        return request;
-    }
-
-
     @Override
     protected Type getType() {
         return new TypeToken<NetWorkResultType<Post[]>>(){}.getType();
     }
 
+    @Override
+    public Request getRequest() {
+        return request;
+    }
 }

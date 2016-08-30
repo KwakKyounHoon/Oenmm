@@ -14,11 +14,11 @@ import okhttp3.Request;
 /**
  * Created by Kwak on 2016-08-29.
  */
-public class RankDonationRequest extends AbstractRequest<NetWorkResultType<DonationRank>>{
+public class RankDonationRequest extends AbstractRequest<NetWorkResultType<DonationRank[]>>{
     Request request;
 
     public RankDonationRequest(Context context){
-        HttpUrl url = getHttpsBaseUrlBuilder()
+        HttpUrl url = getBaseUrlBuilder()
                 .addPathSegment("users")
                 .addQueryParameter("category", "3")
                 .build();
@@ -30,7 +30,7 @@ public class RankDonationRequest extends AbstractRequest<NetWorkResultType<Donat
     }
     @Override
     protected Type getType() {
-        return new TypeToken<NetWorkResultType<DonationRank>>(){}.getType();
+        return new TypeToken<NetWorkResultType<DonationRank[]>>(){}.getType();
     }
 
     @Override

@@ -16,8 +16,13 @@ import android.widget.Toast;
 
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.adapter.OtherAdapter;
-import com.onemeter.omm.onemm.data.OtherInfo;
+import com.onemeter.omm.onemm.data.NetWorkResultType;
+import com.onemeter.omm.onemm.data.OtherData;
 import com.onemeter.omm.onemm.data.Post;
+import com.onemeter.omm.onemm.manager.NetworkManager;
+import com.onemeter.omm.onemm.manager.NetworkRequest;
+import com.onemeter.omm.onemm.request.OtherDataRequest;
+import com.onemeter.omm.onemm.request.OtherPostRequest;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -76,7 +81,7 @@ public class OtherFragment extends Fragment {
         list.setLayoutManager(manager);
         mAdapter.setOnAdapterItemClickListener(new OtherAdapter.OnAdapterItemClickLIstener() {
             @Override
-            public void onAdapterFollowingClick(View view, OtherInfo otherInfo, int position) {
+            public void onAdapterFollowingClick(View view, OtherData otherData, int position) {
                 if(getParentFragment() instanceof TabMyFragment){
                     ((TabMyFragment) (getParentFragment())).showFollwing();
                 }else if(getParentFragment() instanceof TabHomeFragment){
@@ -89,7 +94,7 @@ public class OtherFragment extends Fragment {
             }
 
             @Override
-            public void onAdapterFollowerClick(View view, OtherInfo otherInfo, int position) {
+            public void onAdapterFollowerClick(View view, OtherData otherData, int position) {
 
                 if(getParentFragment() instanceof TabMyFragment){
                     ((TabMyFragment) (getParentFragment())).showFollwer();
@@ -103,7 +108,7 @@ public class OtherFragment extends Fragment {
             }
 
             @Override
-            public void onAdapterSoundClick(View view, OtherInfo otherInfo, int position) {
+            public void onAdapterSoundClick(View view, OtherData otherData, int position) {
             }
 
             @Override
@@ -129,24 +134,32 @@ public class OtherFragment extends Fragment {
         });
 
 //        initOtherInfo();
+        OtherDataRequest request = new OtherDataRequest(getContext(), id);
+        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<OtherData[]>>() {
+            @Override
+            public void onSuccess(NetworkRequest<NetWorkResultType<OtherData[]>> request, NetWorkResultType<OtherData[]> result) {
+                mAdapter.addOtherData(result.getResult());
+            }
 
-        init();
+            @Override
+            public void onFail(NetworkRequest<NetWorkResultType<OtherData[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+            }
+        });
+
+        OtherPostRequest otherPostRequest = new OtherPostRequest(getContext(),id,"from","0","20","1");
+        NetworkManager.getInstance().getNetworkData(otherPostRequest, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+            @Override
+            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                mAdapter.addAllPost(result.getResult());
+            }
+
+            @Override
+            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+            }
+        });
         return view;
-    }
-
-    void initOtherInfo(){
-        OtherInfo otherInfo = new OtherInfo();
-        otherInfo.setUserId(id);
-        otherInfo.setName(id+"dd");
-        otherInfo.setDonationName(id+"gg");
-        otherInfo.setFollowCheck(id+"1");
-        otherInfo.setFollower(id+"2");
-        otherInfo.setStateMessage(id+"good");
-        otherInfo.setFollowing(id+"3");
-        otherInfo.setVoiceMessage(id+"Hi");
-        otherInfo.setPhoto("");
-        otherInfo.setFollowCheck("true");
-        mAdapter.addOtherInfo(otherInfo);
     }
 
     void init(){

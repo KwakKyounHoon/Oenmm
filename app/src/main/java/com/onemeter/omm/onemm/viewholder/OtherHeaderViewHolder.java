@@ -6,7 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.onemeter.omm.onemm.R;
-import com.onemeter.omm.onemm.data.OtherInfo;
+import com.onemeter.omm.onemm.data.OtherData;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,7 +38,7 @@ public class OtherHeaderViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View view) {
                 if (listener != null) {
-                    listener.onFollowerItemClick(view, otherInfo, getAdapterPosition());
+                    listener.onFollowerItemClick(view, otherData, getAdapterPosition());
                 }
             }
         });
@@ -47,7 +47,7 @@ public class OtherHeaderViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View view) {
                 if (listener != null) {
-                    listener.onFollowingItemClick(view, otherInfo, getAdapterPosition());
+                    listener.onFollowingItemClick(view, otherData, getAdapterPosition());
                 }
             }
         });
@@ -56,24 +56,24 @@ public class OtherHeaderViewHolder extends RecyclerView.ViewHolder {
     @OnClick(R.id.btn_like)
     public void onSoundClick(View view){
         if (listener != null) {
-            listener.onSoundItemClick(view, otherInfo, getAdapterPosition());
+            listener.onSoundItemClick(view, otherData, getAdapterPosition());
         }
     }
 
-    OtherInfo otherInfo;
-    public void setOtherInof(OtherInfo otherInfo){
-        this.otherInfo = otherInfo;
-        nameView.setText(otherInfo.getName());
-        followerView.setText(otherInfo.getFollower());
-        followingView.setText(otherInfo.getFollowing());
-        messageView.setText(otherInfo.getStateMessage());
-        donateView.setText(otherInfo.getDonationName());
+    OtherData otherData;
+    public void setOtherInof(OtherData otherData){
+        this.otherData = otherData;
+        nameView.setText(otherData.getName());
+        followerView.setText(otherData.getFollower());
+        followingView.setText(otherData.getFollowing());
+        messageView.setText(otherData.getStateMessage());
+        donateView.setText(otherData.getDonationName());
     }
 
     public interface OnOtherDataItemClickListener {
-        public void onFollowingItemClick(View view, OtherInfo otherInfo, int position);
-        public void onFollowerItemClick(View view, OtherInfo otherInfo, int position);
-        public void onSoundItemClick(View view, OtherInfo otherInfo, int position);
+        public void onFollowingItemClick(View view, OtherData otherData, int position);
+        public void onFollowerItemClick(View view, OtherData otherData, int position);
+        public void onSoundItemClick(View view, OtherData otherData, int position);
     }
 
     OnOtherDataItemClickListener listener;

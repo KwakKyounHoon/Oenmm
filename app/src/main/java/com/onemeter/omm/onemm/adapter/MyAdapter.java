@@ -14,6 +14,8 @@ import com.onemeter.omm.onemm.viewholder.MyHeaderViewHolder;
 import com.onemeter.omm.onemm.viewholder.MyPostViewHolder;
 import com.onemeter.omm.onemm.viewholder.MyTabViewHolder;
 
+import java.util.Arrays;
+
 /**
  * Created by Tacademy on 2016-08-23.
  */
@@ -29,6 +31,16 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
 
     public void addMyData(MyData myData){
         myPageData.setMyData(myData);
+        notifyDataSetChanged();
+    }
+
+    public void addMyData(MyData[] myData){
+        myPageData.setMyData(myData[0]);
+        notifyDataSetChanged();
+    }
+
+    public void addAllPost(Post[] posts){
+        myPageData.getPosts().addAll(Arrays.asList(posts));
         notifyDataSetChanged();
     }
 
@@ -49,8 +61,10 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0) return VIEW_TYPE_HEADER;
-        position--;
+        if (myPageData.getMyData() != null){
+            if (position == 0) return VIEW_TYPE_HEADER;
+            position--;
+        }
         if(position == 0) return VIEW_TYPE_TAP;
         position--;
         if(categoryFlag){
@@ -92,13 +106,15 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (position == 0){
-            MyHeaderViewHolder mhvh = (MyHeaderViewHolder)holder;
-            mhvh.setOnMyDataItemClickListener(this);
-            mhvh.setUserInof(myPageData.getMyData());
-            return;
+        if (myPageData.getMyData() != null) {
+            if (position == 0) {
+                MyHeaderViewHolder mhvh = (MyHeaderViewHolder) holder;
+                mhvh.setOnMyDataItemClickListener(this);
+                mhvh.setUserInof(myPageData.getMyData());
+                return;
+            }
+            position--;
         }
-        position--;
         if(position == 0) {
             MyTabViewHolder mtvh = (MyTabViewHolder)holder;
             mtvh.setOnTabClickListener(this);
@@ -131,8 +147,9 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
 
     @Override
     public int getItemCount() {
-        if(myPageData == null) return 0;
         int ctn = 2;
+        if(myPageData == null) return 0;
+        if(myPageData.getMyData() == null) ctn--;
         if(categoryFlag) {
             ctn++;
         }

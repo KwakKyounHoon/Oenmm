@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.onemeter.omm.onemm.MainActivity;
 import com.onemeter.omm.onemm.R;
@@ -19,9 +20,11 @@ import com.onemeter.omm.onemm.data.Post;
 import com.onemeter.omm.onemm.manager.NetworkManager;
 import com.onemeter.omm.onemm.manager.NetworkRequest;
 import com.onemeter.omm.onemm.request.MyDataReqeust;
+import com.onemeter.omm.onemm.request.MyPostRequest;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,12 +34,12 @@ public class MyPageFragment extends Fragment {
     @BindView(R.id.list)
     RecyclerView list;
 
-    //    public static final int POST_TYPE_RECEIVE_COM = 1;
-//    public static final int POST_TYPE_RECEIVE_INCOM = 2;
-//    public static final int POST_TYPE_SEND_COM = 3;
-//    public static final int POST_TYPE_SEND_INCOM = 4;
-//    public static final int POST_TYPE_LISTEN = 5;
-//
+    public static final String POST_TYPE_RECEIVE = "from";
+    public static final String POST_TYPE_INCOM = "0";
+    public static final String POST_TYPE_SEND = "to";
+    public static final String POST_TYPE_COM = "1";
+    public static final String POST_TYPE_LISTEN = "3";
+
 //    int type;
     int tabType = 1;
     boolean comFlag = true;
@@ -103,10 +106,74 @@ public class MyPageFragment extends Fragment {
                 comFlag = flag;
                 if (comFlag){
                     mAdapter.clearPost();
-                    init();
+//                    init();
+                    switch (tabType){
+                        case 1: {
+                            MyPostRequest request = new MyPostRequest(getContext(), "from", "1", "1", "20");
+                            NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                                @Override
+                                public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                    mAdapter.addAllPost(result.getResult());
+                                }
+
+                                @Override
+                                public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                                }
+                            });
+                        }
+                        break;
+                        case 2: {
+                            MyPostRequest request = new MyPostRequest(getContext(), "to", "1", "1", "20");
+                            NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                                @Override
+                                public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                    mAdapter.addAllPost(result.getResult());
+                                }
+
+                                @Override
+                                public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                                }
+                            });
+                        }
+                        break;
+                    }
                 }else{
                     mAdapter.clearPost();
-                    init2();
+//                    init2();
+                    switch (tabType){
+                        case 1: {
+                            MyPostRequest request = new MyPostRequest(getContext(), "from", "0", "1", "20");
+                            NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                                @Override
+                                public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                    mAdapter.addAllPost(result.getResult());
+                                }
+
+                                @Override
+                                public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                                }
+                            });
+                        }
+                        break;
+                        case 2: {
+                            MyPostRequest request = new MyPostRequest(getContext(), "to", "0", "1", "20");
+                            NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                                @Override
+                                public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                    mAdapter.addAllPost(result.getResult());
+                                }
+
+                                @Override
+                                public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                                }
+                            });
+                        }
+                        break;
+                    }
                 }
             }
 
@@ -115,13 +182,76 @@ public class MyPageFragment extends Fragment {
                 tabType = num;
                 if(num == 1){
                     mAdapter.clearPost();
-                    init();
+                    if(comFlag){
+                        MyPostRequest request = new MyPostRequest(getContext(), "to", "1", "1", "20");
+                        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                mAdapter.addAllPost(result.getResult());
+                            }
+
+                            @Override
+                            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                            }
+                        });
+                    }else{
+                        MyPostRequest request = new MyPostRequest(getContext(), "to", "0", "1", "20");
+                        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                mAdapter.addAllPost(result.getResult());
+                            }
+
+                            @Override
+                            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                            }
+                        });
+                    }
                 }else if(num == 2){
                     mAdapter.clearPost();
-                    init2();
+                    if(comFlag){
+                        MyPostRequest request = new MyPostRequest(getContext(), "from", "1", "1", "20");
+                        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                mAdapter.addAllPost(result.getResult());
+                            }
+
+                            @Override
+                            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                            }
+                        });
+                    }else{
+                        MyPostRequest request = new MyPostRequest(getContext(), "from", "0", "1", "20");
+                        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                mAdapter.addAllPost(result.getResult());
+                            }
+
+                            @Override
+                            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                            }
+                        });
+                    }
                 }else if(num == 3){
                     mAdapter.clearPost();
-                    init3();
+                    MyPostRequest request = new MyPostRequest(getContext(), "to", "0", "1", "20");
+                    NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                        @Override
+                        public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                            mAdapter.addAllPost(result.getResult());
+                        }
+
+                        @Override
+                        public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                        }
+                    });
                 }
 
             }
@@ -140,19 +270,30 @@ public class MyPageFragment extends Fragment {
         });
 
         MyDataReqeust reqeust = new MyDataReqeust(getContext());
-        NetworkManager.getInstance().getNetworkData(reqeust, new NetworkManager.OnResultListener<NetWorkResultType<MyData>>() {
+        NetworkManager.getInstance().getNetworkData(reqeust, new NetworkManager.OnResultListener<NetWorkResultType<MyData[]>>() {
             @Override
-            public void onSuccess(NetworkRequest<NetWorkResultType<MyData>> request, NetWorkResultType<MyData> result) {
+            public void onSuccess(NetworkRequest<NetWorkResultType<MyData[]>> request, NetWorkResultType<MyData[]> result) {
                 mAdapter.addMyData(result.getResult());
             }
 
             @Override
-            public void onFail(NetworkRequest<NetWorkResultType<MyData>> request, int errorCode, String errorMessage, Throwable e) {
-
+            public void onFail(NetworkRequest<NetWorkResultType<MyData[]>> request, int errorCode, String errorMessage, Throwable e) {
+                Toast.makeText(getContext(),errorCode+", "+errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
         mAdapter.clearPost();
-        init();
+        MyPostRequest request = new MyPostRequest(getContext(), "from", "1", "1", "20");
+        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+            @Override
+            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                mAdapter.addAllPost(result.getResult());
+            }
+
+            @Override
+            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+            }
+        });
         return view;
     }
     void initInfo(){
@@ -166,6 +307,10 @@ public class MyPageFragment extends Fragment {
         myData.setUserId("me");
         myData.setVoiceMessage("good");
         mAdapter.addMyData(myData);
+    }
+    @OnClick(R.id.btn_setting)
+    public void settingClick(View view){
+        ((TabMyFragment)getParentFragment()).showSetting();
     }
 
     void init(){
