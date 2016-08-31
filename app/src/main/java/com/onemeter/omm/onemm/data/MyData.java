@@ -13,10 +13,9 @@ public class MyData {
     private String photo;
     private String voiceMessage;
     private String userId;
-    private String followCheck;
 
     public String getFollower() {
-        return this.follower;
+        return follower;
     }
 
     public void setFollower(String follower) {
@@ -24,7 +23,7 @@ public class MyData {
     }
 
     public String getDonationName() {
-        return this.donationName;
+        return donationName;
     }
 
     public void setDonationName(String donationName) {
@@ -32,7 +31,7 @@ public class MyData {
     }
 
     public String getFollowing() {
-        return this.following;
+        return following;
     }
 
     public void setFollowing(String following) {
@@ -40,7 +39,7 @@ public class MyData {
     }
 
     public String getNickname() {
-        return this.nickname;
+        return nickname;
     }
 
     public void setNickname(String nickname) {
@@ -48,7 +47,7 @@ public class MyData {
     }
 
     public String getName() {
-        return this.name;
+        return name;
     }
 
     public void setName(String name) {
@@ -56,7 +55,7 @@ public class MyData {
     }
 
     public String getStateMessage() {
-        return this.stateMessage;
+        return stateMessage;
     }
 
     public void setStateMessage(String stateMessage) {
@@ -64,7 +63,7 @@ public class MyData {
     }
 
     public String getPhoto() {
-        return this.photo;
+        return photo;
     }
 
     public void setPhoto(String photo) {
@@ -72,7 +71,7 @@ public class MyData {
     }
 
     public String getVoiceMessage() {
-        return this.voiceMessage;
+        return voiceMessage;
     }
 
     public void setVoiceMessage(String voiceMessage) {
@@ -80,18 +79,10 @@ public class MyData {
     }
 
     public String getUserId() {
-        return this.userId;
+        return userId;
     }
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public String getFollowCheck() {
-        return this.followCheck;
-    }
-
-    public void setFollowCheck(String followCheck) {
-        this.followCheck = followCheck;
     }
 }

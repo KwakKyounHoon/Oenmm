@@ -17,12 +17,11 @@ import okhttp3.Request;
 public class PopularPostListRequest extends AbstractRequest<NetWorkResultType<RankPopular[]>> {
     Request request;
 
-    public PopularPostListRequest(Context context, String pageNo, String count) {
+    public PopularPostListRequest(Context context, int type) {
         HttpUrl url = getHttpsBaseUrlBuilder()
                 .addPathSegment("questions")
                 .addPathSegment("popular10")
-                .addQueryParameter("pageNo", pageNo)
-                .addQueryParameter("count", count)
+                .addQueryParameter("type", type+"")
                 .build();
 
         request = new Request.Builder()

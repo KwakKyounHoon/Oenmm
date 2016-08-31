@@ -1,6 +1,6 @@
 package com.onemeter.omm.onemm.data;
 
-public class ActorRecommend {
+public class SearchRecommend {
     private String name;
     private String userId;
 

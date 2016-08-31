@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.onemeter.omm.onemm.R;
-import com.onemeter.omm.onemm.data.OtherInfo;
+import com.onemeter.omm.onemm.data.OtherData;
 import com.onemeter.omm.onemm.data.OtherPageData;
 import com.onemeter.omm.onemm.data.Post;
 import com.onemeter.omm.onemm.viewholder.OtherCategoryViewHolder;
@@ -14,13 +14,15 @@ import com.onemeter.omm.onemm.viewholder.OtherHeaderViewHolder;
 import com.onemeter.omm.onemm.viewholder.OtherPostViewHolder;
 import com.onemeter.omm.onemm.viewholder.OtherTabViewHolder;
 
+import java.util.Arrays;
+
 
 /**
  * Created by Tacademy on 2016-08-24.
  */
 public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
         OtherHeaderViewHolder.OnOtherDataItemClickListener, OtherCategoryViewHolder.OnOtherCategoryItemClickListener,
-        OtherPostViewHolder.OnOtherItemClickListener{
+        OtherPostViewHolder.OnOtherItemClickListener, OtherTabViewHolder.OnTabItemClickListener{
     OtherPageData otherPageData = new OtherPageData();
 
 
@@ -30,13 +32,23 @@ public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         notifyDataSetChanged();
     }
 
+    public void addOtherData(OtherData[] otherDatas) {
+        otherPageData.setOtherData(otherDatas[0]);
+        notifyDataSetChanged();
+    }
+
     public void addPost(Post post){
         otherPageData.getPostDatas().add(post);
         notifyDataSetChanged();
     }
 
-    public void addOtherInfo(OtherInfo otherInfo){
-        otherPageData.setOtherInfo(otherInfo);
+    public void addAllPost(Post[] post){
+        otherPageData.getPostDatas().addAll(Arrays.asList(post));
+        notifyDataSetChanged();
+    }
+
+    public void addOtherInfo(OtherData otherData){
+        otherPageData.setOtherData(otherData);
         notifyDataSetChanged();
     }
 
@@ -53,8 +65,10 @@ public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0) return VIEW_TYPE_HEADER;
-        position--;
+        if(otherPageData.getOtherData() != null) {
+            if (position == 0) return VIEW_TYPE_HEADER;
+            position--;
+        }
         if (position == 0) return VIEW_TYPE_TAP;
         position--;
 
@@ -96,15 +110,18 @@ public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (position == 0) {
-            OtherHeaderViewHolder othvh = (OtherHeaderViewHolder) holder;
-            othvh.setOnOtherDataItemClickListener(this);
-            othvh.setOtherInof(otherPageData.getOtherInfo());
-            return;
+        if(otherPageData.getOtherData() != null) {
+            if (position == 0) {
+                OtherHeaderViewHolder othvh = (OtherHeaderViewHolder) holder;
+                othvh.setOnOtherDataItemClickListener(this);
+                othvh.setOtherInof(otherPageData.getOtherData());
+                return;
+            }
+            position--;
         }
-        position--;
         if (position == 0) {
             OtherTabViewHolder othvh = (OtherTabViewHolder) holder;
+            othvh.setOnTabClickListener(this);
             return;
         }
         position--;
@@ -130,30 +147,31 @@ public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public int getItemCount() {
+        int ctn = 3;
         if (otherPageData == null) return 0;
-
-        return otherPageData.getPostDatas().size() + 3;
+        if(otherPageData.getOtherData() == null) ctn--;
+        return otherPageData.getPostDatas().size() + ctn;
     }
 
 
     @Override
-    public void onFollowingItemClick(View view, OtherInfo otherInfo, int position) {
+    public void onFollowingItemClick(View view, OtherData otherData, int position) {
         if(listener != null) {
-            listener.onAdapterFollowingClick(view, otherInfo, position);
+            listener.onAdapterFollowingClick(view, otherData, position);
         }
     }
 
     @Override
-    public void onFollowerItemClick(View view, OtherInfo otherInfo, int position) {
+    public void onFollowerItemClick(View view, OtherData otherData, int position) {
         if(listener != null) {
-            listener.onAdapterFollowerClick(view, otherInfo, position);
+            listener.onAdapterFollowerClick(view, otherData, position);
         }
     }
 
     @Override
-    public void onSoundItemClick(View view, OtherInfo otherInfo, int position) {
+    public void onSoundItemClick(View view, OtherData otherData, int position) {
         if(listener != null) {
-            listener.onAdapterSoundClick(view, otherInfo, position);
+            listener.onAdapterSoundClick(view, otherData, position);
         }
     }
 
@@ -178,16 +196,25 @@ public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
+    @Override
+    public void onTabType(View view, int num) {
+        if(listener != null){
+            listener.onAdapterTabType(view, num);
+        }
+    }
+
 
     public interface OnAdapterItemClickLIstener {
 
-        public void onAdapterFollowingClick(View view, OtherInfo otherInfo, int position);
-        public void onAdapterFollowerClick(View view, OtherInfo otherInfo, int position);
-        public void onAdapterSoundClick(View view, OtherInfo otherInfo, int position);
+        public void onAdapterFollowingClick(View view, OtherData otherData, int position);
+        public void onAdapterFollowerClick(View view, OtherData otherData, int position);
+        public void onAdapterSoundClick(View view, OtherData otherData, int position);
         public void onAdapterCategoryItemClick(boolean flag);
 
         public void onAdapterItemClick(View view, Post post, int position);
         public void onAdapterPlayClick(View view, Post post, int position);
+
+        public void onAdapterTabType(View view, int type);
 
     }
 

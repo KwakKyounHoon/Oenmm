@@ -21,7 +21,8 @@ public class TabMyFragment extends BackKeyFragment {
     public static String TAG_FOLLOWER = "follower";
     public static String TAG_PROFILE = "profile";
     public static String TAG_OTHER = "other";
-
+    public static String TAG_SETTING = "setting";
+    public static String TAG_REPLY = "reply";
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,18 +62,18 @@ public class TabMyFragment extends BackKeyFragment {
         ft.commit();
     }
 
-    public void showFollwer(){
+    public void showFollwer(String id){
         FragmentTransaction ft = getChildFragmentManager()
                 .beginTransaction();
-        FollowerFragment f = new FollowerFragment();
+        FollowerFragment f = FollowerFragment.newInstance(id);
         ft.replace(R.id.container,f , TAG_FOLLOWER).addToBackStack(TAG_FOLLOWER);
         ft.commit();
     }
 
-    public void showFollwing(){
+    public void showFollwing(String id){
         FragmentTransaction ft = getChildFragmentManager()
                 .beginTransaction();
-        FollowingFragment f = new FollowingFragment();
+        FollowerFragment f = FollowerFragment.newInstance(id);
         ft.replace(R.id.container,f , TAG_FOLLOWING).addToBackStack(TAG_FOLLOWING);
         ft.commit();
     }
@@ -105,11 +106,19 @@ public class TabMyFragment extends BackKeyFragment {
         FragmentTransaction ft = getChildFragmentManager()
                 .beginTransaction();
          ReplyFragment f = new ReplyFragment();
-        ft.replace(R.id.container,f , TAG_OTHER).addToBackStack(TAG_OTHER);
+        ft.replace(R.id.container,f , TAG_REPLY).addToBackStack(TAG_REPLY);
         ft.commit();
     }
 
     public void popFragment(){
         getChildFragmentManager().popBackStack();
+    }
+
+    public void showSetting() {
+        FragmentTransaction ft = getChildFragmentManager()
+                .beginTransaction();
+        SettingFragment f = new SettingFragment();
+        ft.replace(R.id.container,f , TAG_SETTING).addToBackStack(TAG_SETTING);
+        ft.commit();
     }
 }

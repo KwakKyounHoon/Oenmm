@@ -12,6 +12,10 @@ import android.view.ViewGroup;
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.adapter.RankDonationAdatper;
 import com.onemeter.omm.onemm.data.DonationRank;
+import com.onemeter.omm.onemm.data.NetWorkResultType;
+import com.onemeter.omm.onemm.manager.NetworkManager;
+import com.onemeter.omm.onemm.manager.NetworkRequest;
+import com.onemeter.omm.onemm.request.RankDonationRequest;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,8 +52,20 @@ public class RankDonationFragment extends Fragment {
 
             }
         });
+        RankDonationRequest request = new RankDonationRequest(getContext());
+        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<DonationRank[]>>() {
+            @Override
+            public void onSuccess(NetworkRequest<NetWorkResultType<DonationRank[]>> request, NetWorkResultType<DonationRank[]> result) {
+                mAdatper.addAllDonationRank(result.getResult());
+            }
 
-        init();
+            @Override
+            public void onFail(NetworkRequest<NetWorkResultType<DonationRank[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+            }
+        });
+
+//        init();
         return view;
     }
 

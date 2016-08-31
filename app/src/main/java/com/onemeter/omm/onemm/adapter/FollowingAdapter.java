@@ -20,7 +20,7 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingViewHolder> 
 
     List<Following> followings = new ArrayList<>();
 
-    public void addAll(Following following){
+    public void addAll(Following[] following){
         this.followings.addAll(Arrays.asList(following));
         notifyDataSetChanged();
     }

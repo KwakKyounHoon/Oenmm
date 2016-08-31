@@ -31,6 +31,8 @@ public class RankPopularFragment extends Fragment {
 
     RankPopularAdapter mAdapter;
 
+    Boolean tabType = true;
+
     public RankPopularFragment() {
         // Required empty public constructor
     }
@@ -59,9 +61,10 @@ public class RankPopularFragment extends Fragment {
 
             @Override
             public void onAdapterCategoryItemClick(Boolean flag) {
-                if(flag){
+                tabType = flag;
+                if(tabType){
                     mAdapter.clearRankPopular();
-                    PopularPostListRequest request = new PopularPostListRequest(getContext(), "1","20");
+                    PopularPostListRequest request = new PopularPostListRequest(getContext(), 0);
                     NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<RankPopular[]>>() {
                         @Override
                         public void onSuccess(NetworkRequest<NetWorkResultType<RankPopular[]>> request, NetWorkResultType<RankPopular[]> result) {
@@ -75,7 +78,7 @@ public class RankPopularFragment extends Fragment {
                     });
                 }else{
                     mAdapter.clearRankPopular();
-                    PopularPostListRequest request = new PopularPostListRequest(getContext(), "1","20");
+                    PopularPostListRequest request = new PopularPostListRequest(getContext(), 1);
                     NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<RankPopular[]>>() {
                         @Override
                         public void onSuccess(NetworkRequest<NetWorkResultType<RankPopular[]>> request, NetWorkResultType<RankPopular[]> result) {
@@ -91,7 +94,7 @@ public class RankPopularFragment extends Fragment {
             }
         });
 
-        PopularPostListRequest request = new PopularPostListRequest(getContext(), "1","20");
+        PopularPostListRequest request = new PopularPostListRequest(getContext(), 0);
         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<RankPopular[]>>() {
             @Override
             public void onSuccess(NetworkRequest<NetWorkResultType<RankPopular[]>> request, NetWorkResultType<RankPopular[]> result) {

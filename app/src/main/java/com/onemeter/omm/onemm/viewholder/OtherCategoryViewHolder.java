@@ -34,7 +34,7 @@ public class OtherCategoryViewHolder extends RecyclerView.ViewHolder {
                             listener.onCategoryItemClick(true);
                         }
                         break;
-                    case R.id.btn_cost:
+                    case R.id.btn_new:
                         if (listener != null) {
                             listener.onCategoryItemClick(false);
                         }

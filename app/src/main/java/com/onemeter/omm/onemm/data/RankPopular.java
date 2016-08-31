@@ -10,6 +10,15 @@ public class RankPopular {
     private String length;
     private String questionerId;
     private String voiceContent;
+    private String payInfo;
+
+    public String getPayInfo() {
+        return payInfo;
+    }
+
+    public void setPayInfo(String payInfo) {
+        this.payInfo = payInfo;
+    }
 
     public String getAnswernerId() {
         return this.answernerId;

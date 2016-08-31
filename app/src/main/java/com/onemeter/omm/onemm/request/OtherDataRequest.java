@@ -14,13 +14,13 @@ import okhttp3.Request;
 /**
  * Created by Tacademy on 2016-08-29.
  */
-public class OtherDataRequest extends AbstractRequest<NetWorkResultType<OtherData>> {
+public class OtherDataRequest extends AbstractRequest<NetWorkResultType<OtherData[]>> {
     Request request;
 
     public OtherDataRequest(Context context, String id){
-        HttpUrl url = getHttpsBaseUrlBuilder()
+        HttpUrl url = getBaseUrlBuilder()
                 .addPathSegment("users")
-                .addQueryParameter("id", id)
+                .addPathSegment(id)
                 .build();
 
         request = new Request.Builder()
@@ -31,7 +31,7 @@ public class OtherDataRequest extends AbstractRequest<NetWorkResultType<OtherDat
 
     @Override
     protected Type getType() {
-        return new TypeToken<NetWorkResultType<OtherData>>(){}.getType();
+        return new TypeToken<NetWorkResultType<OtherData[]>>(){}.getType();
     }
 
     @Override

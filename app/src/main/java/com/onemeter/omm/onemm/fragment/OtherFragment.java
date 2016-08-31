@@ -16,8 +16,13 @@ import android.widget.Toast;
 
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.adapter.OtherAdapter;
-import com.onemeter.omm.onemm.data.OtherInfo;
+import com.onemeter.omm.onemm.data.NetWorkResultType;
+import com.onemeter.omm.onemm.data.OtherData;
 import com.onemeter.omm.onemm.data.Post;
+import com.onemeter.omm.onemm.manager.NetworkManager;
+import com.onemeter.omm.onemm.manager.NetworkRequest;
+import com.onemeter.omm.onemm.request.OtherDataRequest;
+import com.onemeter.omm.onemm.request.OtherPostRequest;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,6 +35,8 @@ public class OtherFragment extends Fragment {
 
     public static String OTHER_ID = "id";
     private String id;
+    int tabType = 1;
+    boolean categoryType = true;
 
 
     @BindView(R.id.toolbar)
@@ -76,44 +83,159 @@ public class OtherFragment extends Fragment {
         list.setLayoutManager(manager);
         mAdapter.setOnAdapterItemClickListener(new OtherAdapter.OnAdapterItemClickLIstener() {
             @Override
-            public void onAdapterFollowingClick(View view, OtherInfo otherInfo, int position) {
+            public void onAdapterFollowingClick(View view, OtherData otherData, int position) {
                 if(getParentFragment() instanceof TabMyFragment){
-                    ((TabMyFragment) (getParentFragment())).showFollwing();
+                    ((TabMyFragment) (getParentFragment())).showFollwing(id);
                 }else if(getParentFragment() instanceof TabHomeFragment){
-                    ((TabHomeFragment)getParentFragment()).showFollwing();
+                    ((TabHomeFragment)getParentFragment()).showFollwing(id);
                 }else if(getParentFragment() instanceof TabRankFragment){
-                    ((TabRankFragment) (getParentFragment())).showFollwing();
+                    ((TabRankFragment) (getParentFragment())).showFollwing(id);
                 }else{
-                    ((TabSearchFragment) (getParentFragment())).showFollwing();
+                    ((TabSearchFragment) (getParentFragment())).showFollwing(id);
                 }
             }
 
             @Override
-            public void onAdapterFollowerClick(View view, OtherInfo otherInfo, int position) {
+            public void onAdapterFollowerClick(View view, OtherData otherData, int position) {
 
                 if(getParentFragment() instanceof TabMyFragment){
-                    ((TabMyFragment) (getParentFragment())).showFollwer();
+                    ((TabMyFragment) (getParentFragment())).showFollwer(id);
                 }else if(getParentFragment() instanceof TabHomeFragment){
-                    ((TabHomeFragment)getParentFragment()).showFollwer();
+                    ((TabHomeFragment)getParentFragment()).showFollwer(id);
                 }else if(getParentFragment() instanceof TabRankFragment){
-                    ((TabRankFragment) (getParentFragment())).showFollwer();
+                    ((TabRankFragment) (getParentFragment())).showFollwer(id);
                 }else{
-                    ((TabSearchFragment) (getParentFragment())).showFollwer();
+                    ((TabSearchFragment) (getParentFragment())).showFollwer(id);
                 }
             }
 
             @Override
-            public void onAdapterSoundClick(View view, OtherInfo otherInfo, int position) {
+            public void onAdapterSoundClick(View view, OtherData otherData, int position) {
+            }
+
+            @Override
+            public void onAdapterTabType(View view, int type) {
+                mAdapter.clearPost();
+                tabType = type;
+                if(tabType == 1){
+                    if(categoryType){
+                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "from", "0", 1, 20);
+                        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                mAdapter.addAllPost(result.getResult());
+                            }
+
+                            @Override
+                            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                            }
+                        });
+                    }else{
+                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "from", "1", 1, 20);
+                        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                mAdapter.addAllPost(result.getResult());
+                            }
+
+                            @Override
+                            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                            }
+                        });
+                    }
+                }else{
+                    if(categoryType){
+                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "to", "0", 1, 20);
+                        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                mAdapter.addAllPost(result.getResult());
+                            }
+
+                            @Override
+                            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                            }
+                        });
+                    }else{
+                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "to", "1", 1, 20);
+                        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                mAdapter.addAllPost(result.getResult());
+                            }
+
+                            @Override
+                            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                            }
+                        });
+                    }
+                }
             }
 
             @Override
             public void onAdapterCategoryItemClick(boolean flag) {
+                mAdapter.clearPost();
+                categoryType = flag;
                 if(flag){
-                    mAdapter.clearPost();
-                    init();
+                    if(tabType == 1){
+                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "from", "0", 1, 20);
+                        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                mAdapter.addAllPost(result.getResult());
+                            }
+
+                            @Override
+                            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                            }
+                        });
+                    }else{
+                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "to", "0", 1, 20);
+                        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                mAdapter.addAllPost(result.getResult());
+                            }
+
+                            @Override
+                            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                            }
+                        });
+                    }
                 }else{
-                    mAdapter.clearPost();
-                    init2();
+                    if(tabType == 2){
+                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "from", "1", 1, 20);
+                        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                mAdapter.addAllPost(result.getResult());
+                            }
+
+                            @Override
+                            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                            }
+                        });
+                    }else{
+                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "to", "1", 1, 20);
+                        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                mAdapter.addAllPost(result.getResult());
+                            }
+
+                            @Override
+                            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                            }
+                        });
+                    }
                 }
             }
 
@@ -128,25 +250,34 @@ public class OtherFragment extends Fragment {
             }
         });
 
-//        initOtherInfo();
+        OtherDataRequest request = new OtherDataRequest(getContext(), id);
+        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<OtherData[]>>() {
+            @Override
+            public void onSuccess(NetworkRequest<NetWorkResultType<OtherData[]>> request, NetWorkResultType<OtherData[]> result) {
+                mAdapter.addOtherData(result.getResult());
+            }
 
-        init();
+            @Override
+            public void onFail(NetworkRequest<NetWorkResultType<OtherData[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+            }
+        });
+
+        mAdapter.clearPost();
+
+        OtherPostRequest otherPostRequest = new OtherPostRequest(getContext(),id,"from","0", 20, 1);
+        NetworkManager.getInstance().getNetworkData(otherPostRequest, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+            @Override
+            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                mAdapter.addAllPost(result.getResult());
+            }
+
+            @Override
+            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+            }
+        });
         return view;
-    }
-
-    void initOtherInfo(){
-        OtherInfo otherInfo = new OtherInfo();
-        otherInfo.setUserId(id);
-        otherInfo.setName(id+"dd");
-        otherInfo.setDonationName(id+"gg");
-        otherInfo.setFollowCheck(id+"1");
-        otherInfo.setFollower(id+"2");
-        otherInfo.setStateMessage(id+"good");
-        otherInfo.setFollowing(id+"3");
-        otherInfo.setVoiceMessage(id+"Hi");
-        otherInfo.setPhoto("");
-        otherInfo.setFollowCheck("true");
-        mAdapter.addOtherInfo(otherInfo);
     }
 
     void init(){

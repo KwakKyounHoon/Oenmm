@@ -2,6 +2,7 @@ package com.onemeter.omm.onemm.fragment;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,11 @@ import com.onemeter.omm.onemm.MainActivity;
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.adapter.FollowerAdatper;
 import com.onemeter.omm.onemm.data.Follower;
+import com.onemeter.omm.onemm.data.NetWorkResultType;
+import com.onemeter.omm.onemm.manager.NetworkManager;
+import com.onemeter.omm.onemm.manager.NetworkRequest;
+import com.onemeter.omm.onemm.request.MyFollowerRequest;
+import com.onemeter.omm.onemm.request.OtherFollowerRequest;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,9 +33,28 @@ public class FollowerFragment extends Fragment {
     @BindView(R.id.list)
     RecyclerView list;
     FollowerAdatper mAdapter;
+    String id;
 
     public FollowerFragment() {
         // Required empty public constructor
+    }
+
+    public static String USRE_ID = "id";
+
+    public static FollowerFragment newInstance(String id) {
+        FollowerFragment fragment = new FollowerFragment();
+        Bundle args = new Bundle();
+        args.putString(USRE_ID, id);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            id = getArguments().getString(USRE_ID);
+        }
     }
 
 
@@ -65,7 +90,34 @@ public class FollowerFragment extends Fragment {
 
             }
         });
-        init();
+//        init();
+        if(id != "-1"){
+            OtherFollowerRequest request = new OtherFollowerRequest(getContext(), id, 1, 20);
+            NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Follower[]>>() {
+                @Override
+                public void onSuccess(NetworkRequest<NetWorkResultType<Follower[]>> request, NetWorkResultType<Follower[]> result) {
+                    mAdapter.addAll(result.getResult());
+                }
+
+                @Override
+                public void onFail(NetworkRequest<NetWorkResultType<Follower[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                }
+            });
+        }else{
+            MyFollowerRequest request = new MyFollowerRequest(getContext(), 1, 20);
+            NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Follower[]>>() {
+                @Override
+                public void onSuccess(NetworkRequest<NetWorkResultType<Follower[]>> request, NetWorkResultType<Follower[]> result) {
+                    mAdapter.addAll(result.getResult());
+                }
+
+                @Override
+                public void onFail(NetworkRequest<NetWorkResultType<Follower[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                }
+            });
+        }
         return view;
     }
 
