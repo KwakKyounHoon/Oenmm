@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import com.onemeter.omm.onemm.MyApplication;
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.data.SettingData;
+import com.onemeter.omm.onemm.data.SettingDonate;
+import com.onemeter.omm.onemm.data.SettingSave;
 import com.onemeter.omm.onemm.viewholder.SettingAgreeViewHolder;
 import com.onemeter.omm.onemm.viewholder.SettingCategoryViewHolder;
 import com.onemeter.omm.onemm.viewholder.SettingDonateViewHolder;
@@ -23,6 +25,16 @@ public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     SettingData settingData = new SettingData();
 
+    public void addSave(SettingSave[] settingSaves){
+        settingData.setSettingSave(settingSaves[0]);
+        notifyDataSetChanged();
+    }
+
+    public void addDonate(SettingDonate[] settingDonates){
+        settingData.setSettingDonate(settingDonates[0]);
+        notifyDataSetChanged();
+    }
+
     public static final int VIEW_TYPE_CATEGORY = 1;
     public static final int VIEW_TYPE_NOTIFY = 2;
     public static final int VIEW_TYPE_SAVE_PARENT = 3;
@@ -33,27 +45,6 @@ public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public int getItemViewType(int position) {
-//        switch (position) {
-//            case 0:
-//                return VIEW_TYPE_CATEGORY;
-//            case 1:
-//                return VIEW_TYPE_NOTIFY;
-//            case 2:
-//                return VIEW_TYPE_CATEGORY;
-//            case 3:
-//                return VIEW_TYPE_SAVE_PARENT;
-//            case 4:
-//                return VIEW_TYPE_SAVE_CHILD;
-//            case 5:
-//                return VIEW_TYPE_CATEGORY;
-//            case 6:
-//                return VIEW_TYPE_DONATE;
-//            case 7:
-//                return VIEW_TYPE_AGREE;
-//            case 8:
-//                return VIEW_TYPE_LOGOUT;
-//        }
-
         if(position == 0) return VIEW_TYPE_CATEGORY;
         position--;
         if(position == 0) return VIEW_TYPE_NOTIFY;
@@ -113,53 +104,6 @@ public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-//            switch (position) {
-//                case 0: {
-//                    SettingCategoryViewHolder scvh = (SettingCategoryViewHolder) holder;
-//                    scvh.setCategory(MyApplication.getContext().getString(R.string.setting_notify_text));
-//                    return;
-//                }
-//                case 1: {
-//                    SettingNotifyViewHolder snvh = (SettingNotifyViewHolder) holder;
-//                    return;
-//                }
-//                case 2: {
-//                    SettingCategoryViewHolder scvh = (SettingCategoryViewHolder) holder;
-//                    scvh.setCategory(MyApplication.getContext().getString(R.string.setting_notify_text));
-//                    return;
-//                }
-//                case 3: {
-//                    SettingSaveViewHolder ssvh = (SettingSaveViewHolder)holder;
-//                    ssvh.setPoin(settingData.getSettingSave());
-//                    return;
-//                }
-//                case 4: {
-//                    SettingSaveExpandViewHolder ssevh = (SettingSaveExpandViewHolder)holder;
-//                    ssevh.setSettingSave(settingData.getSettingSave());
-//                    return;
-//                }
-//                case 5: {
-//                    SettingCategoryViewHolder scvh = (SettingCategoryViewHolder) holder;
-//                    scvh.setCategory(MyApplication.getContext().getString(R.string.setting_notify_text));
-//                    return;
-//                }
-//                case 6: {
-//                    SettingDonateViewHolder sdvh = (SettingDonateViewHolder)holder;
-//                    sdvh.setSettingDonate(settingData.getSettingDonate());
-//                    return;
-//                }
-//                case 7: {
-//                    SettingAgreeViewHolder savh = (SettingAgreeViewHolder)holder;
-//                    savh.setText(MyApplication.getContext().getString(R.string.setting_agree_text));
-//                    return;
-//                }
-//                case 8: {
-//                    SettingLogoutViewHolder slvh = (SettingLogoutViewHolder)holder;
-//                    slvh.setCategory(MyApplication.getContext().getString(R.string.setting_logout_text));
-//                    return;
-//                }
-//            }
-//        throw new IllegalArgumentException("invalid position");
         if(position == 0) {
             SettingCategoryViewHolder scvh = (SettingCategoryViewHolder) holder;
             scvh.setCategory(MyApplication.getContext().getString(R.string.setting_notify_text));
@@ -173,6 +117,12 @@ public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         position--;
         if(settingData.getSettingSave() != null) {
             if (position == 0){
+                SettingCategoryViewHolder scvh = (SettingCategoryViewHolder) holder;
+                scvh.setCategory(MyApplication.getContext().getString(R.string.setting_save_text));
+                return;
+            }
+            position--;
+            if (position == 0){
                 SettingSaveViewHolder ssvh = (SettingSaveViewHolder)holder;
                 ssvh.setPoin(settingData.getSettingSave());
                 return;
@@ -184,23 +134,17 @@ public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 return;
             }
             position--;
+        }
+        if(settingData.getSettingDonate() != null) {
             if (position == 0){
                 SettingCategoryViewHolder scvh = (SettingCategoryViewHolder) holder;
-                scvh.setCategory(MyApplication.getContext().getString(R.string.setting_notify_text));
+                scvh.setCategory(MyApplication.getContext().getString(R.string.setting_donate_text));
                 return;
             }
             position--;
-        }
-        if(settingData.getSettingDonate() != null) {
             if (position == 0) {
                 SettingDonateViewHolder sdvh = (SettingDonateViewHolder)holder;
                 sdvh.setSettingDonate(settingData.getSettingDonate());
-                return;
-            }
-            position--;
-            if (position == 0) {
-                SettingAgreeViewHolder savh = (SettingAgreeViewHolder)holder;
-                savh.setText(MyApplication.getContext().getString(R.string.setting_agree_text));
                 return;
             }
             position--;

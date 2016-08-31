@@ -11,6 +11,13 @@ import android.view.ViewGroup;
 
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.adapter.SettingAdapter;
+import com.onemeter.omm.onemm.data.NetWorkResultType;
+import com.onemeter.omm.onemm.data.SettingDonate;
+import com.onemeter.omm.onemm.data.SettingSave;
+import com.onemeter.omm.onemm.manager.NetworkManager;
+import com.onemeter.omm.onemm.manager.NetworkRequest;
+import com.onemeter.omm.onemm.request.SettingDonateRequest;
+import com.onemeter.omm.onemm.request.SettingSaveRequest;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,6 +46,30 @@ public class SettingFragment extends Fragment {
         list.setAdapter(mAdatper);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         list.setLayoutManager(manager);
+        SettingDonateRequest settingDonateRequest = new SettingDonateRequest(getContext());
+        NetworkManager.getInstance().getNetworkData(settingDonateRequest, new NetworkManager.OnResultListener<NetWorkResultType<SettingDonate[]>>() {
+            @Override
+            public void onSuccess(NetworkRequest<NetWorkResultType<SettingDonate[]>> request, NetWorkResultType<SettingDonate[]> result) {
+                mAdatper.addDonate(result.getResult());
+            }
+
+            @Override
+            public void onFail(NetworkRequest<NetWorkResultType<SettingDonate[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+            }
+        });
+        SettingSaveRequest settingSaveRequest = new SettingSaveRequest(getContext());
+        NetworkManager.getInstance().getNetworkData(settingSaveRequest, new NetworkManager.OnResultListener<NetWorkResultType<SettingSave[]>>() {
+            @Override
+            public void onSuccess(NetworkRequest<NetWorkResultType<SettingSave[]>> request, NetWorkResultType<SettingSave[]> result) {
+                mAdatper.addSave(result.getResult());
+            }
+
+            @Override
+            public void onFail(NetworkRequest<NetWorkResultType<SettingSave[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+            }
+        });
         return view;
     }
 
