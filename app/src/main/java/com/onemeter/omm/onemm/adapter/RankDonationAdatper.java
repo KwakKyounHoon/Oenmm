@@ -10,6 +10,7 @@ import com.onemeter.omm.onemm.data.DonationRank;
 import com.onemeter.omm.onemm.viewholder.RankDonationViewHolder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -21,6 +22,11 @@ public class RankDonationAdatper extends RecyclerView.Adapter<RankDonationViewHo
 
     public void addDonationRank(DonationRank donationRank){
         donationRanks.add(donationRank);
+        notifyDataSetChanged();
+    }
+
+    public void addAllDonationRank(DonationRank[] donationRanks){
+        this.donationRanks.addAll(Arrays.asList(donationRanks));
         notifyDataSetChanged();
     }
     @Override

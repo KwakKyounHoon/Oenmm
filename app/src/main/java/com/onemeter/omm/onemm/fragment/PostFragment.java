@@ -57,7 +57,7 @@ public class PostFragment extends Fragment {
         });
 
 //        init();
-        FollowPostListRequest request = new FollowPostListRequest(getContext(), "1","20");
+        FollowPostListRequest request = new FollowPostListRequest(getContext(), 1, 20);
         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
             @Override
             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {

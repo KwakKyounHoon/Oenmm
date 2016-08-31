@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.google.gson.reflect.TypeToken;
 
+import java.io.File;
 import java.lang.reflect.Type;
 
 import okhttp3.FormBody;
@@ -16,7 +17,7 @@ import okhttp3.RequestBody;
  */
 public class ModifyProfileRequest extends AbstractRequest<String> {
     Request request;
-    public ModifyProfileRequest(Context context, String nickname, String name, String stateMessage, String voiceMessage){
+    public ModifyProfileRequest(Context context, String nickname, String name, String stateMessage, File voiceMessage){
         HttpUrl.Builder builder = getBaseUrlBuilder();
         builder.addPathSegment("users");
         builder.addPathSegment("me");

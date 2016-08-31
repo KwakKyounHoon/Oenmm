@@ -3,8 +3,8 @@ package com.onemeter.omm.onemm.request;
 import android.content.Context;
 
 import com.google.gson.reflect.TypeToken;
+import com.onemeter.omm.onemm.data.Following;
 import com.onemeter.omm.onemm.data.NetWorkResultType;
-import com.onemeter.omm.onemm.data.Post;
 
 import java.lang.reflect.Type;
 
@@ -14,14 +14,13 @@ import okhttp3.Request;
 /**
  * Created by Tacademy on 2016-08-30.
  */
-public class OtherPostRequest extends AbstractRequest<NetWorkResultType<Post[]>> {
+public class OtherFollowingListRequest extends AbstractRequest<NetWorkResultType<Following[]>> {
     Request request;
-    public OtherPostRequest(Context context, String id, String direction, String answer, int pageNo, int count){
-        HttpUrl url = getHttpsBaseUrlBuilder()
-                .addPathSegment("questions")
+    public OtherFollowingListRequest(Context context, String id, int pageNo, int count){
+        HttpUrl url = getBaseUrlBuilder()
+                .addPathSegment("follows")
                 .addPathSegment(id)
-                .addQueryParameter("direction", direction)
-                .addQueryParameter("answer", answer)
+                .addQueryParameter("direction", "to")
                 .addQueryParameter("pageNo", pageNo+"")
                 .addQueryParameter("count", count+"")
                 .build();
@@ -33,7 +32,7 @@ public class OtherPostRequest extends AbstractRequest<NetWorkResultType<Post[]>>
     }
     @Override
     protected Type getType() {
-        return new TypeToken<NetWorkResultType<Post[]>>(){}.getType();
+        return new TypeToken<NetWorkResultType<Following[]>>(){}.getType();
     }
 
     @Override

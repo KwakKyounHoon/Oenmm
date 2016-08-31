@@ -62,18 +62,18 @@ public class TabMyFragment extends BackKeyFragment {
         ft.commit();
     }
 
-    public void showFollwer(){
+    public void showFollwer(String id){
         FragmentTransaction ft = getChildFragmentManager()
                 .beginTransaction();
-        FollowerFragment f = new FollowerFragment();
+        FollowerFragment f = FollowerFragment.newInstance(id);
         ft.replace(R.id.container,f , TAG_FOLLOWER).addToBackStack(TAG_FOLLOWER);
         ft.commit();
     }
 
-    public void showFollwing(){
+    public void showFollwing(String id){
         FragmentTransaction ft = getChildFragmentManager()
                 .beginTransaction();
-        FollowingFragment f = new FollowingFragment();
+        FollowerFragment f = FollowerFragment.newInstance(id);
         ft.replace(R.id.container,f , TAG_FOLLOWING).addToBackStack(TAG_FOLLOWING);
         ft.commit();
     }

@@ -6,6 +6,15 @@ public class Following {
     private String name;
     private String photo;
     private String userId;
+    private String celebrity;
+
+    public String getCelebrity() {
+        return celebrity;
+    }
+
+    public void setCelebrity(String celebrity) {
+        this.celebrity = celebrity;
+    }
 
     public String getDistance() {
         return this.distance;

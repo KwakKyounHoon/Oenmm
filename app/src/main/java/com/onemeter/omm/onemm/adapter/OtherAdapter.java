@@ -22,7 +22,7 @@ import java.util.Arrays;
  */
 public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
         OtherHeaderViewHolder.OnOtherDataItemClickListener, OtherCategoryViewHolder.OnOtherCategoryItemClickListener,
-        OtherPostViewHolder.OnOtherItemClickListener{
+        OtherPostViewHolder.OnOtherItemClickListener, OtherTabViewHolder.OnTabItemClickListener{
     OtherPageData otherPageData = new OtherPageData();
 
 
@@ -121,6 +121,7 @@ public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
         if (position == 0) {
             OtherTabViewHolder othvh = (OtherTabViewHolder) holder;
+            othvh.setOnTabClickListener(this);
             return;
         }
         position--;
@@ -195,6 +196,13 @@ public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
+    @Override
+    public void onTabType(View view, int num) {
+        if(listener != null){
+            listener.onAdapterTabType(view, num);
+        }
+    }
+
 
     public interface OnAdapterItemClickLIstener {
 
@@ -205,6 +213,8 @@ public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         public void onAdapterItemClick(View view, Post post, int position);
         public void onAdapterPlayClick(View view, Post post, int position);
+
+        public void onAdapterTabType(View view, int type);
 
     }
 

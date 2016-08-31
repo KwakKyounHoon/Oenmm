@@ -16,12 +16,12 @@ import okhttp3.Request;
  */
 public class SearchRequest extends AbstractRequest<NetWorkResultType<SearchResult[]>> {
     Request request;
-    public SearchRequest(Context context,String word, String pageNo, String count){
+    public SearchRequest(Context context,String word, int pageNo, int count){
         HttpUrl url = getBaseUrlBuilder()
                 .addPathSegment("users")
                 .addQueryParameter("word", word)
-                .addQueryParameter("pageNo", pageNo)
-                .addQueryParameter("count", count)
+                .addQueryParameter("pageNo", pageNo+"")
+                .addQueryParameter("count", count+"")
                 .build();
 
         request = new Request.Builder()

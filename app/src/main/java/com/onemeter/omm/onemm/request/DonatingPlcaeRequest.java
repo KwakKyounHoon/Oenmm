@@ -16,11 +16,11 @@ import okhttp3.Request;
  */
 public class DonatingPlcaeRequest extends AbstractRequest<NetWorkResultType<DonatingPlace[]>> {
     Request request;
-    public DonatingPlcaeRequest(Context context, String pageNo, String count){
+    public DonatingPlcaeRequest(Context context, int pageNo, int count){
         HttpUrl url = getBaseUrlBuilder()
                 .addPathSegment("donations")
-                .addQueryParameter("pageNo", pageNo)
-                .addQueryParameter("count", count)
+                .addQueryParameter("pageNo", pageNo+"")
+                .addQueryParameter("count", count+"")
                 .build();
 
         request = new Request.Builder()

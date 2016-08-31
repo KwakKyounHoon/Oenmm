@@ -12,18 +12,15 @@ import okhttp3.HttpUrl;
 import okhttp3.Request;
 
 /**
- * Created by Tacademy on 2016-08-30.
+ * Created by Tacademy on 2016-08-31.
  */
-public class OtherPostRequest extends AbstractRequest<NetWorkResultType<Post[]>> {
+public class MyListenRequest extends AbstractRequest<NetWorkResultType<Post[]>>{
     Request request;
-    public OtherPostRequest(Context context, String id, String direction, String answer, int pageNo, int count){
-        HttpUrl url = getHttpsBaseUrlBuilder()
-                .addPathSegment("questions")
-                .addPathSegment(id)
-                .addQueryParameter("direction", direction)
-                .addQueryParameter("answer", answer)
-                .addQueryParameter("pageNo", pageNo+"")
-                .addQueryParameter("count", count+"")
+    public MyListenRequest(Context context,int pageNo, int count){
+        HttpUrl url = getBaseUrlBuilder()
+                .addPathSegment("pays")
+                .addQueryParameter("pageNo",pageNo+"")
+                .addQueryParameter("count",count+"")
                 .build();
 
         request = new Request.Builder()

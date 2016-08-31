@@ -34,11 +34,11 @@ public class OtherTabViewHolder extends RecyclerView.ViewHolder{
 
                 if (tag.equals(TAB_TAG_MY_RECEIVE)){
                     if(listener != null){
-                        listener.onCategory(itemView, true);
+                        listener.onTabType(itemView, 1);
                     }
                 }else if(tag.equals(TAB_TAG_MY_SEND)){
                     if(listener != null){
-                        listener.onCategory(itemView, true);
+                        listener.onTabType(itemView, 2);
                     }
                 }
             }
@@ -60,7 +60,7 @@ public class OtherTabViewHolder extends RecyclerView.ViewHolder{
     }
 
     public interface OnTabItemClickListener {
-        public void onCategory(View view, boolean flag);
+        public void onTabType(View view, int num);
     }
 
     OnTabItemClickListener listener;

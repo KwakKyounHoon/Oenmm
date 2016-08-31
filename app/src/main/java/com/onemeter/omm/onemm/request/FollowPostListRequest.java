@@ -17,13 +17,13 @@ import okhttp3.Request;
 public class FollowPostListRequest extends AbstractRequest<NetWorkResultType<Post[]>> {
     Request request;
 
-    public FollowPostListRequest(Context context, String pageNo, String count){
+    public FollowPostListRequest(Context context, int pageNo, int count){
         HttpUrl url = getHttpsBaseUrlBuilder()
                 .addPathSegment("questions")
                 .addQueryParameter("direction", "to")
                 .addQueryParameter("celebrity", "true")
-                .addQueryParameter("pageNo", pageNo)
-                .addQueryParameter("count", count)
+                .addQueryParameter("pageNo", pageNo+"")
+                .addQueryParameter("count", count+"")
                 .build();
 
         request = new Request.Builder()

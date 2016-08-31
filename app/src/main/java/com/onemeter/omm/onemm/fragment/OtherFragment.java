@@ -35,6 +35,8 @@ public class OtherFragment extends Fragment {
 
     public static String OTHER_ID = "id";
     private String id;
+    int tabType = 1;
+    boolean categoryType = true;
 
 
     @BindView(R.id.toolbar)
@@ -83,13 +85,13 @@ public class OtherFragment extends Fragment {
             @Override
             public void onAdapterFollowingClick(View view, OtherData otherData, int position) {
                 if(getParentFragment() instanceof TabMyFragment){
-                    ((TabMyFragment) (getParentFragment())).showFollwing();
+                    ((TabMyFragment) (getParentFragment())).showFollwing(id);
                 }else if(getParentFragment() instanceof TabHomeFragment){
-                    ((TabHomeFragment)getParentFragment()).showFollwing();
+                    ((TabHomeFragment)getParentFragment()).showFollwing(id);
                 }else if(getParentFragment() instanceof TabRankFragment){
-                    ((TabRankFragment) (getParentFragment())).showFollwing();
+                    ((TabRankFragment) (getParentFragment())).showFollwing(id);
                 }else{
-                    ((TabSearchFragment) (getParentFragment())).showFollwing();
+                    ((TabSearchFragment) (getParentFragment())).showFollwing(id);
                 }
             }
 
@@ -97,13 +99,13 @@ public class OtherFragment extends Fragment {
             public void onAdapterFollowerClick(View view, OtherData otherData, int position) {
 
                 if(getParentFragment() instanceof TabMyFragment){
-                    ((TabMyFragment) (getParentFragment())).showFollwer();
+                    ((TabMyFragment) (getParentFragment())).showFollwer(id);
                 }else if(getParentFragment() instanceof TabHomeFragment){
-                    ((TabHomeFragment)getParentFragment()).showFollwer();
+                    ((TabHomeFragment)getParentFragment()).showFollwer(id);
                 }else if(getParentFragment() instanceof TabRankFragment){
-                    ((TabRankFragment) (getParentFragment())).showFollwer();
+                    ((TabRankFragment) (getParentFragment())).showFollwer(id);
                 }else{
-                    ((TabSearchFragment) (getParentFragment())).showFollwer();
+                    ((TabSearchFragment) (getParentFragment())).showFollwer(id);
                 }
             }
 
@@ -112,13 +114,128 @@ public class OtherFragment extends Fragment {
             }
 
             @Override
-            public void onAdapterCategoryItemClick(boolean flag) {
-                if(flag){
-                    mAdapter.clearPost();
-                    init();
+            public void onAdapterTabType(View view, int type) {
+                mAdapter.clearPost();
+                tabType = type;
+                if(tabType == 1){
+                    if(categoryType){
+                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "from", "0", 1, 20);
+                        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                mAdapter.addAllPost(result.getResult());
+                            }
+
+                            @Override
+                            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                            }
+                        });
+                    }else{
+                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "from", "1", 1, 20);
+                        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                mAdapter.addAllPost(result.getResult());
+                            }
+
+                            @Override
+                            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                            }
+                        });
+                    }
                 }else{
-                    mAdapter.clearPost();
-                    init2();
+                    if(categoryType){
+                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "to", "0", 1, 20);
+                        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                mAdapter.addAllPost(result.getResult());
+                            }
+
+                            @Override
+                            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                            }
+                        });
+                    }else{
+                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "to", "1", 1, 20);
+                        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                mAdapter.addAllPost(result.getResult());
+                            }
+
+                            @Override
+                            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                            }
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void onAdapterCategoryItemClick(boolean flag) {
+                mAdapter.clearPost();
+                categoryType = flag;
+                if(flag){
+                    if(tabType == 1){
+                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "from", "0", 1, 20);
+                        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                mAdapter.addAllPost(result.getResult());
+                            }
+
+                            @Override
+                            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                            }
+                        });
+                    }else{
+                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "to", "0", 1, 20);
+                        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                mAdapter.addAllPost(result.getResult());
+                            }
+
+                            @Override
+                            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                            }
+                        });
+                    }
+                }else{
+                    if(tabType == 2){
+                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "from", "1", 1, 20);
+                        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                mAdapter.addAllPost(result.getResult());
+                            }
+
+                            @Override
+                            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                            }
+                        });
+                    }else{
+                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "to", "1", 1, 20);
+                        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                mAdapter.addAllPost(result.getResult());
+                            }
+
+                            @Override
+                            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                            }
+                        });
+                    }
                 }
             }
 
@@ -133,7 +250,6 @@ public class OtherFragment extends Fragment {
             }
         });
 
-//        initOtherInfo();
         OtherDataRequest request = new OtherDataRequest(getContext(), id);
         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<OtherData[]>>() {
             @Override
@@ -147,7 +263,9 @@ public class OtherFragment extends Fragment {
             }
         });
 
-        OtherPostRequest otherPostRequest = new OtherPostRequest(getContext(),id,"from","0","20","1");
+        mAdapter.clearPost();
+
+        OtherPostRequest otherPostRequest = new OtherPostRequest(getContext(),id,"from","0", 20, 1);
         NetworkManager.getInstance().getNetworkData(otherPostRequest, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
             @Override
             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {

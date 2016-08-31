@@ -20,6 +20,7 @@ import com.onemeter.omm.onemm.data.Post;
 import com.onemeter.omm.onemm.manager.NetworkManager;
 import com.onemeter.omm.onemm.manager.NetworkRequest;
 import com.onemeter.omm.onemm.request.MyDataReqeust;
+import com.onemeter.omm.onemm.request.MyListenRequest;
 import com.onemeter.omm.onemm.request.MyPostRequest;
 
 import butterknife.BindView;
@@ -79,12 +80,12 @@ public class MyPageFragment extends Fragment {
 
             @Override
             public void onAdapterFollowingClick(View view, MyData myData, int position) {
-                ((TabMyFragment)getParentFragment()).showFollwing();
+                ((TabMyFragment)getParentFragment()).showFollwing("-1");
             }
 
             @Override
             public void onAdapterFollowerClick(View view, MyData myData, int position) {
-                ((TabMyFragment)getParentFragment()).showFollwer();
+                ((TabMyFragment)getParentFragment()).showFollwer("-1");
             }
 
             @Override
@@ -109,7 +110,7 @@ public class MyPageFragment extends Fragment {
 //                    init();
                     switch (tabType){
                         case 1: {
-                            MyPostRequest request = new MyPostRequest(getContext(), "from", "1", "1", "20");
+                            MyPostRequest request = new MyPostRequest(getContext(), "from", "1", 1, 20);
                             NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                                 @Override
                                 public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
@@ -124,7 +125,7 @@ public class MyPageFragment extends Fragment {
                         }
                         break;
                         case 2: {
-                            MyPostRequest request = new MyPostRequest(getContext(), "to", "1", "1", "20");
+                            MyPostRequest request = new MyPostRequest(getContext(), "to", "1", 1, 20);
                             NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                                 @Override
                                 public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
@@ -144,7 +145,7 @@ public class MyPageFragment extends Fragment {
 //                    init2();
                     switch (tabType){
                         case 1: {
-                            MyPostRequest request = new MyPostRequest(getContext(), "from", "0", "1", "20");
+                            MyPostRequest request = new MyPostRequest(getContext(), "from", "0", 1, 20);
                             NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                                 @Override
                                 public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
@@ -159,7 +160,7 @@ public class MyPageFragment extends Fragment {
                         }
                         break;
                         case 2: {
-                            MyPostRequest request = new MyPostRequest(getContext(), "to", "0", "1", "20");
+                            MyPostRequest request = new MyPostRequest(getContext(), "to", "0", 1, 20);
                             NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                                 @Override
                                 public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
@@ -183,7 +184,7 @@ public class MyPageFragment extends Fragment {
                 if(num == 1){
                     mAdapter.clearPost();
                     if(comFlag){
-                        MyPostRequest request = new MyPostRequest(getContext(), "to", "1", "1", "20");
+                        MyPostRequest request = new MyPostRequest(getContext(), "to", "1", 1, 20);
                         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
@@ -196,7 +197,7 @@ public class MyPageFragment extends Fragment {
                             }
                         });
                     }else{
-                        MyPostRequest request = new MyPostRequest(getContext(), "to", "0", "1", "20");
+                        MyPostRequest request = new MyPostRequest(getContext(), "to", "0", 1, 20);
                         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
@@ -212,7 +213,7 @@ public class MyPageFragment extends Fragment {
                 }else if(num == 2){
                     mAdapter.clearPost();
                     if(comFlag){
-                        MyPostRequest request = new MyPostRequest(getContext(), "from", "1", "1", "20");
+                        MyPostRequest request = new MyPostRequest(getContext(), "from", "1", 1, 20);
                         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
@@ -225,7 +226,7 @@ public class MyPageFragment extends Fragment {
                             }
                         });
                     }else{
-                        MyPostRequest request = new MyPostRequest(getContext(), "from", "0", "1", "20");
+                        MyPostRequest request = new MyPostRequest(getContext(), "from", "0", 1, 20);
                         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
@@ -240,7 +241,7 @@ public class MyPageFragment extends Fragment {
                     }
                 }else if(num == 3){
                     mAdapter.clearPost();
-                    MyPostRequest request = new MyPostRequest(getContext(), "to", "0", "1", "20");
+                    MyListenRequest request = new MyListenRequest(getContext(), 1, 20);
                     NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                         @Override
                         public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
@@ -282,7 +283,7 @@ public class MyPageFragment extends Fragment {
             }
         });
         mAdapter.clearPost();
-        MyPostRequest request = new MyPostRequest(getContext(), "from", "1", "1", "20");
+        MyPostRequest request = new MyPostRequest(getContext(), "from", "1", 1, 20);
         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
             @Override
             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
