@@ -16,7 +16,7 @@ import butterknife.OnClick;
  * Created by Tacademy on 2016-08-23.
  */
 public class MyHeaderViewHolder extends RecyclerView.ViewHolder {
-    @BindView(R.id.text_name)
+    @BindView(R.id.text_questioner_name)
     TextView nameView;
     @BindView(R.id.text_message)
     TextView messageView;

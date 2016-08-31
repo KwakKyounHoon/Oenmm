@@ -41,5 +41,4 @@ public class QuestionFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-
 }

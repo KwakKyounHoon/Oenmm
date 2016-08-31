@@ -42,7 +42,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/image_photo"
+                    android:id="@+id/image_questioner"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_alignParentLeft="true"
@@ -52,17 +52,17 @@
                     android:scaleType="centerCrop" />
 
                 <TextView
-                    android:id="@+id/text_name"
+                    android:id="@+id/text_questioner_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/image_photo"
+                    android:layout_below="@+id/image_questioner"
                     android:text="질문자"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/image_photo"
+                    android:layout_toRightOf="@id/image_questioner"
                     android:text="질문 내용" />
 
             </RelativeLayout>
@@ -73,7 +73,7 @@
                 android:layout_below="@+id/rt_questioner">
 
                 <TextView
-                    android:id="@+id/answer_photo"
+                    android:id="@+id/image_answerner"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_alignParentLeft="true"
@@ -86,7 +86,7 @@
                     android:id="@+id/answer_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/answer_photo"
+                    android:layout_below="@+id/image_answerner"
                     android:text="답변자"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -95,8 +95,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
-                    android:layout_toEndOf="@+id/answer_photo"
-                    android:layout_toRightOf="@+id/answer_photo"
+                    android:layout_toEndOf="@+id/image_answerner"
+                    android:layout_toRightOf="@+id/image_answerner"
                     android:text="답변듣기" />
 
             </RelativeLayout>

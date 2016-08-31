@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.onemeter.omm.onemm.MainActivity;
 import com.onemeter.omm.onemm.R;
+import com.onemeter.omm.onemm.data.Post;
 
 public class TabSearchFragment extends BackKeyFragment {
 
@@ -78,6 +79,22 @@ public class TabSearchFragment extends BackKeyFragment {
                 .beginTransaction();
         OtherFragment f = OtherFragment.newInstance(id);
         ft.replace(R.id.container,f , TAG_OTHER).addToBackStack(TAG_OTHER);
+        ft.commit();
+    }
+
+    public void showListenToOff(Post post){
+        FragmentTransaction ft = getChildFragmentManager()
+                .beginTransaction();
+        ListenToOffFragment f = ListenToOffFragment.newInstance(post);
+        ft.replace(R.id.container,f , TAG_FOLLOWING).addToBackStack(null);
+        ft.commit();
+    }
+
+    public void showListenToOn(Post post){
+        FragmentTransaction ft = getChildFragmentManager()
+                .beginTransaction();
+        ListenToOnFragment f = ListenToOnFragment.newInstance(post);
+        ft.replace(R.id.container,f , TAG_FOLLOWING).addToBackStack(null);
         ft.commit();
     }
 

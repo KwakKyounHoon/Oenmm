@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.adapter.RankPopularAdapter;
 import com.onemeter.omm.onemm.data.NetWorkResultType;
-import com.onemeter.omm.onemm.data.RankPopular;
+import com.onemeter.omm.onemm.data.Post;
 import com.onemeter.omm.onemm.manager.NetworkManager;
 import com.onemeter.omm.onemm.manager.NetworkRequest;
 import com.onemeter.omm.onemm.request.PopularPostListRequest;
@@ -50,12 +50,14 @@ public class RankPopularFragment extends Fragment {
 
         mAdapter.setOnAdapterItemClickListener(new RankPopularAdapter.OnAdapterItemClickLIstener() {
             @Override
-            public void onAdapterItemClick(View view, RankPopular rankPopular, int position) {
-                Toast.makeText(getContext(), rankPopular.getQuestionerId(), Toast.LENGTH_SHORT).show();
+            public void onAdapterItemClick(View view, Post post, int position) {
+                if(post.getPayInfo().equals("0")){
+                    ((RankFragment) (getParentFragment())).showListenToOff(post);
+                }
             }
 
             @Override
-            public void onAdapterPlayClick(View view, RankPopular rankPopular, int position) {
+            public void onAdapterPlayClick(View view, Post rankPopular, int position) {
                 Toast.makeText(getContext(), rankPopular.getVoiceContent(), Toast.LENGTH_SHORT).show();
             }
 
@@ -65,28 +67,28 @@ public class RankPopularFragment extends Fragment {
                 if(tabType){
                     mAdapter.clearRankPopular();
                     PopularPostListRequest request = new PopularPostListRequest(getContext(), 0);
-                    NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<RankPopular[]>>() {
+                    NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                         @Override
-                        public void onSuccess(NetworkRequest<NetWorkResultType<RankPopular[]>> request, NetWorkResultType<RankPopular[]> result) {
+                        public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                             mAdapter.addAll(result.getResult());
                         }
 
                         @Override
-                        public void onFail(NetworkRequest<NetWorkResultType<RankPopular[]>> request, int errorCode, String errorMessage, Throwable e) {
+                        public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
 
                         }
                     });
                 }else{
                     mAdapter.clearRankPopular();
                     PopularPostListRequest request = new PopularPostListRequest(getContext(), 1);
-                    NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<RankPopular[]>>() {
+                    NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                         @Override
-                        public void onSuccess(NetworkRequest<NetWorkResultType<RankPopular[]>> request, NetWorkResultType<RankPopular[]> result) {
+                        public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                             mAdapter.addAll(result.getResult());
                         }
 
                         @Override
-                        public void onFail(NetworkRequest<NetWorkResultType<RankPopular[]>> request, int errorCode, String errorMessage, Throwable e) {
+                        public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
 
                         }
                     });
@@ -95,14 +97,14 @@ public class RankPopularFragment extends Fragment {
         });
 
         PopularPostListRequest request = new PopularPostListRequest(getContext(), 0);
-        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<RankPopular[]>>() {
+        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
             @Override
-            public void onSuccess(NetworkRequest<NetWorkResultType<RankPopular[]>> request, NetWorkResultType<RankPopular[]> result) {
+            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                 mAdapter.addAll(result.getResult());
             }
 
             @Override
-            public void onFail(NetworkRequest<NetWorkResultType<RankPopular[]>> request, int errorCode, String errorMessage, Throwable e) {
+            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
 
             }
         });

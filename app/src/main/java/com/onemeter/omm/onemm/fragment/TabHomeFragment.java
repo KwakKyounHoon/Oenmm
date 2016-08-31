@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.onemeter.omm.onemm.R;
+import com.onemeter.omm.onemm.data.Post;
 
 public class TabHomeFragment extends BackKeyFragment {
 
@@ -35,7 +36,7 @@ public class TabHomeFragment extends BackKeyFragment {
                 FragmentTransaction ft = getChildFragmentManager()
                         .beginTransaction();
                 PostFragment f = new PostFragment();
-                ft.add(R.id.container, f, TAG_POST);
+                ft.replace(R.id.container, f, TAG_POST);
                 ft.commit();
             }
         }
@@ -71,6 +72,22 @@ public class TabHomeFragment extends BackKeyFragment {
         FragmentTransaction ft = getChildFragmentManager()
                 .beginTransaction();
         FollowingFragment f = FollowingFragment.newInstance(id);
+        ft.replace(R.id.container,f , TAG_FOLLOWING).addToBackStack(null);
+        ft.commit();
+    }
+
+    public void showListenToOff(Post post){
+        FragmentTransaction ft = getChildFragmentManager()
+                .beginTransaction();
+        ListenToOffFragment f = ListenToOffFragment.newInstance(post);
+        ft.replace(R.id.container,f , TAG_FOLLOWING).addToBackStack(null);
+        ft.commit();
+    }
+
+    public void showListenToOn(Post post){
+        FragmentTransaction ft = getChildFragmentManager()
+                .beginTransaction();
+        ListenToOnFragment f = ListenToOnFragment.newInstance(post);
         ft.replace(R.id.container,f , TAG_FOLLOWING).addToBackStack(null);
         ft.commit();
     }

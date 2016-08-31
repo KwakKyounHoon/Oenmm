@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     public static String TAB_TAG_MY = "my";
 
     BackKeyFragment currentFragment = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

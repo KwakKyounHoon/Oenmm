@@ -17,8 +17,8 @@ public class FollowPersonViewHolder extends RecyclerView.ViewHolder {
 
     public FollowPersonViewHolder(View itemView) {
         super(itemView);
-        photoView = (TextView) itemView.findViewById(R.id.image_photo);
-        nameView = (TextView)itemView.findViewById(R.id.text_name);
+        photoView = (TextView) itemView.findViewById(R.id.image_questioner);
+        nameView = (TextView)itemView.findViewById(R.id.text_questioner_name);
 
 
     }

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.onemeter.omm.onemm.MainActivity;
 import com.onemeter.omm.onemm.R;
+import com.onemeter.omm.onemm.data.Post;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -138,5 +139,13 @@ public class RankFragment extends Fragment {
 
     public void setTab(boolean flag){
         tabFlag =  flag;
+    }
+
+    public void showListenToOn(Post post) {
+        ((TabRankFragment) (getParentFragment())).showListenToOn(post);
+    }
+
+    public void showListenToOff(Post post) {
+        ((TabRankFragment) (getParentFragment())).showListenToOff(post);
     }
 }

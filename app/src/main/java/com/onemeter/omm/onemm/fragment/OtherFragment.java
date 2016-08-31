@@ -97,7 +97,6 @@ public class OtherFragment extends Fragment {
 
             @Override
             public void onAdapterFollowerClick(View view, OtherData otherData, int position) {
-
                 if(getParentFragment() instanceof TabMyFragment){
                     ((TabMyFragment) (getParentFragment())).showFollwer(id);
                 }else if(getParentFragment() instanceof TabHomeFragment){
@@ -241,7 +240,27 @@ public class OtherFragment extends Fragment {
 
             @Override
             public void onAdapterItemClick(View view, Post post, int position) {
-                Toast.makeText(getContext(),post.getAnswernerId(),Toast.LENGTH_SHORT).show();
+                if(post.getPayInfo().equals("1")){
+                    if(getParentFragment() instanceof TabMyFragment){
+                        ((TabMyFragment) (getParentFragment())).showListenToOn(post);
+                    }else if(getParentFragment() instanceof TabHomeFragment){
+                        ((TabHomeFragment) (getParentFragment())).showListenToOn(post);
+                    }else if(getParentFragment() instanceof TabRankFragment){
+                        ((TabRankFragment) (getParentFragment())).showListenToOn(post);
+                    }else{
+                        ((TabSearchFragment) (getParentFragment())).showListenToOn(post);
+                    }
+                }else{
+                    if(getParentFragment() instanceof TabMyFragment){
+                        ((TabMyFragment) (getParentFragment())).showListenToOff(post);
+                    }else if(getParentFragment() instanceof TabHomeFragment){
+                        ((TabHomeFragment) (getParentFragment())).showListenToOff(post);
+                    }else if(getParentFragment() instanceof TabRankFragment){
+                        ((TabRankFragment) (getParentFragment())).showListenToOff(post);
+                    }else{
+                        ((TabSearchFragment) (getParentFragment())).showListenToOff(post);
+                    }
+                }
             }
 
             @Override

@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.onemeter.omm.onemm.R;
-import com.onemeter.omm.onemm.data.RankPopular;
+import com.onemeter.omm.onemm.data.Post;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -19,7 +19,7 @@ import butterknife.OnClick;
 public class RankPostViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.image_questioner)
     ImageView questionerImgView;
-    @BindView(R.id.image_answer)
+    @BindView(R.id.image_answerner)
     ImageView answernerImgView;
     @BindView(R.id.text_question)
     TextView textQuestionView;
@@ -36,37 +36,37 @@ public class RankPostViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View view) {
                 if(listener != null){
-                    listener.onPostItemClick(view, rankPopular, getAdapterPosition());
+                    listener.onPostItemClick(view, post, getAdapterPosition());
                 }
             }
         });
     }
 
-    RankPopular rankPopular;
-    public void setRankPopular(RankPopular rankPopular){
-        this.rankPopular = rankPopular;
-        textQuestionView.setText(rankPopular.getQuestionerContent());
-        playTimeView.setText(rankPopular.getLength());
-        listenView.setText(rankPopular.getListenCount());
-        costView.setText(rankPopular.getPrice());
+    Post post;
+    public void setPost(Post post){
+        this.post = post;
+        textQuestionView.setText(post.getQuestionerContent());
+        playTimeView.setText(post.getLength());
+        listenView.setText(post.getListenCount());
+        costView.setText(post.getPrice());
         Glide.with(questionerImgView.getContext())
-                .load(rankPopular.getQuestionerPhoto())
+                .load(post.getQuestionerPhoto())
                 .into(questionerImgView);
         Glide.with(answernerImgView.getContext())
-                .load(rankPopular.getAnswernerPhoto())
+                .load(post.getAnswernerPhoto())
                 .into(answernerImgView);
     }
 
     @OnClick(R.id.btn_listen)
     public void listenClick(View view){
         if(listener != null){
-            listener.onPlayClick(view, rankPopular, getAdapterPosition());
+            listener.onPlayClick(view, post, getAdapterPosition());
         }
     }
 
     public interface OnRankPopularItemClickListener {
-        public void onPostItemClick(View view, RankPopular rankPopular, int position);
-        public void onPlayClick(View view, RankPopular rankPopular, int position);
+        public void onPostItemClick(View view, Post post, int position);
+        public void onPlayClick(View view, Post post, int position);
     }
 
     OnRankPopularItemClickListener listener;

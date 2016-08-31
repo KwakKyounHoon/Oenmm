@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.onemeter.omm.onemm.R;
-import com.onemeter.omm.onemm.data.RankPopular;
+import com.onemeter.omm.onemm.data.Post;
 import com.onemeter.omm.onemm.viewholder.RankCategoryViewHolder;
 import com.onemeter.omm.onemm.viewholder.RankPostViewHolder;
 
@@ -20,35 +20,35 @@ import java.util.List;
 public class RankPopularAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
         RankPostViewHolder.OnRankPopularItemClickListener, RankCategoryViewHolder.OnRankCategoryItemClickListener{
 
-    List<RankPopular> rankPopulars = new ArrayList<>();
+    List<Post> posts = new ArrayList<>();
 
     public static final int VIEW_TYPE_CATEGORY = 1;
     public static final int VIEW_TYPE_POST = 2;
 
 
-    public void addRankPopular(RankPopular rankPopular){
-        this.rankPopulars.add(rankPopular);
+    public void addRankPopular(Post rankPopular){
+        this.posts.add(rankPopular);
         notifyDataSetChanged();
     }
 
-    public void addAll(RankPopular[] populars){
-        this.rankPopulars.addAll(Arrays.asList(populars));
+    public void addAll(Post[] populars){
+        this.posts.addAll(Arrays.asList(populars));
         notifyDataSetChanged();
     }
 
     public void clearRankPopular(){
-        rankPopulars.clear();
+        posts.clear();
     }
 
     @Override
     public int getItemViewType(int position) {
         if (position == 0) return VIEW_TYPE_CATEGORY;
         position--;
-        if (rankPopulars.size() > 0) {
-            if (position < rankPopulars.size()) {
+        if (posts.size() > 0) {
+            if (position < posts.size()) {
                 return VIEW_TYPE_POST;
             }
-            position -= rankPopulars.size();
+            position -= posts.size();
         }
         throw new IllegalArgumentException("invalid position");
     }
@@ -76,34 +76,34 @@ public class RankPopularAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             return;
         }
         position--;
-        if (rankPopulars.size() > 0) {
-            if (position < rankPopulars.size()) {
+        if (posts.size() > 0) {
+            if (position < posts.size()) {
                 RankPostViewHolder rpvh = (RankPostViewHolder)holder;
-                rpvh.setRankPopular(rankPopulars.get(position));
+                rpvh.setPost(posts.get(position));
                 rpvh.setOnRankPopularItemClickListener(this);
                 return;
             }
-            position -= rankPopulars.size();
+            position -= posts.size();
         }
         throw new IllegalArgumentException("invalid position");
     }
 
     @Override
     public int getItemCount() {
-        return rankPopulars.size()+1;
+        return posts.size()+1;
     }
 
     @Override
-    public void onPostItemClick(View view, RankPopular rankPopular, int position) {
+    public void onPostItemClick(View view, Post post, int position) {
         if(listener != null){
-            listener.onAdapterItemClick(view, rankPopular, position);
+            listener.onAdapterItemClick(view, post, position);
         }
     }
 
     @Override
-    public void onPlayClick(View view, RankPopular rankPopular, int position) {
+    public void onPlayClick(View view, Post post, int position) {
         if(listener != null){
-            listener.onAdapterPlayClick(view, rankPopular, position);
+            listener.onAdapterPlayClick(view, post, position);
         }
     }
 
@@ -115,8 +115,8 @@ public class RankPopularAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     public interface OnAdapterItemClickLIstener {
-        public void onAdapterItemClick(View view, RankPopular rankPopular, int position);
-        public void onAdapterPlayClick(View view, RankPopular rankPopular, int position);
+        public void onAdapterItemClick(View view, Post post, int position);
+        public void onAdapterPlayClick(View view, Post post, int position);
         public void onAdapterCategoryItemClick(Boolean flag);
     }
 

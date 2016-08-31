@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.onemeter.omm.onemm.MainActivity;
 import com.onemeter.omm.onemm.R;
+import com.onemeter.omm.onemm.data.Post;
 
 public class TabRankFragment extends BackKeyFragment {
 
@@ -67,6 +68,22 @@ public class TabRankFragment extends BackKeyFragment {
                 .beginTransaction();
         FollowingFragment f = FollowingFragment.newInstance(id);
         ft.replace(R.id.container,f , TAG_FOLLOWING).addToBackStack(TAG_FOLLOWING);
+        ft.commit();
+    }
+
+    public void showListenToOff(Post post){
+        FragmentTransaction ft = getChildFragmentManager()
+                .beginTransaction();
+        ListenToOffFragment f = ListenToOffFragment.newInstance(post);
+        ft.replace(R.id.container,f , TAG_FOLLOWING).addToBackStack(null);
+        ft.commit();
+    }
+
+    public void showListenToOn(Post post){
+        FragmentTransaction ft = getChildFragmentManager()
+                .beginTransaction();
+        ListenToOnFragment f = ListenToOnFragment.newInstance(post);
+        ft.replace(R.id.container,f , TAG_FOLLOWING).addToBackStack(null);
         ft.commit();
     }
 

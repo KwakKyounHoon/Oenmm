@@ -56,7 +56,6 @@
             android:layout_below="@+id/editText3"
             android:hint="음성프로필" />
 
-
     </LinearLayout>
 
     <FrameLayout

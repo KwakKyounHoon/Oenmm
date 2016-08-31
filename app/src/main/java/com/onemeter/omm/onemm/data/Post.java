@@ -1,6 +1,8 @@
 package com.onemeter.omm.onemm.data;
 
-public class Post {
+import java.io.Serializable;
+
+public class Post implements Serializable {
     private String date;
     private String answernerId;
     private String questionerPhoto;

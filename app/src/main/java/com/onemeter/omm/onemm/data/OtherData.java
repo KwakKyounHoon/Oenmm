@@ -13,7 +13,7 @@ public class OtherData {
     private String photo;
     private String voiceMessage;
     private String userId;
-    private String followCheck;
+    private String followInfo;
 
     public String getFollower() {
         return this.follower;
@@ -87,11 +87,11 @@ public class OtherData {
         this.userId = userId;
     }
 
-    public String getFollowCheck() {
-        return this.followCheck;
+    public String getFollowInfo() {
+        return followInfo;
     }
 
-    public void setFollowCheck(String followCheck) {
-        this.followCheck = followCheck;
+    public void setFollowInfo(String followInfo) {
+        this.followInfo = followInfo;
     }
 }

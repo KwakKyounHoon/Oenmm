@@ -19,7 +19,7 @@ import butterknife.OnClick;
 public class PostViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.image_questioner)
     ImageView questionerImgView;
-    @BindView(R.id.image_answer)
+    @BindView(R.id.image_answerner)
     ImageView answernerImgView;
     @BindView(R.id.text_question)
     TextView textQuestionView;

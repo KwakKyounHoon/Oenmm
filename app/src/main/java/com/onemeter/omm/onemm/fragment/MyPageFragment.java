@@ -57,8 +57,7 @@ public class MyPageFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (firstFlag) {
-            mAdapter = new MyAdapter();
-            mAdapter.setAdatperPosition(tabType, comFlag);
+
         }
         firstFlag = false;
 
@@ -69,6 +68,8 @@ public class MyPageFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_my_page, container, false);
         ButterKnife.bind(this, view);
+        mAdapter = new MyAdapter();
+        mAdapter.setAdatperPosition(tabType, comFlag);
         list.setAdapter(mAdapter);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         list.setLayoutManager(manager);

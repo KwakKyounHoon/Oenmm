@@ -5,6 +5,24 @@ public class Follower {
     private String name;
     private String photo;
     private String userId;
+    private String celebrity;
+    private String followInfo;
+
+    public String getCelebrity() {
+        return celebrity;
+    }
+
+    public void setCelebrity(String celebrity) {
+        this.celebrity = celebrity;
+    }
+
+    public String getFollowInfo() {
+        return followInfo;
+    }
+
+    public void setFollowInfo(String followInfo) {
+        this.followInfo = followInfo;
+    }
 
     public String getNickname() {
         return this.nickname;

@@ -7,7 +7,6 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.data.Follower;
 
@@ -18,7 +17,7 @@ import butterknife.ButterKnife;
  * Created by Tacademy on 2016-08-29.
  */
 public class FollowerViewHolder extends RecyclerView.ViewHolder {
-    @BindView(R.id.text_name)
+    @BindView(R.id.text_questioner_name)
     TextView nameView;
     @BindView(R.id.text_nickname)
     TextView nicknameView;
@@ -55,9 +54,9 @@ public class FollowerViewHolder extends RecyclerView.ViewHolder {
         this.follower = follower;
         nameView.setText(follower.getName());
         nicknameView.setText(follower.getNickname());
-        Glide.with(profileView.getContext())
-                .load(follower.getPhoto())
-                .into(profileView);
+//        Glide.with(profileView.getContext())
+//                .load(follower.getPhoto())
+//                .into(profileView);
     }
 
     public interface OnFollowerItemClickListener {
