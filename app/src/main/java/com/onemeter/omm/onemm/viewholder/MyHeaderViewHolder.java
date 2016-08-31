@@ -61,9 +61,16 @@ public class MyHeaderViewHolder extends RecyclerView.ViewHolder {
     }
 
     @OnClick(R.id.btn_sound)
+    public void onSoundClick(View view){
+        if (listener != null) {
+            listener.onSoundItemClick(view, mydata, getAdapterPosition());
+        }
+    }
+
+    @OnClick(R.id.image_profile)
     public void onPhotoClick(View view){
         if (listener != null) {
-            listener.onPhotoItemClick(view, mydata, getAdapterPosition());
+            listener.onPhotoClick(view, mydata, getAdapterPosition());
         }
     }
 
@@ -74,6 +81,7 @@ public class MyHeaderViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
+
     MyData mydata;
     public void setUserInof(MyData myData){
         this.mydata = myData;
@@ -82,6 +90,9 @@ public class MyHeaderViewHolder extends RecyclerView.ViewHolder {
         followingView.setText(myData.getFollowing());
         messageView.setText(myData.getStateMessage());
         donateView.setText(myData.getDonationName());
+//        Glide.with(profileView.getContext())
+//                .load(myData.getPhoto())
+//                .into(profileView);
     }
 
     public interface OnMyDataItemClickListener {
@@ -89,8 +100,8 @@ public class MyHeaderViewHolder extends RecyclerView.ViewHolder {
         public void onFollowingItemClick(View view, MyData myData, int position);
         public void onFollowerItemClick(View view, MyData myData, int position);
         public void onSoundItemClick(View view, MyData myData, int position);
-        public void onPhotoItemClick(View view, MyData myData, int position);
         public void onModifyClick(View view, MyData myData, int position);
+        public void onPhotoClick(View view, MyData myData, int position);
     }
 
     OnMyDataItemClickListener listener;

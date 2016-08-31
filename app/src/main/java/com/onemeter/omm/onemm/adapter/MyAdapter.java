@@ -126,7 +126,7 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
             if (position == 0) {
                 MyCategoryViewHolder mcvh = (MyCategoryViewHolder) holder;
                 mcvh.setOnMyCategoryItemClickListener(this);
-//                mcvh.setCategory(isCom);
+//                mcvh.setCategory(comFlag);
                 return;
             }
             position--;
@@ -185,16 +185,16 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
     }
 
     @Override
-    public void onPhotoItemClick(View view, MyData myData, int position) {
+    public void onModifyClick(View view, MyData myData, int position) {
         if(listener != null){
-            listener.onAdapterPhotoClick(view,myData,position);
+            listener.onAdatperModyfiyClick(view,myData,position);
         }
     }
 
     @Override
-    public void onModifyClick(View view, MyData myData, int position) {
+    public void onPhotoClick(View view, MyData myData, int position) {
         if(listener != null){
-            listener.onAdatperModyfiyClick(view,myData,position);
+            listener.onAdapterPhotoClick(view, myData, position);
         }
     }
 
@@ -235,6 +235,20 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
         }
     }
 
+    @Override
+    public void onQuestionerClick(View view, Post post, int position) {
+        if(listener != null){
+            listener.onAdapterQuestionerClick(view, post, position);
+        }
+    }
+
+    @Override
+    public void onAnswerClick(View view, Post post, int position) {
+        if(listener != null){
+            listener.onAdapterAnswerClick(view, post, position);
+        }
+    }
+
 
     public interface OnAdapterItemClickLIstener {
         public void onAdapterDonateClick(View view, MyData myData, int position);
@@ -247,6 +261,8 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
         public void onAdapterTabType(View view, int num);
         public void onAdapterItemClick(View view, Post post, int position);
         public void onAdapterPlayItemClick(View view, Post post, int position);
+        public void onAdapterQuestionerClick(View view, Post post, int position);
+        public void onAdapterAnswerClick(View view, Post post, int position);
     }
 
     OnAdapterItemClickLIstener listener;

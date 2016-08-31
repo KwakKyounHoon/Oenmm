@@ -6,7 +6,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.data.Post;
 
@@ -67,12 +66,12 @@ public class MyPostViewHolder extends RecyclerView.ViewHolder {
         playTimeView.setText(post.getLength());
         listenView.setText(post.getListenCount());
         costView.setText(post.getPrice());
-        Glide.with(questionerImgView.getContext())
-                .load(post.getQuestionerPhoto())
-                .into(questionerImgView);
-        Glide.with(answernerImgView.getContext())
-                .load(post.getAnswernerPhoto())
-                .into(answernerImgView);
+//        Glide.with(questionerImgView.getContext())
+//                .load(post.getQuestionerPhoto())
+//                .into(questionerImgView);
+//        Glide.with(answernerImgView.getContext())
+//                .load(post.getAnswernerPhoto())
+//                .into(answernerImgView);
     }
 
     @OnClick(R.id.btn_listen)
@@ -82,9 +81,25 @@ public class MyPostViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
+    @OnClick(R.id.image_questioner)
+    public void questionerClick(View view){
+        if(listener != null){
+            listener.onQuestionerClick(view, post, getAdapterPosition());
+        }
+    }
+
+    @OnClick(R.id.image_answerner)
+    public void answernerClick(View view){
+        if(listener != null){
+            listener.onAnswerClick(view, post, getAdapterPosition());
+        }
+    }
+
     public interface OnMyItemClickListener {
         public void onPostItemClick(View view, Post post, int position);
         public void onPlayClick(View view, Post post, int position);
+        public void onQuestionerClick(View view, Post post, int position);
+        public void onAnswerClick(View view, Post post, int position);
     }
 
     OnMyItemClickListener listener;

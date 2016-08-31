@@ -102,10 +102,10 @@ public class TabMyFragment extends BackKeyFragment {
         ft.commit();
     }
 
-    public void showReply(){
+    public void showReply(Post post){
         FragmentTransaction ft = getChildFragmentManager()
                 .beginTransaction();
-         ReplyFragment f = new ReplyFragment();
+         ReplyFragment f = ReplyFragment.newInstance(post);
         ft.replace(R.id.container,f , TAG_REPLY).addToBackStack(TAG_REPLY);
         ft.commit();
     }
