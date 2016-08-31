@@ -1,0 +1,46 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.onemeter.omm.onemm.fragment.ProfilingFragment">
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal|top"
+        android:text="녹음중 시간" />
+
+    <ImageView
+        android:id="@+id/return_off"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/image_ing"
+        android:paddingRight="50dp"
+        android:src="@drawable/ic_record_return_off" />
+
+    <ImageView
+        android:id="@+id/image_ing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_record_stop"
+        android:onClick="setFrag"/>
+
+    <ImageView
+        android:id="@+id/sound_on"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/return_off"
+        android:layout_toEndOf="@+id/image_ing"
+        android:layout_toRightOf="@+id/image_ing"
+        android:paddingLeft="50dp"
+        android:src="@drawable/ic_record_sound_on" />
+
+
+</RelativeLayout>
