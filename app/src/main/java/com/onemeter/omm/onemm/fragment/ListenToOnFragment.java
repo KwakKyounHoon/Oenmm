@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.data.Post;
@@ -71,9 +72,15 @@ public class ListenToOnFragment extends Fragment {
         init();
         return view;
     }
+
+    @OnClick(R.id.btn_answer)
+    public void answerClick(View view){
+        Toast.makeText(getContext(),post.getListenCount(),Toast.LENGTH_SHORT).show();
+    }
+
     public void init(){
-//        qNameView.setText(post.get);
-//        aNameVIew.setText(post.get);
+        qNameView.setText(post.getQuestionerName());
+        aNameVIew.setText(post.getAnswernerName());
         questionView.setText(post.getQuestionerContent());
         timeView.setText(post.getLength());
         listenView.setText(post.getListenCount());

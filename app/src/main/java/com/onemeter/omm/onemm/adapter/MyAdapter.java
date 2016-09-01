@@ -28,6 +28,9 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
     int tabPosition;
     boolean comFlag;
 
+    public void setFlag(boolean comFlag){
+        this.comFlag = comFlag;
+    }
 
     public void addMyData(MyData myData){
         myPageData.setMyData(myData);

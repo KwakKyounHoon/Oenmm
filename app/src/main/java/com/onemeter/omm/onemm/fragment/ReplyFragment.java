@@ -69,7 +69,7 @@ public class ReplyFragment extends Fragment {
     public void setData(){
         qestionView.setText(post.getQuestionerContent());
         costView.setText(post.getPrice());
-//        qNameView.setText(post.get);
+        qNameView.setText(post.getQuestionerName());
 //        Glide.with(qustionerView.getContext())
 //                .load(post.getQuestionerPhoto())
 //                .into(qustionerView);

@@ -3,6 +3,7 @@ package com.onemeter.omm.onemm.request;
 import android.content.Context;
 
 import com.google.gson.reflect.TypeToken;
+import com.onemeter.omm.onemm.data.NetWorkResultType;
 
 import java.lang.reflect.Type;
 
@@ -14,11 +15,11 @@ import okhttp3.RequestBody;
 /**
  * Created by Tacademy on 2016-08-30.
  */
-public class AddFollowReqeust extends AbstractRequest<String> {
+public class AddFollowReqeust extends AbstractRequest<NetWorkResultType> {
     Request request;
     public AddFollowReqeust(Context context, String followId){
         HttpUrl.Builder builder = getBaseUrlBuilder();
-        builder.addPathSegment("signup");
+        builder.addPathSegment("follows");
 
         RequestBody body = new FormBody.Builder()
                 .add("followId",followId)
@@ -30,9 +31,10 @@ public class AddFollowReqeust extends AbstractRequest<String> {
                 .tag(context)
                 .build();
     }
+
     @Override
     protected Type getType() {
-        return new TypeToken<String>(){}.getType();
+        return new TypeToken<NetWorkResultType>(){}.getType();
     }
 
     @Override

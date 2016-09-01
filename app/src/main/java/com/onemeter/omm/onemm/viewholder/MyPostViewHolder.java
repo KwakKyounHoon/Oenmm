@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.data.Post;
 
@@ -47,6 +48,7 @@ public class MyPostViewHolder extends RecyclerView.ViewHolder {
     }
 
     boolean comFlag;
+
     public void setComFlag(boolean flag, int tabPosition){
         if (flag){
             answerLayout.setVisibility(View.VISIBLE);
@@ -66,12 +68,12 @@ public class MyPostViewHolder extends RecyclerView.ViewHolder {
         playTimeView.setText(post.getLength());
         listenView.setText(post.getListenCount());
         costView.setText(post.getPrice());
-//        Glide.with(questionerImgView.getContext())
-//                .load(post.getQuestionerPhoto())
-//                .into(questionerImgView);
-//        Glide.with(answernerImgView.getContext())
-//                .load(post.getAnswernerPhoto())
-//                .into(answernerImgView);
+        Glide.with(questionerImgView.getContext())
+                .load(post.getQuestionerPhoto())
+                .into(questionerImgView);
+        Glide.with(answernerImgView.getContext())
+                .load(post.getAnswernerPhoto())
+                .into(answernerImgView);
     }
 
     @OnClick(R.id.btn_listen)

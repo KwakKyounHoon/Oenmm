@@ -21,8 +21,10 @@ import com.onemeter.omm.onemm.data.OtherData;
 import com.onemeter.omm.onemm.data.Post;
 import com.onemeter.omm.onemm.manager.NetworkManager;
 import com.onemeter.omm.onemm.manager.NetworkRequest;
+import com.onemeter.omm.onemm.request.AddFollowReqeust;
 import com.onemeter.omm.onemm.request.OtherDataRequest;
 import com.onemeter.omm.onemm.request.OtherPostRequest;
+import com.onemeter.omm.onemm.request.RemoveFollowRequest;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -82,6 +84,51 @@ public class OtherFragment extends Fragment {
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         list.setLayoutManager(manager);
         mAdapter.setOnAdapterItemClickListener(new OtherAdapter.OnAdapterItemClickLIstener() {
+
+            @Override
+            public void onAdapterQuestionClick(View view, OtherData otherData) {
+                if(getParentFragment() instanceof TabMyFragment){
+                    ((TabMyFragment) (getParentFragment())).showQuestion(otherData);
+                }else if(getParentFragment() instanceof TabHomeFragment){
+                    ((TabHomeFragment)getParentFragment()).showQuestion(otherData);
+                }else if(getParentFragment() instanceof TabRankFragment){
+                    ((TabRankFragment) (getParentFragment())).showQuestion(otherData);
+                }else{
+                    ((TabSearchFragment) (getParentFragment())).showQuestion(otherData);
+                }
+            }
+
+            @Override
+            public void onAdapterFollowClick(View view, boolean flag) {
+                if(flag){
+                    AddFollowReqeust request = new AddFollowReqeust(getContext(), id);
+                    NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+                        @Override
+                        public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
+                            Toast.makeText(getContext(), result.getMessage()+"",Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
+
+                        }
+                    });
+                }else{
+                    RemoveFollowRequest request = new RemoveFollowRequest(getContext(), id);
+                    NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+                        @Override
+                        public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
+                            Toast.makeText(getContext(), result.getMessage(),Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
+
+                        }
+                    });
+                }
+            }
+
             @Override
             public void onAdapterFollowingClick(View view, OtherData otherData, int position) {
                 if(getParentFragment() instanceof TabMyFragment){
@@ -208,7 +255,7 @@ public class OtherFragment extends Fragment {
                         });
                     }
                 }else{
-                    if(tabType == 2){
+                    if(tabType == 1){
                         OtherPostRequest request = new OtherPostRequest(getContext(), id, "from", "1", 1, 20);
                         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override

@@ -7,6 +7,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.data.Follower;
 
@@ -54,9 +55,9 @@ public class FollowerViewHolder extends RecyclerView.ViewHolder {
         this.follower = follower;
         nameView.setText(follower.getName());
         nicknameView.setText(follower.getNickname());
-//        Glide.with(profileView.getContext())
-//                .load(follower.getPhoto())
-//                .into(profileView);
+        Glide.with(profileView.getContext())
+                .load(follower.getPhoto())
+                .into(profileView);
     }
 
     public interface OnFollowerItemClickListener {

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.onemeter.omm.onemm.MainActivity;
 import com.onemeter.omm.onemm.R;
+import com.onemeter.omm.onemm.data.OtherData;
 import com.onemeter.omm.onemm.data.Post;
 
 
@@ -24,6 +25,9 @@ public class TabMyFragment extends BackKeyFragment {
     public static String TAG_OTHER = "other";
     public static String TAG_SETTING = "setting";
     public static String TAG_REPLY = "reply";
+    public static String TAG_LISTEN_ON ="listenon";
+    public static String TAG_LISTEN_OFF ="listenoff";
+    public static String TAG_QUESTION ="question";
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,10 +57,10 @@ public class TabMyFragment extends BackKeyFragment {
         return view;
     }
 
-    public void showDonate(){
+    public void showDonate(String id){
         FragmentTransaction ft = getChildFragmentManager()
                 .beginTransaction();
-        DonatingPlaceFragment f = new DonatingPlaceFragment();
+        DonatingPlaceFragment f = DonatingPlaceFragment.newInstance(id);
         ft.replace(R.id.container,f , TAG_DONATION);
         ft.addToBackStack(TAG_DONATION);
         ft.commit();
@@ -123,7 +127,7 @@ public class TabMyFragment extends BackKeyFragment {
         FragmentTransaction ft = getChildFragmentManager()
                 .beginTransaction();
         ListenToOffFragment f = ListenToOffFragment.newInstance(post);
-        ft.replace(R.id.container,f , TAG_FOLLOWING).addToBackStack(null);
+        ft.replace(R.id.container,f , TAG_LISTEN_OFF).addToBackStack(null);
         ft.commit();
     }
 
@@ -131,11 +135,19 @@ public class TabMyFragment extends BackKeyFragment {
         FragmentTransaction ft = getChildFragmentManager()
                 .beginTransaction();
         ListenToOnFragment f = ListenToOnFragment.newInstance(post);
-        ft.replace(R.id.container,f , TAG_FOLLOWING).addToBackStack(null);
+        ft.replace(R.id.container,f , TAG_LISTEN_ON).addToBackStack(null);
         ft.commit();
     }
 
     public void popFragment(){
         getChildFragmentManager().popBackStack();
+    }
+
+    public void showQuestion(OtherData otherData) {
+        FragmentTransaction ft = getChildFragmentManager()
+                .beginTransaction();
+        QuestionFragment f = QuestionFragment.newInstance(otherData);
+        ft.replace(R.id.container,f , TAG_QUESTION).addToBackStack(null);
+        ft.commit();
     }
 }
