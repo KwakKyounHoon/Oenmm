@@ -39,10 +39,12 @@
         android:layout_toEndOf="@+id/text_follower" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="184dp"
+        android:layout_height="32dp"
         android:text="@string/btn_modify_profile"
         android:id="@+id/btn_question"
+        android:background="@color/toolbar_text_color"
+        android:textColor="@color/colorWhite"
         android:layout_alignBottom="@+id/image_profile"
         android:layout_toRightOf="@+id/image_profile"
         android:layout_toEndOf="@+id/image_profile" />
