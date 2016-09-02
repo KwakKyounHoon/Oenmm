@@ -20,7 +20,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     @BindView(id.btn_back)
     ImageView back;
-    @BindView(id.check)
+    @BindView(id.btn_check)
     ImageView check;
 
     Fragment f;

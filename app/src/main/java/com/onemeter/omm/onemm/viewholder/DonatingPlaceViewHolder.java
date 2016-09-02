@@ -4,11 +4,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.onemeter.omm.onemm.MyApplication;
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.data.DonatingPlace;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
  * Created by Tacademy on 2016-09-01.
@@ -25,8 +28,9 @@ public class DonatingPlaceViewHolder extends RecyclerView.ViewHolder {
     DonatingPlace donatingPlace;
     public void setDPItem(DonatingPlace donatingPlace) {
         this.donatingPlace = donatingPlace;
-//        Glide.with(itemView.getContext())
-//                .load(donatingPlace.getPhoto())
-//                .into(itemView);
+        Glide.with(itemView.getContext())
+                .load(donatingPlace.getPhoto())
+                .bitmapTransform(new CropCircleTransformation(MyApplication.getContext()))
+                .into(itemView);
     }
 }

@@ -8,11 +8,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.onemeter.omm.onemm.MyApplication;
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.data.Follower;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
  * Created by Tacademy on 2016-08-29.
@@ -57,6 +59,7 @@ public class FollowerViewHolder extends RecyclerView.ViewHolder {
         nicknameView.setText(follower.getNickname());
         Glide.with(profileView.getContext())
                 .load(follower.getPhoto())
+                .bitmapTransform(new CropCircleTransformation(MyApplication.getContext()))
                 .into(profileView);
     }
 

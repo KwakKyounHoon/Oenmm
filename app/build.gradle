@@ -32,4 +32,5 @@ dependencies {
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.github.franmontiel:PersistentCookieJar:v0.9.3'
     compile 'com.wefika:flowlayout:0.4.1'
+    compile 'jp.wasabeef:glide-transformations:2.0.1'
 }

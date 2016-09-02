@@ -6,12 +6,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.onemeter.omm.onemm.MyApplication;
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.data.Post;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
  * Created by Tacademy on 2016-08-24.
@@ -52,9 +54,11 @@ public class OtherPostViewHolder extends RecyclerView.ViewHolder {
         costView.setText(post.getPrice());
         Glide.with(questionerImgView.getContext())
                 .load(post.getQuestionerPhoto())
+                .bitmapTransform(new CropCircleTransformation(MyApplication.getContext()))
                 .into(questionerImgView);
         Glide.with(answernerImgView.getContext())
                 .load(post.getAnswernerPhoto())
+                .bitmapTransform(new CropCircleTransformation(MyApplication.getContext()))
                 .into(answernerImgView);
     }
 

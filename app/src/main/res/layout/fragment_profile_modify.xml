@@ -30,29 +30,29 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/editText"
+            android:id="@+id/edit_nickname"
             android:layout_below="@+id/linearLayout"
             android:hint="아이디"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/editText2"
-            android:layout_below="@+id/editText"
+            android:id="@+id/edit_name"
+            android:layout_below="@+id/edit_nickname"
             android:hint="이름" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/editText3"
-            android:layout_below="@+id/editText2"
+            android:id="@+id/edit_message"
+            android:layout_below="@+id/edit_name"
             android:hint="상태메시지" />
 
-        <EditText
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/editText4"
-            android:layout_below="@+id/editText3"
+            android:layout_below="@+id/edit_message"
             android:hint="음성프로필" />
 
     </LinearLayout>

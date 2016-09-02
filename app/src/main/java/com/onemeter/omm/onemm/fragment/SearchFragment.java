@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.data.NetWorkResultType;
@@ -38,34 +39,41 @@ public class SearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
-
+        ButterKnife.bind(this, view);
         flowLayout = (FlowLayout) view.findViewById(R.id.flowlayout);
 
-        TextView userText;
-        FlowLayout.LayoutParams params;
+
+        final FlowLayout.LayoutParams params;
         params = new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT, FlowLayout.LayoutParams.WRAP_CONTENT);
 
         SearchRecommendRequest request = new SearchRecommendRequest(getContext());
         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<SearchRecommend[]>>() {
             @Override
             public void onSuccess(NetworkRequest<NetWorkResultType<SearchRecommend[]>> request, NetWorkResultType<SearchRecommend[]> result) {
-//                result.getResult();
+                for(SearchRecommend s : result.getResult()){
+                    TextView userText = new TextView(getContext());
+                    userText.setLayoutParams(params);
+                    userText.setText("  "+ s.getName() +"  ");
+                    // userText.setId(); ID설정
+                    SearchFragment.this.flowLayout.addView(userText);
+                }
             }
 
             @Override
             public void onFail(NetworkRequest<NetWorkResultType<SearchRecommend[]>> request, int errorCode, String errorMessage, Throwable e) {
-
+                Toast.makeText(getContext(), "실패",Toast.LENGTH_SHORT).show();
             }
         });
 
-        for (int i = 0; i < 15; i++) {
-            userText = new TextView(getContext());
-            userText.setLayoutParams(params);
-            userText.setText("  추천 스타  ");
-            // userText.setId(); ID설정
-            this.flowLayout.addView(userText);
-        }
-        ButterKnife.bind(this, view);
+
+
+//        for (int i = 0; i < 15; i++) {
+//            userText = new TextView(getContext());
+//            userText.setLayoutParams(params);
+//            userText.setText("  추천 스타  ");
+//            // userText.setId(); ID설정
+//            this.flowLayout.addView(userText);
+//        }
         return view;
     }
 

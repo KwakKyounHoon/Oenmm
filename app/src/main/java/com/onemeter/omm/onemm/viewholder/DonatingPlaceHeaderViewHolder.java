@@ -5,11 +5,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.onemeter.omm.onemm.MyApplication;
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.data.DonatingPlace;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
  * Created by Tacademy on 2016-09-01.
@@ -31,8 +34,9 @@ public class DonatingPlaceHeaderViewHolder extends RecyclerView.ViewHolder{
         this.donatingPlace = donatingPlace;
         headerTitleView.setText(donatingPlace.getName());
         headerDiscriptionView.setText(donatingPlace.getDescription());
-//        Glide.with(headerView.getContext())
-//                .load(donatingPlace.getPhoto())
-//                .into(headerView);
+        Glide.with(headerView.getContext())
+                .load(donatingPlace.getPhoto())
+                .bitmapTransform(new CropCircleTransformation(MyApplication.getContext()))
+                .into(headerView);
     }
 }
