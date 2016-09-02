@@ -1,13 +1,20 @@
 package com.onemeter.omm.onemm.fragment;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,10 +54,12 @@ public class OtherFragment extends Fragment {
 
     @BindView(R.id.btn_back)
     ImageView backView;
+    ShareActionProvider mShareActionProvider;
 
     public OtherFragment() {
         // Required empty public constructor
     }
+
     OtherAdapter mAdapter;
 
     public static OtherFragment newInstance(String message) {
@@ -61,13 +70,35 @@ public class OtherFragment extends Fragment {
         return fragment;
     }
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             id = getArguments().getString(OTHER_ID);
         }
+
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.toolbar_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+        MenuItem shareMenuItem = menu.findItem(R.id.menu_item_1);
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareMenuItem);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        AppCompatActivity menu = (AppCompatActivity) getActivity();
+        toolbar = (Toolbar) getView().findViewById(R.id.toolbar);
+        menu.setSupportActionBar(toolbar);
+        menu.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.inflateMenu(R.menu.toolbar_menu);
+        super.onActivityCreated(savedInstanceState);
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -77,6 +108,8 @@ public class OtherFragment extends Fragment {
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
 //        changeHomeAsUp(true);
+
+
         mAdapter = new OtherAdapter();
         list.setAdapter(mAdapter);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
@@ -84,26 +117,26 @@ public class OtherFragment extends Fragment {
         mAdapter.setOnAdapterItemClickListener(new OtherAdapter.OnAdapterItemClickLIstener() {
             @Override
             public void onAdapterFollowingClick(View view, OtherData otherData, int position) {
-                if(getParentFragment() instanceof TabMyFragment){
+                if (getParentFragment() instanceof TabMyFragment) {
                     ((TabMyFragment) (getParentFragment())).showFollwing(id);
-                }else if(getParentFragment() instanceof TabHomeFragment){
-                    ((TabHomeFragment)getParentFragment()).showFollwing(id);
-                }else if(getParentFragment() instanceof TabRankFragment){
+                } else if (getParentFragment() instanceof TabHomeFragment) {
+                    ((TabHomeFragment) getParentFragment()).showFollwing(id);
+                } else if (getParentFragment() instanceof TabRankFragment) {
                     ((TabRankFragment) (getParentFragment())).showFollwing(id);
-                }else{
+                } else {
                     ((TabSearchFragment) (getParentFragment())).showFollwing(id);
                 }
             }
 
             @Override
             public void onAdapterFollowerClick(View view, OtherData otherData, int position) {
-                if(getParentFragment() instanceof TabMyFragment){
+                if (getParentFragment() instanceof TabMyFragment) {
                     ((TabMyFragment) (getParentFragment())).showFollwer(id);
-                }else if(getParentFragment() instanceof TabHomeFragment){
-                    ((TabHomeFragment)getParentFragment()).showFollwer(id);
-                }else if(getParentFragment() instanceof TabRankFragment){
+                } else if (getParentFragment() instanceof TabHomeFragment) {
+                    ((TabHomeFragment) getParentFragment()).showFollwer(id);
+                } else if (getParentFragment() instanceof TabRankFragment) {
                     ((TabRankFragment) (getParentFragment())).showFollwer(id);
-                }else{
+                } else {
                     ((TabSearchFragment) (getParentFragment())).showFollwer(id);
                 }
             }
@@ -116,8 +149,8 @@ public class OtherFragment extends Fragment {
             public void onAdapterTabType(View view, int type) {
                 mAdapter.clearPost();
                 tabType = type;
-                if(tabType == 1){
-                    if(categoryType){
+                if (tabType == 1) {
+                    if (categoryType) {
                         OtherPostRequest request = new OtherPostRequest(getContext(), id, "from", "0", 1, 20);
                         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
@@ -130,7 +163,7 @@ public class OtherFragment extends Fragment {
 
                             }
                         });
-                    }else{
+                    } else {
                         OtherPostRequest request = new OtherPostRequest(getContext(), id, "from", "1", 1, 20);
                         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
@@ -144,8 +177,8 @@ public class OtherFragment extends Fragment {
                             }
                         });
                     }
-                }else{
-                    if(categoryType){
+                } else {
+                    if (categoryType) {
                         OtherPostRequest request = new OtherPostRequest(getContext(), id, "to", "0", 1, 20);
                         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
@@ -158,7 +191,7 @@ public class OtherFragment extends Fragment {
 
                             }
                         });
-                    }else{
+                    } else {
                         OtherPostRequest request = new OtherPostRequest(getContext(), id, "to", "1", 1, 20);
                         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
@@ -179,8 +212,8 @@ public class OtherFragment extends Fragment {
             public void onAdapterCategoryItemClick(boolean flag) {
                 mAdapter.clearPost();
                 categoryType = flag;
-                if(flag){
-                    if(tabType == 1){
+                if (flag) {
+                    if (tabType == 1) {
                         OtherPostRequest request = new OtherPostRequest(getContext(), id, "from", "0", 1, 20);
                         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
@@ -193,7 +226,7 @@ public class OtherFragment extends Fragment {
 
                             }
                         });
-                    }else{
+                    } else {
                         OtherPostRequest request = new OtherPostRequest(getContext(), id, "to", "0", 1, 20);
                         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
@@ -207,8 +240,8 @@ public class OtherFragment extends Fragment {
                             }
                         });
                     }
-                }else{
-                    if(tabType == 2){
+                } else {
+                    if (tabType == 2) {
                         OtherPostRequest request = new OtherPostRequest(getContext(), id, "from", "1", 1, 20);
                         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
@@ -221,7 +254,7 @@ public class OtherFragment extends Fragment {
 
                             }
                         });
-                    }else{
+                    } else {
                         OtherPostRequest request = new OtherPostRequest(getContext(), id, "to", "1", 1, 20);
                         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
@@ -240,24 +273,24 @@ public class OtherFragment extends Fragment {
 
             @Override
             public void onAdapterItemClick(View view, Post post, int position) {
-                if(post.getPayInfo().equals("1")){
-                    if(getParentFragment() instanceof TabMyFragment){
+                if (post.getPayInfo().equals("1")) {
+                    if (getParentFragment() instanceof TabMyFragment) {
                         ((TabMyFragment) (getParentFragment())).showListenToOn(post);
-                    }else if(getParentFragment() instanceof TabHomeFragment){
+                    } else if (getParentFragment() instanceof TabHomeFragment) {
                         ((TabHomeFragment) (getParentFragment())).showListenToOn(post);
-                    }else if(getParentFragment() instanceof TabRankFragment){
+                    } else if (getParentFragment() instanceof TabRankFragment) {
                         ((TabRankFragment) (getParentFragment())).showListenToOn(post);
-                    }else{
+                    } else {
                         ((TabSearchFragment) (getParentFragment())).showListenToOn(post);
                     }
-                }else{
-                    if(getParentFragment() instanceof TabMyFragment){
+                } else {
+                    if (getParentFragment() instanceof TabMyFragment) {
                         ((TabMyFragment) (getParentFragment())).showListenToOff(post);
-                    }else if(getParentFragment() instanceof TabHomeFragment){
+                    } else if (getParentFragment() instanceof TabHomeFragment) {
                         ((TabHomeFragment) (getParentFragment())).showListenToOff(post);
-                    }else if(getParentFragment() instanceof TabRankFragment){
+                    } else if (getParentFragment() instanceof TabRankFragment) {
                         ((TabRankFragment) (getParentFragment())).showListenToOff(post);
-                    }else{
+                    } else {
                         ((TabSearchFragment) (getParentFragment())).showListenToOff(post);
                     }
                 }
@@ -265,7 +298,7 @@ public class OtherFragment extends Fragment {
 
             @Override
             public void onAdapterPlayClick(View view, Post post, int position) {
-                Toast.makeText(getContext(),post.getVoiceContent(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), post.getVoiceContent(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -284,7 +317,7 @@ public class OtherFragment extends Fragment {
 
         mAdapter.clearPost();
 
-        OtherPostRequest otherPostRequest = new OtherPostRequest(getContext(),id,"from","0", 20, 1);
+        OtherPostRequest otherPostRequest = new OtherPostRequest(getContext(), id, "from", "0", 20, 1);
         NetworkManager.getInstance().getNetworkData(otherPostRequest, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
             @Override
             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
@@ -299,63 +332,96 @@ public class OtherFragment extends Fragment {
         return view;
     }
 
-    void init(){
-        for(int i = 0; i < 5; i++){
+    void init() {
+        for (int i = 0; i < 5; i++) {
             Post post = new Post();
-            post.setAnswernerId(i+"1");
+            post.setAnswernerId(i + "1");
             post.setAnswernerPhoto("");
-            post.setLength(i+"5");
-            post.setPrice(i+"10");
-            post.setQuestionerContent("GOOD"+i);
-            post.setQuestionerId(i+"2");
+            post.setLength(i + "5");
+            post.setPrice(i + "10");
+            post.setQuestionerContent("GOOD" + i);
+            post.setQuestionerId(i + "2");
             post.setQuestionerPhoto("");
-            post.setVoiceContent("yes"+i);
+            post.setVoiceContent("yes" + i);
             mAdapter.addPost(post);
         }
     }
 
-    void init2(){
-        for(int i = 5; i < 11; i++){
+    void init2() {
+        for (int i = 5; i < 11; i++) {
             Post post = new Post();
-            post.setAnswernerId(i+"1");
+            post.setAnswernerId(i + "1");
             post.setAnswernerPhoto("");
-            post.setLength(i+"5");
-            post.setPrice(i+"10");
-            post.setQuestionerContent("GOOD"+i);
-            post.setQuestionerId(i+"2");
+            post.setLength(i + "5");
+            post.setPrice(i + "10");
+            post.setQuestionerContent("GOOD" + i);
+            post.setQuestionerId(i + "2");
             post.setQuestionerPhoto("");
-            post.setVoiceContent("yes"+i);
+            post.setVoiceContent("yes" + i);
             mAdapter.addPost(post);
         }
     }
+
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            if(getParentFragment() instanceof TabMyFragment){
-                ((TabMyFragment) (getParentFragment())).popFragment();
-            }else if(getParentFragment() instanceof TabHomeFragment){
-                ((TabHomeFragment) (getParentFragment())).popFragment();
-            }else if(getParentFragment() instanceof TabRankFragment){
-                ((TabRankFragment) (getParentFragment())).popFragment();
-            }else{
-                ((TabSearchFragment) (getParentFragment())).popFragment();
-            }
-            return true;
+    public boolean onOptionsItemSelected(MenuItem item) { // 신고 차단 UI 구분
+        switch (item.getItemId()) {
+            case R.id.menu_item_1:
+                return true;
+            case R.id.submenu_item_1:
+                onListDialog();
+                return true;
+            case R.id.submenu_item_2:
+                onListDialog();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    String[] items = {"사칭 계정입니다.", "불쾌한 게시물을 올렸습니다.",
+                        "광고성 게시물을 올렸습니다."};
+
+    public void onListDialog() {
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("신고하는 이유");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int position) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("정말 차단하시겠습니까?")
+                        .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Toast.makeText(getContext(), "취소버튼 동작 구현",Toast.LENGTH_SHORT).show();
+                            }
+                        }).setPositiveButton("예, 확실합니다", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(getContext(), "확인버튼 동작 구현",Toast.LENGTH_SHORT).show();
+                    }
+                });
+                builder.show();
+            }
+        });
+
+        builder.show();
+
+
+    }
+
+
+
     @OnClick(R.id.btn_back)
-    public void backClick(View view){
-        if(getParentFragment() instanceof TabMyFragment){
+    public void backClick(View view) {
+        if (getParentFragment() instanceof TabMyFragment) {
             ((TabMyFragment) (getParentFragment())).popFragment();
-        }else if(getParentFragment() instanceof TabHomeFragment){
+        } else if (getParentFragment() instanceof TabHomeFragment) {
             ((TabHomeFragment) (getParentFragment())).popFragment();
-        }else if(getParentFragment() instanceof TabRankFragment){
+        } else if (getParentFragment() instanceof TabRankFragment) {
             ((TabRankFragment) (getParentFragment())).popFragment();
-        }else{
+        } else {
             ((TabSearchFragment) (getParentFragment())).popFragment();
         }
     }

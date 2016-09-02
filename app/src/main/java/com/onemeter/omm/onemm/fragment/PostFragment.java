@@ -30,6 +30,7 @@ public class PostFragment extends Fragment {
     @BindView(R.id.list)
     RecyclerView list;
     PostAdapter mAdapter;
+
     public PostFragment() {
 
     }
@@ -47,10 +48,10 @@ public class PostFragment extends Fragment {
         mAdapter.setOnAdapterItemClickListener(new PostAdapter.OnAdapterItemClickLIstener() {
             @Override
             public void onAdapterPostItemClick(View view, Post post, int position) {
-                Toast.makeText(getContext(),post.getAnswernerId(),Toast.LENGTH_SHORT).show();
-                if(post.getPayInfo().equals("1")){
+                Toast.makeText(getContext(), post.getAnswernerId(), Toast.LENGTH_SHORT).show();
+                if (post.getPayInfo().equals("1")) {
                     ((TabHomeFragment) (getParentFragment())).showListenToOn(post);
-                }else{
+                } else {
                     ((TabHomeFragment) (getParentFragment())).showListenToOff(post);
                 }
 
@@ -58,7 +59,7 @@ public class PostFragment extends Fragment {
 
             @Override
             public void onAdpaterPlayClick(View view, Post post, int position) {
-                Toast.makeText(getContext(),post.getVoiceContent(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), post.getVoiceContent(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -78,17 +79,17 @@ public class PostFragment extends Fragment {
         return view;
     }
 
-    void init(){
-        for(int i = 0; i < 5; i++){
+    void init() {
+        for (int i = 0; i < 5; i++) {
             Post post = new Post();
-            post.setAnswernerId(i+"1");
+            post.setAnswernerId(i + "1");
             post.setAnswernerPhoto("");
-            post.setLength(i+"5");
-            post.setPrice(i+"10");
-            post.setQuestionerContent("GOOD"+i);
-            post.setQuestionerId(i+"2");
+            post.setLength(i + "5");
+            post.setPrice(i + "10");
+            post.setQuestionerContent("GOOD" + i);
+            post.setQuestionerId(i + "2");
             post.setQuestionerPhoto("");
-            post.setVoiceContent("yes"+i);
+            post.setVoiceContent("yes" + i);
             mAdapter.addPost(post);
         }
     }

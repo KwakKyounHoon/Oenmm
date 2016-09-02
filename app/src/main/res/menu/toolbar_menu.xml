@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    
+    <item
+        android:id="@+id/menu_item_1"
+        android:icon="@drawable/ic_more"
+        android:orderInCategory="100"
+        android:title="Add"
+        app:showAsAction="ifRoom|collapseActionView">
+
+        <menu>
+            <item
+                android:id="@+id/submenu_item_1"
+                android:title="신고"
+                android:orderInCategory="200"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/submenu_item_2"
+                android:title="차단"
+                android:orderInCategory="201"
+                app:showAsAction="never" />
+        </menu>
+
+    </item>
+
+
+
+</menu>

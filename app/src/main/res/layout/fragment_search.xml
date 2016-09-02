@@ -1,28 +1,32 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.onemeter.omm.onemm.fragment.SearchFragment">
 
     <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_height"
-        android:id="@+id/toolbar">
+        android:layout_height="@dimen/toolbar_height">
 
 
         <include
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
             layout="@layout/view_search_toolbar"
-            android:background="@color/colorWhite"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite" />
 
     </android.support.v7.widget.Toolbar>
     <!-- TODO: Update blank fragment layout -->
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="SearchFragment"
-        android:layout_gravity="left|center_vertical" />
+    <com.wefika.flowlayout.FlowLayout
+        android:id="@+id/flowlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar">
 
-</FrameLayout>
+
+    </com.wefika.flowlayout.FlowLayout>
+
+
+</RelativeLayout>

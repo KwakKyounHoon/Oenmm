@@ -15,11 +15,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.onemeter.omm.onemm.R.id;
-import static com.onemeter.omm.onemm.R.layout;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    @BindView(id.back)
+    @BindView(id.btn_back)
     ImageView back;
     @BindView(id.check)
     ImageView check;
