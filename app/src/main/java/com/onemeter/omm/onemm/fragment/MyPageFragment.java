@@ -24,6 +24,7 @@ import com.onemeter.omm.onemm.manager.NetworkRequest;
 import com.onemeter.omm.onemm.request.MyDataReqeust;
 import com.onemeter.omm.onemm.request.MyListenRequest;
 import com.onemeter.omm.onemm.request.MyPostRequest;
+import com.onemeter.omm.onemm.request.RemoveImageRequest;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -98,7 +99,6 @@ public class MyPageFragment extends Fragment {
 
             @Override
             public void onAdapterPhotoClick(View view, MyData myData, int position) {
-                Toast.makeText(getContext(), "사진 클릭", Toast.LENGTH_SHORT).show();
                 onListDialog();
 
             }
@@ -332,7 +332,29 @@ public class MyPageFragment extends Fragment {
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int position) {
+                switch (position){
+                    case 0 : {
+                        break;
+                    }
+                    case 1 : {
+                        break;
+                    }
+                    case 2 : {
+                        RemoveImageRequest request = new RemoveImageRequest(getContext());
+                        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
+                                Toast.makeText(getContext(), result.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
 
+                            @Override
+                            public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
+
+                            }
+                        });
+                        break;
+                    }
+                }
                 // 동작구현
             }
         });

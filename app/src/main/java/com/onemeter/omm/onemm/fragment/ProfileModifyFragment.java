@@ -3,7 +3,6 @@ package com.onemeter.omm.onemm.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,8 +16,6 @@ import com.onemeter.omm.onemm.data.NetWorkResultType;
 import com.onemeter.omm.onemm.manager.NetworkManager;
 import com.onemeter.omm.onemm.manager.NetworkRequest;
 import com.onemeter.omm.onemm.request.ModifyProfileRequest;
-
-import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -88,7 +85,7 @@ public class ProfileModifyFragment extends Fragment {
         String name = nameView.getText().toString();
         String nickname = nickNameView.getText().toString();
         String message = messageView.getText().toString();
-        ModifyProfileRequest request = new ModifyProfileRequest(getContext(), nickname, name, message, new File("tt"));
+        ModifyProfileRequest request = new ModifyProfileRequest(getContext(), nickname, name, message, null);
         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType>() {
             @Override
             public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
@@ -97,16 +94,8 @@ public class ProfileModifyFragment extends Fragment {
 
             @Override
             public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
-
             }
         });
-        if(TextUtils.isEmpty(name)) {
-            Toast.makeText(getContext(),"이름을 입력하세요",Toast.LENGTH_SHORT).show();
-        }else if(TextUtils.isEmpty(nickname)){
-            Toast.makeText(getContext(),"닉네임을 입력하세요",Toast.LENGTH_SHORT).show();
-        }else if(TextUtils.isEmpty(message)){
-            Toast.makeText(getContext(),"상태 메세지를 입력하세요",Toast.LENGTH_SHORT).show();
-        }
 //        if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(nickname) && !TextUtils.isEmpty(message)) {
 
 //        }
