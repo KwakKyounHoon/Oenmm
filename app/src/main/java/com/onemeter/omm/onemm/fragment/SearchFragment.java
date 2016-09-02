@@ -49,7 +49,7 @@ public class SearchFragment extends Fragment {
         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<SearchRecommend[]>>() {
             @Override
             public void onSuccess(NetworkRequest<NetWorkResultType<SearchRecommend[]>> request, NetWorkResultType<SearchRecommend[]> result) {
-                result.getResult();
+//                result.getResult();
             }
 
             @Override
