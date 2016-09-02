@@ -16,12 +16,12 @@ import okhttp3.Request;
  */
 public class OtherPostRequest extends AbstractRequest<NetWorkResultType<Post[]>> {
     Request request;
-    public OtherPostRequest(Context context, String id, String direction, String answer, int pageNo, int count){
+    public OtherPostRequest(Context context, String id, String direction, String type, int pageNo, int count){
         HttpUrl url = getHttpsBaseUrlBuilder()
                 .addPathSegment("questions")
                 .addPathSegment(id)
                 .addQueryParameter("direction", direction)
-                .addQueryParameter("answer", answer)
+                .addQueryParameter("type", type)
                 .addQueryParameter("pageNo", pageNo+"")
                 .addQueryParameter("count", count+"")
                 .build();

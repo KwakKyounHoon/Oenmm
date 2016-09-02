@@ -20,7 +20,7 @@ public class RankDonationRequest extends AbstractRequest<NetWorkResultType<Donat
     public RankDonationRequest(Context context){
         HttpUrl url = getBaseUrlBuilder()
                 .addPathSegment("users")
-                .addQueryParameter("category", "3")
+                .addQueryParameter("category", "2")
                 .build();
 
         request = new Request.Builder()

@@ -19,7 +19,7 @@ public class SearchRecommendRequest extends AbstractRequest<NetWorkResultType<Se
     public SearchRecommendRequest(Context context){
         HttpUrl url = getBaseUrlBuilder()
                 .addPathSegment("users")
-                .addQueryParameter("category", "2")
+                .addQueryParameter("category", "1")
                 .build();
 
         request = new Request.Builder()

@@ -72,12 +72,17 @@ public class ListenToOffFragment extends Fragment {
     }
 
     public void init(){
-//        qNameView.setText(post.get);
-//        aNameVIew.setText(post.get);
+        qNameView.setText(post.getQuestionerName());
+        aNameVIew.setText(post.getAnswernerName());
         questionView.setText(post.getQuestionerContent());
         timeView.setText(post.getLength());
         listenView.setText(post.getListenCount());
         moneyView.setText(post.getPrice());
+
+    }
+
+    @OnClick(R.id.btn_pay)
+    public void payClick(View view){
 
     }
 

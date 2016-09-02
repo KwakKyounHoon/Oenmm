@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.data.MyData;
 
@@ -61,18 +62,26 @@ public class MyHeaderViewHolder extends RecyclerView.ViewHolder {
     }
 
     @OnClick(R.id.btn_sound)
-    public void onPhotoClick(View view){
+    public void onSoundClick(View view){
         if (listener != null) {
-            listener.onPhotoItemClick(view, mydata, getAdapterPosition());
+            listener.onSoundItemClick(view, mydata, getAdapterPosition());
         }
     }
 
-    @OnClick(R.id.btn_modify)
+    @OnClick(R.id.image_profile)
+    public void onPhotoClick(View view){
+        if (listener != null) {
+            listener.onPhotoClick(view, mydata, getAdapterPosition());
+        }
+    }
+
+    @OnClick(R.id.btn_question)
     public void modifyClick(View view){
         if(listener != null){
             listener.onModifyClick(view, mydata, getAdapterPosition());
         }
     }
+
 
     MyData mydata;
     public void setUserInof(MyData myData){
@@ -82,6 +91,9 @@ public class MyHeaderViewHolder extends RecyclerView.ViewHolder {
         followingView.setText(myData.getFollowing());
         messageView.setText(myData.getStateMessage());
         donateView.setText(myData.getDonationName());
+        Glide.with(profileView.getContext())
+                .load(myData.getPhoto())
+                .into(profileView);
     }
 
     public interface OnMyDataItemClickListener {
@@ -89,8 +101,8 @@ public class MyHeaderViewHolder extends RecyclerView.ViewHolder {
         public void onFollowingItemClick(View view, MyData myData, int position);
         public void onFollowerItemClick(View view, MyData myData, int position);
         public void onSoundItemClick(View view, MyData myData, int position);
-        public void onPhotoItemClick(View view, MyData myData, int position);
         public void onModifyClick(View view, MyData myData, int position);
+        public void onPhotoClick(View view, MyData myData, int position);
     }
 
     OnMyDataItemClickListener listener;

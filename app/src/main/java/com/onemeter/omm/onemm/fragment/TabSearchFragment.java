@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.onemeter.omm.onemm.MainActivity;
 import com.onemeter.omm.onemm.R;
+import com.onemeter.omm.onemm.data.OtherData;
 import com.onemeter.omm.onemm.data.Post;
 
 public class TabSearchFragment extends BackKeyFragment {
@@ -18,9 +19,11 @@ public class TabSearchFragment extends BackKeyFragment {
     public static String TAG_SEARCH = "search";
     public static String TAG_FOLLOWER = "follower";
     public static String TAG_FOLLOWING = "following";
-    public static String TAG_DONATION = "donation";
     public static String TAG_SEARCH_RESULT = "searchresult";
     public static String TAG_OTHER = "other";
+    public static String TAG_LISTEN_ON ="listenon";
+    public static String TAG_LISTEN_OFF ="listenoff";
+    public static String TAG_QUESTION ="question";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,7 +89,7 @@ public class TabSearchFragment extends BackKeyFragment {
         FragmentTransaction ft = getChildFragmentManager()
                 .beginTransaction();
         ListenToOffFragment f = ListenToOffFragment.newInstance(post);
-        ft.replace(R.id.container,f , TAG_FOLLOWING).addToBackStack(null);
+        ft.replace(R.id.container,f , TAG_LISTEN_OFF).addToBackStack(null);
         ft.commit();
     }
 
@@ -94,11 +97,19 @@ public class TabSearchFragment extends BackKeyFragment {
         FragmentTransaction ft = getChildFragmentManager()
                 .beginTransaction();
         ListenToOnFragment f = ListenToOnFragment.newInstance(post);
-        ft.replace(R.id.container,f , TAG_FOLLOWING).addToBackStack(null);
+        ft.replace(R.id.container,f , TAG_LISTEN_ON).addToBackStack(null);
         ft.commit();
     }
 
     public void popFragment(){
         getChildFragmentManager().popBackStack();
+    }
+
+    public void showQuestion(OtherData otherData) {
+        FragmentTransaction ft = getChildFragmentManager()
+                .beginTransaction();
+        QuestionFragment f = QuestionFragment.newInstance(otherData);
+        ft.replace(R.id.container,f , TAG_QUESTION).addToBackStack(null);
+        ft.commit();
     }
 }

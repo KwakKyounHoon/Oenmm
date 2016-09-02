@@ -55,7 +55,7 @@ public class FollowActivity extends AppCompatActivity {
         listView.setAdapter(mAdapter);
 
         GridLayoutManager manager =
-                new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false);
+                new GridLayoutManager(this, 3);
         listView.setLayoutManager(manager);
 
         initData();

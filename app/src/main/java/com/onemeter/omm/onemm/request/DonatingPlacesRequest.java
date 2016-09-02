@@ -3,7 +3,7 @@ package com.onemeter.omm.onemm.request;
 import android.content.Context;
 
 import com.google.gson.reflect.TypeToken;
-import com.onemeter.omm.onemm.data.FollowRecommend;
+import com.onemeter.omm.onemm.data.DonatingPlace;
 import com.onemeter.omm.onemm.data.NetWorkResultType;
 
 import java.lang.reflect.Type;
@@ -14,12 +14,13 @@ import okhttp3.Request;
 /**
  * Created by Tacademy on 2016-08-30.
  */
-public class FollowRecommendRequest extends AbstractRequest<NetWorkResultType<FollowRecommend[]>> {
+public class DonatingPlacesRequest extends AbstractRequest<NetWorkResultType<DonatingPlace[]>> {
     Request request;
-    public FollowRecommendRequest(Context context){
+    public DonatingPlacesRequest(Context context, int pageNo, int count){
         HttpUrl url = getBaseUrlBuilder()
-                .addPathSegment("users")
-                .addQueryParameter("category", "0")
+                .addPathSegment("donations")
+                .addQueryParameter("pageNo", pageNo+"")
+                .addQueryParameter("count", count+"")
                 .build();
 
         request = new Request.Builder()
@@ -29,7 +30,7 @@ public class FollowRecommendRequest extends AbstractRequest<NetWorkResultType<Fo
     }
     @Override
     protected Type getType() {
-        return new TypeToken<NetWorkResultType<FollowRecommend[]>>(){}.getType();
+        return new TypeToken<NetWorkResultType<DonatingPlace[]>>(){}.getType();
     }
 
     @Override

@@ -28,7 +28,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
+            <ImageView
                 android:layout_gravity="center"
                 android:id="@+id/image_questioner"
                 android:layout_width="50dp"

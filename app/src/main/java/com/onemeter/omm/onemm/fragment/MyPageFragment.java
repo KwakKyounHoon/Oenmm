@@ -76,7 +76,7 @@ public class MyPageFragment extends Fragment {
         mAdapter.setOnAdapterItemClickListener(new MyAdapter.OnAdapterItemClickLIstener() {
             @Override
             public void onAdapterDonateClick(View view, MyData myData, int position) {
-                ((TabMyFragment)getParentFragment()).showDonate();
+                ((TabMyFragment)getParentFragment()).showDonate(myData.getDonationId());
             }
 
             @Override
@@ -91,11 +91,12 @@ public class MyPageFragment extends Fragment {
 
             @Override
             public void onAdapterSoundClick(View view, MyData myData, int position) {
+                    Toast.makeText(getContext(), "프로필 음성 듣기", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onAdapterPhotoClick(View view, MyData myData, int position) {
-
+                Toast.makeText(getContext(), "사진 클릭",Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -185,7 +186,7 @@ public class MyPageFragment extends Fragment {
                 if(num == 1){
                     mAdapter.clearPost();
                     if(comFlag){
-                        MyPostRequest request = new MyPostRequest(getContext(), "to", "1", 1, 20);
+                        MyPostRequest request = new MyPostRequest(getContext(), "from", "1", 1, 20);
                         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
@@ -198,7 +199,7 @@ public class MyPageFragment extends Fragment {
                             }
                         });
                     }else{
-                        MyPostRequest request = new MyPostRequest(getContext(), "to", "0", 1, 20);
+                        MyPostRequest request = new MyPostRequest(getContext(), "from", "0", 1, 20);
                         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
@@ -214,7 +215,7 @@ public class MyPageFragment extends Fragment {
                 }else if(num == 2){
                     mAdapter.clearPost();
                     if(comFlag){
-                        MyPostRequest request = new MyPostRequest(getContext(), "from", "1", 1, 20);
+                        MyPostRequest request = new MyPostRequest(getContext(), "to", "1", 1, 20);
                         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
@@ -227,7 +228,7 @@ public class MyPageFragment extends Fragment {
                             }
                         });
                     }else{
-                        MyPostRequest request = new MyPostRequest(getContext(), "from", "0", 1, 20);
+                        MyPostRequest request = new MyPostRequest(getContext(), "to", "0", 1, 20);
                         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
@@ -260,12 +261,32 @@ public class MyPageFragment extends Fragment {
 
             @Override
             public void onAdapterItemClick(View view, Post post, int position) {
-
+                if(!comFlag){
+                    if(tabType == 1) {
+                        Toast.makeText(getContext(), "답변 미완료 글쓰기", Toast.LENGTH_SHORT).show();
+                        ((TabMyFragment)getParentFragment()).showReply(post);
+                    }
+                }
             }
 
             @Override
             public void onAdapterPlayItemClick(View view, Post post, int position) {
+                if(comFlag || tabType == 3) {
+                    Toast.makeText(getContext(), "음성 듣기", Toast.LENGTH_SHORT).show();
+                }
+            }
 
+            @Override
+            public void onAdapterQuestionerClick(View view, Post post, int position) {
+                if(tabType == 1 || tabType == 3) {
+                    Toast.makeText(getContext(), "질문자 페이지로", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onAdapterAnswerClick(View view, Post post, int position) {
+                if(tabType == 2 || tabType == 3)
+                Toast.makeText(getContext(),"답변자 페이지로 듣기",Toast.LENGTH_SHORT).show();
             }
 
 
@@ -361,6 +382,8 @@ public class MyPageFragment extends Fragment {
         super.onResume();
         ((MainActivity) (getActivity())).changeHomeAsUp(false);
 //        Toast.makeText(getActivity(),"ggg",Toast.LENGTH_SHORT).show();
+        tabType = 1;
+        mAdapter.setFlag(true);
 
     }
 

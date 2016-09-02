@@ -176,6 +176,20 @@ public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     @Override
+    public void onFollowClick(View view, boolean flag) {
+        if(listener != null){
+            listener.onAdapterFollowClick(view, flag);
+        }
+    }
+
+    @Override
+    public void onQuestionClick(View view, OtherData otherData) {
+        if(listener != null){
+            listener.onAdapterQuestionClick(view, otherData);
+        }
+    }
+
+    @Override
     public void onCategoryItemClick(Boolean flag) {
         if(listener != null) {
             listener.onAdapterCategoryItemClick(flag);
@@ -205,7 +219,8 @@ public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
 
     public interface OnAdapterItemClickLIstener {
-
+        public void onAdapterQuestionClick(View view, OtherData otherData);
+        public void onAdapterFollowClick(View view, boolean flag);
         public void onAdapterFollowingClick(View view, OtherData otherData, int position);
         public void onAdapterFollowerClick(View view, OtherData otherData, int position);
         public void onAdapterSoundClick(View view, OtherData otherData, int position);

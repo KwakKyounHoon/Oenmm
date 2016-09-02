@@ -48,6 +48,7 @@ public class MyPostViewHolder extends RecyclerView.ViewHolder {
     }
 
     boolean comFlag;
+
     public void setComFlag(boolean flag, int tabPosition){
         if (flag){
             answerLayout.setVisibility(View.VISIBLE);
@@ -82,9 +83,25 @@ public class MyPostViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
+    @OnClick(R.id.image_questioner)
+    public void questionerClick(View view){
+        if(listener != null){
+            listener.onQuestionerClick(view, post, getAdapterPosition());
+        }
+    }
+
+    @OnClick(R.id.image_answerner)
+    public void answernerClick(View view){
+        if(listener != null){
+            listener.onAnswerClick(view, post, getAdapterPosition());
+        }
+    }
+
     public interface OnMyItemClickListener {
         public void onPostItemClick(View view, Post post, int position);
         public void onPlayClick(View view, Post post, int position);
+        public void onQuestionerClick(View view, Post post, int position);
+        public void onAnswerClick(View view, Post post, int position);
     }
 
     OnMyItemClickListener listener;

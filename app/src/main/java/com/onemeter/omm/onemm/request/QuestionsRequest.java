@@ -3,9 +3,9 @@ package com.onemeter.omm.onemm.request;
 import android.content.Context;
 
 import com.google.gson.reflect.TypeToken;
+import com.onemeter.omm.onemm.data.NetWorkResultType;
 
 import java.lang.reflect.Type;
-import java.util.Date;
 
 import okhttp3.FormBody;
 import okhttp3.HttpUrl;
@@ -15,17 +15,17 @@ import okhttp3.RequestBody;
 /**
  * Created by Tacademy on 2016-08-30.
  */
-public class QuestionsRequest extends AbstractRequest<String> {
+public class QuestionsRequest extends AbstractRequest<NetWorkResultType> {
     Request request;
-    public QuestionsRequest(Context context, int price, Date date, String content, int responsorId){
+    public QuestionsRequest(Context context, String price, String date, String content, String responsorId){
         HttpUrl.Builder builder = getBaseUrlBuilder();
         builder.addPathSegment("questions");
 
         RequestBody body = new FormBody.Builder()
-                .add("price",price+"")
-                .add("date",date+"")
+                .add("price",price)
+                .add("date",date)
                 .add("content",content)
-                .add("responsor_id",responsorId+"")
+                .add("responsor_id",responsorId)
                 .build();
 
         request = new Request.Builder()
@@ -36,7 +36,7 @@ public class QuestionsRequest extends AbstractRequest<String> {
     }
     @Override
     protected Type getType() {
-        return new TypeToken<String>(){}.getType();
+        return new TypeToken<NetWorkResultType>(){}.getType();
     }
 
     @Override

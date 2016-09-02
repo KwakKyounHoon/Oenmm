@@ -1,9 +1,11 @@
 package com.onemeter.omm.onemm.data;
 
+import java.io.Serializable;
+
 /**
  * Created by Tacademy on 2016-08-24.
  */
-public class OtherData {
+public class OtherData implements Serializable {
     private String follower;
     private String donationName;
     private String following;

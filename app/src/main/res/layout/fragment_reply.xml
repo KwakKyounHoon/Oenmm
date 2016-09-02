@@ -59,6 +59,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/text_question"
                     android:text="질문 내용"
                     android:layout_toRightOf="@id/image_questioner" />
 
@@ -67,6 +68,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/text_cost"
                 android:layout_gravity="right"
                 android:text="가격" />
 
@@ -143,6 +145,5 @@
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>
-        android:text="답변하기 페이지" />
 
 </RelativeLayout>

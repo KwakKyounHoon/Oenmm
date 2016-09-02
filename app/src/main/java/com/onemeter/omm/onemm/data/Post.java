@@ -14,6 +14,80 @@ public class Post implements Serializable {
     private String questionerId;
     private String voiceContent;
     private String payInfo;
+    private String questionerNickname;
+    private String questionerName;
+    private String answernerNickname;
+    private String answernerName;
+
+    private String photo;
+    private String myId;
+    private String name;
+    private String nickname;
+    private String content;
+
+    public String getQuestionerNickname() {
+        return questionerNickname;
+    }
+
+    public void setQuestionerNickname(String questionerNickname) {
+        this.questionerNickname = questionerNickname;
+    }
+
+    public String getQuestionerName() {
+        return questionerName;
+    }
+
+    public void setQuestionerName(String questionerName) {
+        this.questionerName = questionerName;
+    }
+
+    public String getAnswernerNickname() {
+        return answernerNickname;
+    }
+
+    public void setAnswernerNickname(String answernerNickname) {
+        this.answernerNickname = answernerNickname;
+    }
+
+    public String getAnswernerName() {
+        return answernerName;
+    }
+
+    public void setAnswernerName(String answernerName) {
+        this.answernerName = answernerName;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    public String getMyId() {
+        return myId;
+    }
+
+    public void setMyId(String myId) {
+        this.myId = myId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 
     public String getPayInfo() {
         return payInfo;

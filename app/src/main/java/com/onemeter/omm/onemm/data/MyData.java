@@ -13,6 +13,15 @@ public class MyData {
     private String photo;
     private String voiceMessage;
     private String userId;
+    private String donationId;
+
+    public String getDonationId() {
+        return donationId;
+    }
+
+    public void setDonationId(String donationId) {
+        this.donationId = donationId;
+    }
 
     public String getFollower() {
         return follower;

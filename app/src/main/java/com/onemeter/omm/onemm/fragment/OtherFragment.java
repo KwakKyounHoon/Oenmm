@@ -1,20 +1,13 @@
 package com.onemeter.omm.onemm.fragment;
 
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +52,6 @@ public class OtherFragment extends Fragment {
     public OtherFragment() {
         // Required empty public constructor
     }
-
     OtherAdapter mAdapter;
 
     public static OtherFragment newInstance(String message) {
@@ -70,15 +62,12 @@ public class OtherFragment extends Fragment {
         return fragment;
     }
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (getArguments() != null) {
             id = getArguments().getString(OTHER_ID);
         }
-
     }
 
     @Override
@@ -108,35 +97,78 @@ public class OtherFragment extends Fragment {
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
 //        changeHomeAsUp(true);
-
-
         mAdapter = new OtherAdapter();
         list.setAdapter(mAdapter);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         list.setLayoutManager(manager);
         mAdapter.setOnAdapterItemClickListener(new OtherAdapter.OnAdapterItemClickLIstener() {
+
+            @Override
+            public void onAdapterQuestionClick(View view, OtherData otherData) {
+                if(getParentFragment() instanceof TabMyFragment){
+                    ((TabMyFragment) (getParentFragment())).showQuestion(otherData);
+                }else if(getParentFragment() instanceof TabHomeFragment){
+                    ((TabHomeFragment)getParentFragment()).showQuestion(otherData);
+                }else if(getParentFragment() instanceof TabRankFragment){
+                    ((TabRankFragment) (getParentFragment())).showQuestion(otherData);
+                }else{
+                    ((TabSearchFragment) (getParentFragment())).showQuestion(otherData);
+                }
+            }
+
+            @Override
+            public void onAdapterFollowClick(View view, boolean flag) {
+                if(flag){
+                    AddFollowReqeust request = new AddFollowReqeust(getContext(), id);
+                    NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+                        @Override
+                        public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
+                            Toast.makeText(getContext(), result.getMessage()+"",Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
+
+                        }
+                    });
+                }else{
+                    RemoveFollowRequest request = new RemoveFollowRequest(getContext(), id);
+                    NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+                        @Override
+                        public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
+                            Toast.makeText(getContext(), result.getMessage(),Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
+
+                        }
+                    });
+                }
+            }
+
             @Override
             public void onAdapterFollowingClick(View view, OtherData otherData, int position) {
-                if (getParentFragment() instanceof TabMyFragment) {
+                if(getParentFragment() instanceof TabMyFragment){
                     ((TabMyFragment) (getParentFragment())).showFollwing(id);
-                } else if (getParentFragment() instanceof TabHomeFragment) {
-                    ((TabHomeFragment) getParentFragment()).showFollwing(id);
-                } else if (getParentFragment() instanceof TabRankFragment) {
+                }else if(getParentFragment() instanceof TabHomeFragment){
+                    ((TabHomeFragment)getParentFragment()).showFollwing(id);
+                }else if(getParentFragment() instanceof TabRankFragment){
                     ((TabRankFragment) (getParentFragment())).showFollwing(id);
-                } else {
+                }else{
                     ((TabSearchFragment) (getParentFragment())).showFollwing(id);
                 }
             }
 
             @Override
             public void onAdapterFollowerClick(View view, OtherData otherData, int position) {
-                if (getParentFragment() instanceof TabMyFragment) {
+                if(getParentFragment() instanceof TabMyFragment){
                     ((TabMyFragment) (getParentFragment())).showFollwer(id);
-                } else if (getParentFragment() instanceof TabHomeFragment) {
-                    ((TabHomeFragment) getParentFragment()).showFollwer(id);
-                } else if (getParentFragment() instanceof TabRankFragment) {
+                }else if(getParentFragment() instanceof TabHomeFragment){
+                    ((TabHomeFragment)getParentFragment()).showFollwer(id);
+                }else if(getParentFragment() instanceof TabRankFragment){
                     ((TabRankFragment) (getParentFragment())).showFollwer(id);
-                } else {
+                }else{
                     ((TabSearchFragment) (getParentFragment())).showFollwer(id);
                 }
             }
@@ -149,8 +181,8 @@ public class OtherFragment extends Fragment {
             public void onAdapterTabType(View view, int type) {
                 mAdapter.clearPost();
                 tabType = type;
-                if (tabType == 1) {
-                    if (categoryType) {
+                if(tabType == 1){
+                    if(categoryType){
                         OtherPostRequest request = new OtherPostRequest(getContext(), id, "from", "0", 1, 20);
                         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
@@ -163,7 +195,7 @@ public class OtherFragment extends Fragment {
 
                             }
                         });
-                    } else {
+                    }else{
                         OtherPostRequest request = new OtherPostRequest(getContext(), id, "from", "1", 1, 20);
                         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
@@ -177,8 +209,8 @@ public class OtherFragment extends Fragment {
                             }
                         });
                     }
-                } else {
-                    if (categoryType) {
+                }else{
+                    if(categoryType){
                         OtherPostRequest request = new OtherPostRequest(getContext(), id, "to", "0", 1, 20);
                         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
@@ -191,7 +223,7 @@ public class OtherFragment extends Fragment {
 
                             }
                         });
-                    } else {
+                    }else{
                         OtherPostRequest request = new OtherPostRequest(getContext(), id, "to", "1", 1, 20);
                         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
@@ -212,8 +244,8 @@ public class OtherFragment extends Fragment {
             public void onAdapterCategoryItemClick(boolean flag) {
                 mAdapter.clearPost();
                 categoryType = flag;
-                if (flag) {
-                    if (tabType == 1) {
+                if(flag){
+                    if(tabType == 1){
                         OtherPostRequest request = new OtherPostRequest(getContext(), id, "from", "0", 1, 20);
                         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
@@ -226,7 +258,7 @@ public class OtherFragment extends Fragment {
 
                             }
                         });
-                    } else {
+                    }else{
                         OtherPostRequest request = new OtherPostRequest(getContext(), id, "to", "0", 1, 20);
                         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
@@ -240,8 +272,8 @@ public class OtherFragment extends Fragment {
                             }
                         });
                     }
-                } else {
-                    if (tabType == 2) {
+                }else{
+                    if(tabType == 1){
                         OtherPostRequest request = new OtherPostRequest(getContext(), id, "from", "1", 1, 20);
                         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
@@ -254,7 +286,7 @@ public class OtherFragment extends Fragment {
 
                             }
                         });
-                    } else {
+                    }else{
                         OtherPostRequest request = new OtherPostRequest(getContext(), id, "to", "1", 1, 20);
                         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
@@ -273,24 +305,24 @@ public class OtherFragment extends Fragment {
 
             @Override
             public void onAdapterItemClick(View view, Post post, int position) {
-                if (post.getPayInfo().equals("1")) {
-                    if (getParentFragment() instanceof TabMyFragment) {
+                if(post.getPayInfo().equals("1")){
+                    if(getParentFragment() instanceof TabMyFragment){
                         ((TabMyFragment) (getParentFragment())).showListenToOn(post);
-                    } else if (getParentFragment() instanceof TabHomeFragment) {
+                    }else if(getParentFragment() instanceof TabHomeFragment){
                         ((TabHomeFragment) (getParentFragment())).showListenToOn(post);
-                    } else if (getParentFragment() instanceof TabRankFragment) {
+                    }else if(getParentFragment() instanceof TabRankFragment){
                         ((TabRankFragment) (getParentFragment())).showListenToOn(post);
-                    } else {
+                    }else{
                         ((TabSearchFragment) (getParentFragment())).showListenToOn(post);
                     }
-                } else {
-                    if (getParentFragment() instanceof TabMyFragment) {
+                }else{
+                    if(getParentFragment() instanceof TabMyFragment){
                         ((TabMyFragment) (getParentFragment())).showListenToOff(post);
-                    } else if (getParentFragment() instanceof TabHomeFragment) {
+                    }else if(getParentFragment() instanceof TabHomeFragment){
                         ((TabHomeFragment) (getParentFragment())).showListenToOff(post);
-                    } else if (getParentFragment() instanceof TabRankFragment) {
+                    }else if(getParentFragment() instanceof TabRankFragment){
                         ((TabRankFragment) (getParentFragment())).showListenToOff(post);
-                    } else {
+                    }else{
                         ((TabSearchFragment) (getParentFragment())).showListenToOff(post);
                     }
                 }
@@ -298,7 +330,7 @@ public class OtherFragment extends Fragment {
 
             @Override
             public void onAdapterPlayClick(View view, Post post, int position) {
-                Toast.makeText(getContext(), post.getVoiceContent(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),post.getVoiceContent(),Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -317,7 +349,7 @@ public class OtherFragment extends Fragment {
 
         mAdapter.clearPost();
 
-        OtherPostRequest otherPostRequest = new OtherPostRequest(getContext(), id, "from", "0", 20, 1);
+        OtherPostRequest otherPostRequest = new OtherPostRequest(getContext(),id,"from","0", 20, 1);
         NetworkManager.getInstance().getNetworkData(otherPostRequest, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
             @Override
             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
@@ -332,32 +364,32 @@ public class OtherFragment extends Fragment {
         return view;
     }
 
-    void init() {
-        for (int i = 0; i < 5; i++) {
+    void init(){
+        for(int i = 0; i < 5; i++){
             Post post = new Post();
-            post.setAnswernerId(i + "1");
+            post.setAnswernerId(i+"1");
             post.setAnswernerPhoto("");
-            post.setLength(i + "5");
-            post.setPrice(i + "10");
-            post.setQuestionerContent("GOOD" + i);
-            post.setQuestionerId(i + "2");
+            post.setLength(i+"5");
+            post.setPrice(i+"10");
+            post.setQuestionerContent("GOOD"+i);
+            post.setQuestionerId(i+"2");
             post.setQuestionerPhoto("");
-            post.setVoiceContent("yes" + i);
+            post.setVoiceContent("yes"+i);
             mAdapter.addPost(post);
         }
     }
 
-    void init2() {
-        for (int i = 5; i < 11; i++) {
+    void init2(){
+        for(int i = 5; i < 11; i++){
             Post post = new Post();
-            post.setAnswernerId(i + "1");
+            post.setAnswernerId(i+"1");
             post.setAnswernerPhoto("");
-            post.setLength(i + "5");
-            post.setPrice(i + "10");
-            post.setQuestionerContent("GOOD" + i);
-            post.setQuestionerId(i + "2");
+            post.setLength(i+"5");
+            post.setPrice(i+"10");
+            post.setQuestionerContent("GOOD"+i);
+            post.setQuestionerId(i+"2");
             post.setQuestionerPhoto("");
-            post.setVoiceContent("yes" + i);
+            post.setVoiceContent("yes"+i);
             mAdapter.addPost(post);
         }
     }
@@ -414,14 +446,14 @@ public class OtherFragment extends Fragment {
 
 
     @OnClick(R.id.btn_back)
-    public void backClick(View view) {
-        if (getParentFragment() instanceof TabMyFragment) {
+    public void backClick(View view){
+        if(getParentFragment() instanceof TabMyFragment){
             ((TabMyFragment) (getParentFragment())).popFragment();
-        } else if (getParentFragment() instanceof TabHomeFragment) {
+        }else if(getParentFragment() instanceof TabHomeFragment){
             ((TabHomeFragment) (getParentFragment())).popFragment();
-        } else if (getParentFragment() instanceof TabRankFragment) {
+        }else if(getParentFragment() instanceof TabRankFragment){
             ((TabRankFragment) (getParentFragment())).popFragment();
-        } else {
+        }else{
             ((TabSearchFragment) (getParentFragment())).popFragment();
         }
     }
