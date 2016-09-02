@@ -19,8 +19,8 @@
     </android.support.v7.widget.Toolbar>
     <!-- TODO: Update blank fragment layout -->
 
-    <TextView
 
+    <TextView
         android:id="@+id/text_star"
         android:layout_width="match_parent"
         android:layout_height="48dp"

@@ -101,7 +101,7 @@
 
             </RelativeLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -110,33 +110,37 @@
                     android:id="@+id/text_money"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="70dp"
                     android:text="결제금액" />
 
                 <TextView
                     android:id="@+id/text_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="34dp"
                     android:text="답변시간" />
 
                 <TextView
                     android:id="@+id/text_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_weight="1"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
                     android:text="들은횟수" />
 
-            </LinearLayout>
+            </RelativeLayout>
 
             <LinearLayout
+                android:layout_marginTop="70dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal">
 
                 <CheckBox
+                    android:id="@+id/check_use"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -148,6 +152,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:layout_marginTop="12dp"
                 android:id="@+id/linear_check"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -155,6 +160,7 @@
                 android:orientation="horizontal">
 
                 <CheckBox
+                    android:id="@+id/check_info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -166,16 +172,20 @@
             </LinearLayout>
 
             <TextView
+                android:layout_marginTop="40dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="나도듣기 하시겠습니까?" />
+                android:text="@string/listen_to_off" />
 
             <Button
+                android:layout_marginTop="30dp"
                 android:id="@+id/btn_pay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="200dp"
+                android:layout_height="48dp"
                 android:layout_gravity="center"
+                android:textColor="@color/colorWhite"
+                android:background="@color/colorBlack"
                 android:text="결제하기" />
         </LinearLayout>
     </ScrollView>
