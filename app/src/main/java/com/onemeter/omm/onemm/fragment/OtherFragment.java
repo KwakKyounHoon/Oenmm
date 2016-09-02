@@ -1,13 +1,20 @@
 package com.onemeter.omm.onemm.fragment;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +28,10 @@ import com.onemeter.omm.onemm.data.OtherData;
 import com.onemeter.omm.onemm.data.Post;
 import com.onemeter.omm.onemm.manager.NetworkManager;
 import com.onemeter.omm.onemm.manager.NetworkRequest;
+import com.onemeter.omm.onemm.request.AddFollowReqeust;
 import com.onemeter.omm.onemm.request.OtherDataRequest;
 import com.onemeter.omm.onemm.request.OtherPostRequest;
+import com.onemeter.omm.onemm.request.RemoveFollowRequest;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
