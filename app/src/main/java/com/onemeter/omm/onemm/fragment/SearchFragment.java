@@ -9,9 +9,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.onemeter.omm.onemm.R;
+import com.onemeter.omm.onemm.data.NetWorkResultType;
+import com.onemeter.omm.onemm.data.SearchRecommend;
+import com.onemeter.omm.onemm.manager.NetworkManager;
+import com.onemeter.omm.onemm.manager.NetworkRequest;
+import com.onemeter.omm.onemm.request.SearchRecommendRequest;
 import com.wefika.flowlayout.FlowLayout;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +44,19 @@ public class SearchFragment extends Fragment {
         TextView userText;
         FlowLayout.LayoutParams params;
         params = new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT, FlowLayout.LayoutParams.WRAP_CONTENT);
+
+        SearchRecommendRequest request = new SearchRecommendRequest(getContext());
+        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<SearchRecommend[]>>() {
+            @Override
+            public void onSuccess(NetworkRequest<NetWorkResultType<SearchRecommend[]>> request, NetWorkResultType<SearchRecommend[]> result) {
+                result.getResult();
+            }
+
+            @Override
+            public void onFail(NetworkRequest<NetWorkResultType<SearchRecommend[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+            }
+        });
 
         for (int i = 0; i < 15; i++) {
             userText = new TextView(getContext());
