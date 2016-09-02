@@ -1,12 +1,15 @@
 package com.onemeter.omm.onemm.fragment;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -39,6 +42,12 @@ public class ListenToOffFragment extends Fragment {
     ImageView qImageVIew;
     @BindView(R.id.image_answerner)
     ImageView aImageview;
+    @BindView(R.id.check_use)
+    CheckBox checkUse;
+    @BindView(R.id.check_info)
+    CheckBox checkInfo;
+    @BindView(R.id.btn_pay)
+    Button payBtn;
 
     public ListenToOffFragment() {
         // Required empty public constructor
@@ -58,6 +67,20 @@ public class ListenToOffFragment extends Fragment {
         if (getArguments() != null) {
             post = (Post) getArguments().getSerializable(POST);
         }
+
+
+    }
+
+    public boolean payCheck() {
+        if (checkUse.isChecked() && checkInfo.isChecked()) {
+            payBtn.setBackgroundColor(Color.parseColor("#f82040"));
+            return true;
+
+        } else {
+            payBtn.setBackgroundColor(Color.BLACK);
+            return false;
+        }
+
     }
 
 
@@ -67,6 +90,28 @@ public class ListenToOffFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_listento_off, container, false);
         ButterKnife.bind(this, view);
+
+        checkInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                payCheck();
+            }
+        });
+
+        checkUse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                payCheck();
+            }
+        });
+
+        payBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 결제완료 버튼 누를 떄 구현
+            }
+        });
+
         init();
         return view;
     }

@@ -1,9 +1,11 @@
 package com.onemeter.omm.onemm.fragment;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -41,7 +43,7 @@ public class MyPageFragment extends Fragment {
     public static final String POST_TYPE_COM = "1";
     public static final String POST_TYPE_LISTEN = "3";
 
-//    int type;
+    //    int type;
     int tabType = 1;
     boolean comFlag = true;
 
@@ -76,41 +78,43 @@ public class MyPageFragment extends Fragment {
         mAdapter.setOnAdapterItemClickListener(new MyAdapter.OnAdapterItemClickLIstener() {
             @Override
             public void onAdapterDonateClick(View view, MyData myData, int position) {
-                ((TabMyFragment)getParentFragment()).showDonate(myData.getDonationId());
+                ((TabMyFragment) getParentFragment()).showDonate(myData.getDonationId());
             }
 
             @Override
             public void onAdapterFollowingClick(View view, MyData myData, int position) {
-                ((TabMyFragment)getParentFragment()).showFollwing("-1");
+                ((TabMyFragment) getParentFragment()).showFollwing("-1");
             }
 
             @Override
             public void onAdapterFollowerClick(View view, MyData myData, int position) {
-                ((TabMyFragment)getParentFragment()).showFollwer("-1");
+                ((TabMyFragment) getParentFragment()).showFollwer("-1");
             }
 
             @Override
             public void onAdapterSoundClick(View view, MyData myData, int position) {
-                    Toast.makeText(getContext(), "프로필 음성 듣기", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "프로필 음성 듣기", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onAdapterPhotoClick(View view, MyData myData, int position) {
-                Toast.makeText(getContext(), "사진 클릭",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "사진 클릭", Toast.LENGTH_SHORT).show();
+                onListDialog();
+
             }
 
             @Override
             public void onAdatperModyfiyClick(View view, MyData myData, int position) {
-                ((TabMyFragment)getParentFragment()).showProfile();
+                ((TabMyFragment) getParentFragment()).showProfile();
             }
 
             @Override
             public void onAdapterCategory(boolean flag) {
                 comFlag = flag;
-                if (comFlag){
+                if (comFlag) {
                     mAdapter.clearPost();
 //                    init();
-                    switch (tabType){
+                    switch (tabType) {
                         case 1: {
                             MyPostRequest request = new MyPostRequest(getContext(), "from", "1", 1, 20);
                             NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
@@ -142,10 +146,10 @@ public class MyPageFragment extends Fragment {
                         }
                         break;
                     }
-                }else{
+                } else {
                     mAdapter.clearPost();
 //                    init2();
-                    switch (tabType){
+                    switch (tabType) {
                         case 1: {
                             MyPostRequest request = new MyPostRequest(getContext(), "from", "0", 1, 20);
                             NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
@@ -183,9 +187,9 @@ public class MyPageFragment extends Fragment {
             @Override
             public void onAdapterTabType(View view, int num) {
                 tabType = num;
-                if(num == 1){
+                if (num == 1) {
                     mAdapter.clearPost();
-                    if(comFlag){
+                    if (comFlag) {
                         MyPostRequest request = new MyPostRequest(getContext(), "from", "1", 1, 20);
                         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
@@ -198,7 +202,7 @@ public class MyPageFragment extends Fragment {
 
                             }
                         });
-                    }else{
+                    } else {
                         MyPostRequest request = new MyPostRequest(getContext(), "from", "0", 1, 20);
                         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
@@ -212,9 +216,9 @@ public class MyPageFragment extends Fragment {
                             }
                         });
                     }
-                }else if(num == 2){
+                } else if (num == 2) {
                     mAdapter.clearPost();
-                    if(comFlag){
+                    if (comFlag) {
                         MyPostRequest request = new MyPostRequest(getContext(), "to", "1", 1, 20);
                         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
@@ -227,7 +231,7 @@ public class MyPageFragment extends Fragment {
 
                             }
                         });
-                    }else{
+                    } else {
                         MyPostRequest request = new MyPostRequest(getContext(), "to", "0", 1, 20);
                         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
@@ -241,7 +245,7 @@ public class MyPageFragment extends Fragment {
                             }
                         });
                     }
-                }else if(num == 3){
+                } else if (num == 3) {
                     mAdapter.clearPost();
                     MyListenRequest request = new MyListenRequest(getContext(), 1, 20);
                     NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
@@ -261,36 +265,37 @@ public class MyPageFragment extends Fragment {
 
             @Override
             public void onAdapterItemClick(View view, Post post, int position) {
-                if(!comFlag){
-                    if(tabType == 1) {
+                if (!comFlag) {
+                    if (tabType == 1) {
                         Toast.makeText(getContext(), "답변 미완료 글쓰기", Toast.LENGTH_SHORT).show();
-                        ((TabMyFragment)getParentFragment()).showReply(post);
+                        ((TabMyFragment) getParentFragment()).showReply(post);
                     }
                 }
             }
 
             @Override
             public void onAdapterPlayItemClick(View view, Post post, int position) {
-                if(comFlag || tabType == 3) {
+                if (comFlag || tabType == 3) {
                     Toast.makeText(getContext(), "음성 듣기", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onAdapterQuestionerClick(View view, Post post, int position) {
-                if(tabType == 1 || tabType == 3) {
+                if (tabType == 1 || tabType == 3) {
                     Toast.makeText(getContext(), "질문자 페이지로", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onAdapterAnswerClick(View view, Post post, int position) {
-                if(tabType == 2 || tabType == 3)
-                Toast.makeText(getContext(),"답변자 페이지로 듣기",Toast.LENGTH_SHORT).show();
+                if (tabType == 2 || tabType == 3)
+                    Toast.makeText(getContext(), "답변자 페이지로 듣기", Toast.LENGTH_SHORT).show();
             }
 
 
         });
+
 
         MyDataReqeust reqeust = new MyDataReqeust(getContext());
         NetworkManager.getInstance().getNetworkData(reqeust, new NetworkManager.OnResultListener<NetWorkResultType<MyData[]>>() {
@@ -301,7 +306,7 @@ public class MyPageFragment extends Fragment {
 
             @Override
             public void onFail(NetworkRequest<NetWorkResultType<MyData[]>> request, int errorCode, String errorMessage, Throwable e) {
-                Toast.makeText(getContext(),errorCode+", "+errorMessage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), errorCode + ", " + errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
         mAdapter.clearPost();
@@ -319,7 +324,23 @@ public class MyPageFragment extends Fragment {
         });
         return view;
     }
-    void initInfo(){
+
+    String[] items = {"촬영", "앨범에서 선택", "프로필사진 삭제"};
+    public void onListDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("프로필 사진 설정");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int position) {
+
+                // 동작구현
+            }
+        });
+        builder.show();
+
+    }
+
+    void initInfo() {
         MyData myData = new MyData();
         myData.setDonationName("유니세프");
         myData.setFollower("100");
@@ -331,50 +352,50 @@ public class MyPageFragment extends Fragment {
         myData.setVoiceMessage("good");
         mAdapter.addMyData(myData);
     }
+
     @OnClick(R.id.btn_setting)
-    public void settingClick(View view){
-        ((TabMyFragment)getParentFragment()).showSetting();
+    public void settingClick(View view) {
+        ((TabMyFragment) getParentFragment()).showSetting();
     }
 
-    void init(){
-        for(int i = 0; i < 5; i++){
+    void init() {
+        for (int i = 0; i < 5; i++) {
             Post post = new Post();
-            post.setAnswernerId(i+"1");
-            post.setLength(i+"5");
-            post.setPrice(i+"10");
-            post.setQuestionerContent("GOOD"+i);
-            post.setQuestionerId(i+"2");
-            post.setVoiceContent("yes"+i);
+            post.setAnswernerId(i + "1");
+            post.setLength(i + "5");
+            post.setPrice(i + "10");
+            post.setQuestionerContent("GOOD" + i);
+            post.setQuestionerId(i + "2");
+            post.setVoiceContent("yes" + i);
             mAdapter.addPost(post);
         }
     }
 
-    void init2(){
-        for(int i = 5; i < 11; i++){
+    void init2() {
+        for (int i = 5; i < 11; i++) {
             Post post = new Post();
-            post.setAnswernerId(i+"1");
-            post.setLength(i+"5");
-            post.setPrice(i+"10");
-            post.setQuestionerContent("GOOD"+i);
-            post.setQuestionerId(i+"2");
-            post.setVoiceContent("yes"+i);
+            post.setAnswernerId(i + "1");
+            post.setLength(i + "5");
+            post.setPrice(i + "10");
+            post.setQuestionerContent("GOOD" + i);
+            post.setQuestionerId(i + "2");
+            post.setVoiceContent("yes" + i);
             mAdapter.addPost(post);
         }
     }
 
-    void init3(){
-        for(int i = 12; i < 20; i++){
+    void init3() {
+        for (int i = 12; i < 20; i++) {
             Post post = new Post();
-            post.setAnswernerId(i+"1");
-            post.setLength(i+"5");
-            post.setPrice(i+"10");
-            post.setQuestionerContent("GOOD"+i);
-            post.setQuestionerId(i+"2");
-            post.setVoiceContent("yes"+i);
+            post.setAnswernerId(i + "1");
+            post.setLength(i + "5");
+            post.setPrice(i + "10");
+            post.setQuestionerContent("GOOD" + i);
+            post.setQuestionerId(i + "2");
+            post.setVoiceContent("yes" + i);
             mAdapter.addPost(post);
         }
     }
-
 
 
     @Override
