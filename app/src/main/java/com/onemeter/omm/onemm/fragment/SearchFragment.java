@@ -12,6 +12,7 @@ import com.onemeter.omm.onemm.R;
 import com.wefika.flowlayout.FlowLayout;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,11 +57,11 @@ public class SearchFragment extends Fragment {
     }
 
 
-//
-//    @OnClick(R.id.btn_search_result)
-//    public void resultClick(View view) {
-//        ((TabSearchFragment) getParentFragment()).showSearchResult();
-//    }
+
+    @OnClick(R.id.btn_search_result)
+    public void resultClick(View view) {
+        ((TabSearchFragment) getParentFragment()).showSearchResult();
+    }
 
 
 }

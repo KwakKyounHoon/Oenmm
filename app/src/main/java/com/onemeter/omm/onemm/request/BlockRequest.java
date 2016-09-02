@@ -3,6 +3,7 @@ package com.onemeter.omm.onemm.request;
 import android.content.Context;
 
 import com.google.gson.reflect.TypeToken;
+import com.onemeter.omm.onemm.data.NetWorkResultType;
 
 import java.lang.reflect.Type;
 
@@ -14,14 +15,14 @@ import okhttp3.RequestBody;
 /**
  * Created by Tacademy on 2016-08-30.
  */
-public class BlockRequest extends AbstractRequest<String> {
+public class BlockRequest extends AbstractRequest<NetWorkResultType> {
     Request request;
-    public BlockRequest(Context context, int blockedId){
+    public BlockRequest(Context context, String blockedId){
         HttpUrl.Builder builder = getBaseUrlBuilder();
         builder.addPathSegment("blocks");
 
         RequestBody body = new FormBody.Builder()
-                .add("blockedId",blockedId+"")
+                .add("blockedId",blockedId)
                 .build();
 
         request = new Request.Builder()
@@ -32,7 +33,7 @@ public class BlockRequest extends AbstractRequest<String> {
     }
     @Override
     protected Type getType() {
-        return new TypeToken<String>(){}.getType();
+        return new TypeToken<NetWorkResultType>(){}.getType();
     }
 
     @Override

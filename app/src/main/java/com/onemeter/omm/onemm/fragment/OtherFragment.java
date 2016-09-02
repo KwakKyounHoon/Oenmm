@@ -29,9 +29,11 @@ import com.onemeter.omm.onemm.data.Post;
 import com.onemeter.omm.onemm.manager.NetworkManager;
 import com.onemeter.omm.onemm.manager.NetworkRequest;
 import com.onemeter.omm.onemm.request.AddFollowReqeust;
+import com.onemeter.omm.onemm.request.BlockRequest;
 import com.onemeter.omm.onemm.request.OtherDataRequest;
 import com.onemeter.omm.onemm.request.OtherPostRequest;
 import com.onemeter.omm.onemm.request.RemoveFollowRequest;
+import com.onemeter.omm.onemm.request.ReportRequest;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -413,25 +415,54 @@ public class OtherFragment extends Fragment {
                 onListDialog();
                 return true;
             case R.id.submenu_item_2:
-                onListDialog();
+                onDialog();
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     String[] items = {"사칭 계정입니다.", "불쾌한 게시물을 올렸습니다.",
-                        "광고성 게시물을 올렸습니다."};
+            "광고성 게시물을 올렸습니다."};
+
+    public void onDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("정말 차단하시겠습니까?")
+                .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(getContext(), "취소버튼 동작 구현",Toast.LENGTH_SHORT).show();
+                    }
+                }).setPositiveButton("예, 확실합니다", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+//                Toast.makeText(getContext(), "확인버튼 동작 구현",Toast.LENGTH_SHORT).show();
+                BlockRequest request = new BlockRequest(getContext(), id);
+                NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+                    @Override
+                    public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
+                        Toast.makeText(getContext(), result.getMessage() ,Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
+
+                    }
+                });
+            }
+        });
+        builder.show();
+    }
+
 
     public void onListDialog() {
-
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("신고하는 이유");
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int position) {
+                final int listPosition = position;
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("정말 차단하시겠습니까?")
+                builder.setTitle("정말 신고하시겠습니까?")
                         .setNegativeButton("취소", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -440,16 +471,60 @@ public class OtherFragment extends Fragment {
                         }).setPositiveButton("예, 확실합니다", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(getContext(), "확인버튼 동작 구현",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "확인버튼 동작 구현"+listPosition,Toast.LENGTH_SHORT).show();
+                        switch (listPosition){
+                            case 0 : {
+                                ReportRequest request = new ReportRequest(getContext(), id, 1);
+                                NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+                                    @Override
+                                    public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
+                                        Toast.makeText(getContext(), result.getMessage(),Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    @Override
+                                    public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
+
+                                    }
+                                });
+                                break;
+                            }
+                            case 1 :{
+                                ReportRequest request = new ReportRequest(getContext(), id, 2);
+                                NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+                                    @Override
+                                    public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
+                                        Toast.makeText(getContext(), result.getMessage(),Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    @Override
+                                    public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
+
+                                    }
+                                });
+                                break;
+                            }
+                            case 2 :{
+                                ReportRequest request = new ReportRequest(getContext(), id, 3);
+                                NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+                                    @Override
+                                    public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
+                                        Toast.makeText(getContext(), result.getMessage(),Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    @Override
+                                    public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
+
+                                    }
+                                });
+                                break;
+                            }
+                        }
                     }
                 });
                 builder.show();
             }
         });
-
         builder.show();
-
-
     }
 
 

@@ -16,9 +16,8 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/toolbar_text_color"
         android:textSize="@dimen/toolbar_text_size"
-        android:id="@+id/textView5"
+        android:id="@+id/edit_search"
         android:layout_alignParentTop="true"
         android:layout_alignBottom="@+id/btn_back"
         android:layout_toLeftOf="@+id/imageView2"

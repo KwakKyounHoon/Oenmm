@@ -14,24 +14,24 @@ import okhttp3.Request;
 /**
  * Created by Tacademy on 2016-08-30.
  */
-public class SearchRequest extends AbstractRequest<NetWorkResultType<SearchResult[]>> {
+public class SearchRequest extends AbstractRequest<NetWorkResultType<SearchResult[]>>{
     Request request;
-    public SearchRequest(Context context,String word, int pageNo, int count){
-        HttpUrl url = getBaseUrlBuilder()
-                .addPathSegment("users")
-                .addQueryParameter("word", word)
-                .addQueryParameter("pageNo", pageNo+"")
-                .addQueryParameter("count", count+"")
-                .build();
+    public SearchRequest(Context context, String word, int pageNo, int count){
+            HttpUrl url = getBaseUrlBuilder()
+                    .addPathSegment("users")
+                    .addQueryParameter("word",word)
+                    .addQueryParameter("pageNo",pageNo+"")
+                    .addQueryParameter("count",count+"")
+                    .build();
 
-        request = new Request.Builder()
-                .url(url)
-                .tag(context)
-                .build();
+            request = new Request.Builder()
+                    .url(url)
+                    .tag(context)
+                    .build();
     }
     @Override
     protected Type getType() {
-        return new TypeToken<NetWorkResultType<SearchResult>>(){}.getType();
+        return new TypeToken<NetWorkResultType<SearchResult[]>>(){}.getType();
     }
 
     @Override
