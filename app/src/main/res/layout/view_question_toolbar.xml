@@ -20,6 +20,5 @@
         android:textSize="@dimen/toolbar_text_size"
         android:id="@+id/textView4"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/btn_back"
-        android:layout_toEndOf="@+id/btn_back" />
+        android:layout_marginLeft="@dimen/toolbar_back" />
 </RelativeLayout>

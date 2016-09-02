@@ -3,10 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.ListenToOffFragment">
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_height">
+        android:layout_height="@dimen/toolbar_height"
+        android:background="@drawable/toolbar_under">
 
         <include
             layout="@layout/view_listenme_toolbar"
@@ -57,11 +59,11 @@
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <TextView
+                    android:id="@+id/text_question"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/image_questioner"
-                    android:text="질문 내용"
-                    android:id="@+id/text_question" />
+                    android:text="질문 내용" />
 
             </RelativeLayout>
 
@@ -170,11 +172,11 @@
                 android:text="나도듣기 하시겠습니까?" />
 
             <Button
+                android:id="@+id/btn_pay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="결제하기"
-                android:id="@+id/btn_pay" />
+                android:text="결제하기" />
         </LinearLayout>
     </ScrollView>
 
