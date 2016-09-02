@@ -5,6 +5,7 @@
     tools:context="com.onemeter.omm.onemm.fragment.ReplyFragment">
 
     <android.support.v7.widget.Toolbar
+        android:background="@drawable/toolbar_under"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height">

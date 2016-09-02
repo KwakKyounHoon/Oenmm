@@ -5,6 +5,7 @@
     tools:context="com.onemeter.omm.onemm.fragment.OtherFragment">
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
+        android:background="@drawable/toolbar_under"
         android:layout_height="@dimen/toolbar_height"
         android:id="@+id/toolbar">
 
@@ -15,6 +16,7 @@
         android:background="@color/colorWhite"/>
     </android.support.v7.widget.Toolbar>
     <!-- TODO: Update blank fragment layout -->
+
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

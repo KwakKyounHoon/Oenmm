@@ -35,27 +35,20 @@ public class SearchFragment extends Fragment {
 
         flowLayout = (FlowLayout) view.findViewById(R.id.flowlayout);
 
-        TextView btn;
-        TextView params;
-        btn = new TextView(getContext());
+        TextView userText;
+        FlowLayout.LayoutParams params;
+        params = new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT, FlowLayout.LayoutParams.WRAP_CONTENT);
 
-        btn.setText("asdfasdf");
-        this.flowLayout.addView(btn);
-
-//        params = new FlowLayout.LayoutParams(FlowLayout.LayoutParams.MATCH_PARENT, FlowLayout.LayoutParams.MATCH_PARENT);
-//        btn.setLayoutParams(params);
-
-        btn = new TextView(getContext());
-        btn.setText("1234");
-        this.flowLayout.addView(btn);
-//        params = new FlowLayout.LayoutParams(FlowLayout.LayoutParams.MATCH_PARENT, FlowLayout.LayoutParams.wr);
-//        btn.setLayoutParams(params);
-
+        for (int i = 0; i < 15; i++) {
+            userText = new TextView(getContext());
+            userText.setLayoutParams(params);
+            userText.setText("  추천 스타  ");
+            // userText.setId(); ID설정
+            this.flowLayout.addView(userText);
+        }
         ButterKnife.bind(this, view);
         return view;
     }
-
-
 //
 //    @OnClick(R.id.btn_search_result)
 //    public void resultClick(View view) {

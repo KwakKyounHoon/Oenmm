@@ -6,27 +6,27 @@
 
 
     <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
-        android:id="@+id/toolbar">
+        android:background="@drawable/toolbar_under">
 
-    <include
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        layout="@layout/view_donating_place_toolbar"
-        android:background="@color/colorWhite"/>
+        <include
+            layout="@layout/view_donating_place_toolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite" />
     </android.support.v7.widget.Toolbar>
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/list"
-        android:layout_below="@+id/toolbar"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true">
-    </android.support.v7.widget.RecyclerView>
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/toolbar"></android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>
