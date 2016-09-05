@@ -24,7 +24,7 @@
         android:layout_marginTop="16dp"
         android:id="@+id/rt_layout"
         android:layout_width="wrap_content"
-        android:layout_height="150dp"
+        android:layout_height="200dp"
         android:layout_below="@+id/toolbar">
 
         <TextView
@@ -39,9 +39,9 @@
             android:paddingLeft="8dp"
             android:layout_marginTop="8dp"
             android:id="@+id/text_box1"
-            android:layout_width="wrap_content"
-            android:layout_height="70dp"
-            android:background="#A9A9A9"
+            android:layout_width="328dp"
+            android:layout_height="140dp"
+            android:background="@drawable/icon_background"
             android:layout_below="@+id/text_use1"
             android:scrollbars="vertical"
             android:text="①
@@ -80,7 +80,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="24dp"
         android:layout_width="wrap_content"
-        android:layout_height="150dp"
+        android:layout_height="230dp"
         android:layout_below="@+id/rt_layout">
 
         <TextView
@@ -95,11 +95,11 @@
             android:paddingTop="8dp"
             android:paddingLeft="8dp"
             android:id="@+id/text_box2"
-            android:layout_width="wrap_content"
-            android:layout_height="70dp"
+            android:layout_width="328dp"
+            android:layout_height="150dp"
             android:layout_below="@+id/text_use2"
             android:scrollbars="vertical"
-            android:background="#A9A9A9"
+            android:background="@drawable/icon_background"
             android:text="①
 회사는 이 약관의 내용을 회원이 쉽게 알 수 있도록 서비스 초기 화면에 게시합니다.
 ②

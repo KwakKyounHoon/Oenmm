@@ -61,7 +61,6 @@
             android:layout_alignBottom="@+id/btn_question"
             android:layout_marginLeft="3dp"
             android:layout_toRightOf="@+id/btn_question"
-            android:background="@color/colorWhite"
             android:src="@drawable/ic_follow_off" />
 
         <Button

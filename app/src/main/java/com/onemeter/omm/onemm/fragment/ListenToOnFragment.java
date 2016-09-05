@@ -32,11 +32,11 @@ public class ListenToOnFragment extends Fragment {
     TextView aNameVIew;
     @BindView(R.id.text_question)
     TextView questionView;
-    @BindView(R.id.text_money)
+    @BindView(R.id.text_cost)
     TextView moneyView;
-    @BindView(R.id.text_time)
+    @BindView(R.id.text_play_time)
     TextView timeView;
-    @BindView(R.id.text_count)
+    @BindView(R.id.text_listen)
     TextView listenView;
     @BindView(R.id.image_questioner)
     ImageView qImageVIew;

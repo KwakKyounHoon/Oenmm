@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,20 +31,20 @@ public class ListenToOffFragment extends Fragment {
     TextView aNameVIew;
     @BindView(R.id.text_question)
     TextView questionView;
-    @BindView(R.id.text_money)
+    @BindView(R.id.text_cost)
     TextView moneyView;
-    @BindView(R.id.text_time)
+    @BindView(R.id.text_play_time)
     TextView timeView;
-    @BindView(R.id.text_count)
+    @BindView(R.id.text_listen)
     TextView listenView;
     @BindView(R.id.image_questioner)
     ImageView qImageVIew;
     @BindView(R.id.image_answerner)
     ImageView aImageview;
     @BindView(R.id.check_use)
-    CheckBox checkUse;
+    ImageView checkUse;
     @BindView(R.id.check_info)
-    CheckBox checkInfo;
+    ImageView checkInfo;
     @BindView(R.id.btn_pay)
     Button payBtn;
 
@@ -72,7 +71,7 @@ public class ListenToOffFragment extends Fragment {
     }
 
     public boolean payCheck() {
-        if (checkUse.isChecked() && checkInfo.isChecked()) {
+        if (checkUse.isClickable() && checkInfo.isClickable()) {
             payBtn.setBackgroundColor(Color.parseColor("#f82040"));
             return true;
 

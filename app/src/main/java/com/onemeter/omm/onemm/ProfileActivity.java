@@ -2,14 +2,9 @@ package com.onemeter.omm.onemm;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
-
-import com.onemeter.omm.onemm.fragment.ProfileAfterFragment;
-import com.onemeter.omm.onemm.fragment.ProfileBeforeFragment;
-import com.onemeter.omm.onemm.fragment.ProfilingFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,8 +18,8 @@ public class ProfileActivity extends AppCompatActivity {
     @BindView(id.btn_check)
     ImageView check;
 
-    Fragment f;
-    ImageView before, ing , after;
+//    Fragment f;
+//    ImageView before, ing , after;
     int count = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +28,10 @@ public class ProfileActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
 
-        f = new ProfileBeforeFragment();
-                getSupportFragmentManager().beginTransaction()
-                .add(R.id.container, f)
-                .commit();
+//        f = new ProfileBeforeFragment();
+//                getSupportFragmentManager().beginTransaction()
+//                .add(R.id.container, f)
+//                .commit();
 
 
         back.setOnClickListener(new View.OnClickListener() {
@@ -59,18 +54,18 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
-    public void setFrag (View view) {
-        Fragment f = null;
-        if(view == findViewById(R.id.image_before)) {
-            f = new ProfilingFragment();
-
-        } else if (view == findViewById(R.id.image_ing)) {
-            f = new ProfileAfterFragment();
-
-        }
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, f)
-                .commit();
-
-    }
+//    public void setFrag (View view) {
+//        Fragment f = null;
+//        if(view == findViewById(R.id.image_before)) {
+//            f = new ProfilingFragment();
+//
+//        } else if (view == findViewById(R.id.image_ing)) {
+//            f = new ProfileAfterFragment();
+//
+//        }
+//        getSupportFragmentManager().beginTransaction()
+//                .replace(R.id.container, f)
+//                .commit();
+//
+//    }
 }
