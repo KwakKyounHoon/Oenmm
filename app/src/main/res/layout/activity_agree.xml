@@ -64,10 +64,13 @@
 
         <TextView
             android:layout_marginLeft="8dp"
+            android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_box1"
             android:layout_toRightOf="@+id/check_info"
+            android:layout_alignTop="@+id/check_info"
+            android:layout_alignBottom="@+id/check_info"
             android:text="동의합니다" />
 
 
@@ -120,7 +123,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_box2"
             android:layout_toRightOf="@+id/check_use"
+            android:layout_alignTop="@+id/check_use"
+            android:layout_alignBottom="@+id/check_use"
+            android:gravity="center"
             android:text="동의합니다" />
+
 
     </RelativeLayout>
 
