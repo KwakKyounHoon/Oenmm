@@ -2,8 +2,6 @@ package com.onemeter.omm.onemm.viewholder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,19 +32,19 @@ public class OtherHeaderViewHolder extends RecyclerView.ViewHolder {
     TextView followingView;
     @BindView(R.id.image_profile)
     ImageView profileView;
-    @BindView(R.id.btn_like)
-    CheckBox likeView;
+    @BindView(R.id.image_like)
+    ImageView likeView;
     public OtherHeaderViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
-        likeView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(listener != null){
-                    listener.onFollowClick(compoundButton, b);
-                }
-            }
-        });
+//        likeView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//                if(listener != null){
+//                    listener.onFollowClick(compoundButton, b);
+//                }
+//            }
+//        });
 
         followerView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,12 +65,12 @@ public class OtherHeaderViewHolder extends RecyclerView.ViewHolder {
         });
     }
 
-    @OnClick(R.id.btn_like)
-    public void onSoundClick(View view){
-        if (listener != null) {
-            listener.onSoundItemClick(view, otherData, getAdapterPosition());
-        }
-    }
+//    @OnClick(R.id.btn_like)
+//    public void onSoundClick(View view){
+//        if (listener != null) {
+//            listener.onSoundItemClick(view, otherData, getAdapterPosition());
+//        }
+//    }
 
     @OnClick(R.id.btn_question)
     public void onQuestionClick(View view){

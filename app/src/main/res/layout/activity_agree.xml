@@ -20,6 +20,8 @@
     </android.support.v7.widget.Toolbar>
 
     <RelativeLayout
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
         android:id="@+id/rt_layout"
         android:layout_width="wrap_content"
         android:layout_height="150dp"
@@ -32,9 +34,14 @@
             android:text="1mm 이용약관" />
 
         <TextView
+            android:paddingTop="8dp"
+            android:paddingRight="8dp"
+            android:paddingLeft="8dp"
+            android:layout_marginTop="8dp"
             android:id="@+id/text_box1"
             android:layout_width="wrap_content"
             android:layout_height="70dp"
+            android:background="#A9A9A9"
             android:layout_below="@+id/text_use1"
             android:scrollbars="vertical"
             android:text="①
@@ -46,39 +53,53 @@
 ④
 회사가 전항에 따라 회원에게 통지하면서 공지∙고지일로부터 개정약관 시행일 7일 후까지 거부의사를 표시하지 아니하면 승인한 것으로 본다는 뜻을 명확하게 고지하였음에도 의사표시가 없는 경우에는 변경된 약관을 승인한 것으로 봅니다. 회원이 개정약관에 동의하지 않을 경우 회원은 제17조 제1항의 규정에 따라 이용계약을 해지할 수 있습니다." />
 
-        <CheckBox
+        <ImageView
             android:id="@+id/check_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/text_box1" />
+            android:layout_below="@+id/text_box1"
+            android:src="@drawable/ic_checkbox_off"
+            android:background="@color/colorWhite"
+            android:layout_marginTop="8dp"/>
 
         <TextView
+            android:layout_marginLeft="8dp"
+            android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_box1"
             android:layout_toRightOf="@+id/check_info"
+            android:layout_alignTop="@+id/check_info"
+            android:layout_alignBottom="@+id/check_info"
             android:text="동의합니다" />
 
 
     </RelativeLayout>
 
     <RelativeLayout
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="24dp"
         android:layout_width="wrap_content"
         android:layout_height="150dp"
         android:layout_below="@+id/rt_layout">
 
         <TextView
+            android:layout_marginTop="8dp"
             android:id="@+id/text_use2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="개인정보 수집 및 이용안내" />
 
         <TextView
+            android:paddingRight="8dp"
+            android:paddingTop="8dp"
+            android:paddingLeft="8dp"
             android:id="@+id/text_box2"
             android:layout_width="wrap_content"
             android:layout_height="70dp"
             android:layout_below="@+id/text_use2"
             android:scrollbars="vertical"
+            android:background="#A9A9A9"
             android:text="①
 회사는 이 약관의 내용을 회원이 쉽게 알 수 있도록 서비스 초기 화면에 게시합니다.
 ②
@@ -88,25 +109,32 @@
 ④
 회사가 전항에 따라 회원에게 통지하면서 공지∙고지일로부터 개정약관 시행일 7일 후까지 거부의사를 표시하지 아니하면 승인한 것으로 본다는 뜻을 명확하게 고지하였음에도 의사표시가 없는 경우에는 변경된 약관을 승인한 것으로 봅니다. 회원이 개정약관에 동의하지 않을 경우 회원은 제17조 제1항의 규정에 따라 이용계약을 해지할 수 있습니다." />
 
-        <CheckBox
+        <ImageView
+            android:src="@drawable/ic_checkbox_off"
+            android:layout_marginTop="8dp"
             android:id="@+id/check_use"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_box2" />
 
         <TextView
+            android:layout_marginLeft="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_box2"
             android:layout_toRightOf="@+id/check_use"
+            android:layout_alignTop="@+id/check_use"
+            android:layout_alignBottom="@+id/check_use"
+            android:gravity="center"
             android:text="동의합니다" />
+
 
     </RelativeLayout>
 
     <Button
         android:id="@+id/btn_agree"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
