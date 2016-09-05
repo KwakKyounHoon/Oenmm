@@ -17,7 +17,7 @@ import okhttp3.RequestBody;
  */
 public class QuestionsRequest extends AbstractRequest<NetWorkResultType> {
     Request request;
-    public QuestionsRequest(Context context, String price, String date, String content, String responsorId){
+    public QuestionsRequest(Context context, String price, String date, String content, String answernerId){
         HttpUrl.Builder builder = getBaseUrlBuilder();
         builder.addPathSegment("questions");
 
@@ -25,7 +25,7 @@ public class QuestionsRequest extends AbstractRequest<NetWorkResultType> {
                 .add("price",price)
                 .add("date",date)
                 .add("content",content)
-                .add("responsor_id",responsorId)
+                .add("answernerId",answernerId)
                 .build();
 
         request = new Request.Builder()

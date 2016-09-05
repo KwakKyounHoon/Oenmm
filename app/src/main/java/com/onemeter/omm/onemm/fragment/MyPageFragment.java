@@ -1,8 +1,14 @@
 package com.onemeter.omm.onemm.fragment;
 
 
+import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -21,10 +27,13 @@ import com.onemeter.omm.onemm.data.NetWorkResultType;
 import com.onemeter.omm.onemm.data.Post;
 import com.onemeter.omm.onemm.manager.NetworkManager;
 import com.onemeter.omm.onemm.manager.NetworkRequest;
+import com.onemeter.omm.onemm.request.ChangeImageRequest;
 import com.onemeter.omm.onemm.request.MyDataReqeust;
 import com.onemeter.omm.onemm.request.MyListenRequest;
 import com.onemeter.omm.onemm.request.MyPostRequest;
 import com.onemeter.omm.onemm.request.RemoveImageRequest;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -334,9 +343,11 @@ public class MyPageFragment extends Fragment {
             public void onClick(DialogInterface dialogInterface, int position) {
                 switch (position){
                     case 0 : {
+                        getCaptureImage();
                         break;
                     }
                     case 1 : {
+                        getGalleryImage();
                         break;
                     }
                     case 2 : {
@@ -355,12 +366,81 @@ public class MyPageFragment extends Fragment {
                         break;
                     }
                 }
-                // 동작구현
             }
         });
         builder.show();
-
     }
+
+    private static final int RC_GET_IMAGE = 1;
+
+    private void getGalleryImage() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("image/*");
+        startActivityForResult(intent, RC_GET_IMAGE);
+    }
+
+    private static final int RC_CATPURE_IMAGE = 2;
+
+    private void getCaptureImage() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, getSaveFile());
+        startActivityForResult(intent, RC_CATPURE_IMAGE);
+    }
+
+    File savedFile = null;
+    File uploadFile = null;
+    private Uri getSaveFile() {
+        File dir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DCIM
+        ),"camera");
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        savedFile = new File(dir, "1mm_" + System.currentTimeMillis() + ".jpeg");
+        return Uri.fromFile(savedFile);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_GET_IMAGE) {
+            if (resultCode == Activity.RESULT_OK) {
+                Uri uri = data.getData();
+                Cursor c = getContext().getContentResolver().query(uri, new String[]{MediaStore.Images.Media.DATA}, null, null, null);
+                if (c.moveToNext()) {
+                    String path = c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA));
+                    uploadFile = new File(path);
+                    ChangeImageRequest request = new ChangeImageRequest(getContext(), uploadFile);
+                    NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+                        @Override
+                        public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
+                            Toast.makeText(getContext(),result.getMessage(),Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
+                        }
+                    });
+                }
+            }
+        } else if (requestCode == RC_CATPURE_IMAGE) {
+            if (resultCode == Activity.RESULT_OK) {
+                uploadFile = savedFile;
+                ChangeImageRequest request = new ChangeImageRequest(getContext(), uploadFile);
+                NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+                    @Override
+                    public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
+                        Toast.makeText(getContext(),result.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
+                    }
+                });
+            }
+        }
+    }
+
 
     void initInfo() {
         MyData myData = new MyData();
@@ -424,7 +504,6 @@ public class MyPageFragment extends Fragment {
     public void onResume() {
         super.onResume();
         ((MainActivity) (getActivity())).changeHomeAsUp(false);
-//        Toast.makeText(getActivity(),"ggg",Toast.LENGTH_SHORT).show();
         tabType = 1;
         mAdapter.setFlag(true);
 

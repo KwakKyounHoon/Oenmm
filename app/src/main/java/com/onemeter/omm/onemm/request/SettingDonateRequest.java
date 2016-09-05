@@ -19,8 +19,8 @@ public class SettingDonateRequest extends AbstractRequest<NetWorkResultType<Sett
     public SettingDonateRequest(Context context){
         HttpUrl url = getBaseUrlBuilder()
                 .addPathSegment("users")
-                .addPathSegment("me")
-                .addQueryParameter("point", "2")
+                .addPathSegment("point")
+                .addQueryParameter("type", "1")
                 .build();
 
         request = new Request.Builder()

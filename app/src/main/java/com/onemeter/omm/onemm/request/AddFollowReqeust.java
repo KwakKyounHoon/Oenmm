@@ -17,12 +17,14 @@ import okhttp3.RequestBody;
  */
 public class AddFollowReqeust extends AbstractRequest<NetWorkResultType> {
     Request request;
-    public AddFollowReqeust(Context context, String followId){
+    public AddFollowReqeust(Context context, String uid){
         HttpUrl.Builder builder = getBaseUrlBuilder();
-        builder.addPathSegment("follows");
+        builder.addPathSegment("users")
+                .addPathSegment(uid)
+                .addPathSegment("follows");
 
         RequestBody body = new FormBody.Builder()
-                .add("followId",followId)
+                .add("uid",uid)
                 .build();
 
         request = new Request.Builder()

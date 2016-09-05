@@ -18,8 +18,9 @@ public class OtherFollowingListRequest extends AbstractRequest<NetWorkResultType
     Request request;
     public OtherFollowingListRequest(Context context, String id, int pageNo, int count){
         HttpUrl url = getBaseUrlBuilder()
-                .addPathSegment("follows")
+                .addPathSegment("users")
                 .addPathSegment(id)
+                .addPathSegment("follows")
                 .addQueryParameter("direction", "to")
                 .addQueryParameter("pageNo", pageNo+"")
                 .addQueryParameter("count", count+"")

@@ -40,7 +40,7 @@ public class AgreeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agree);
         ButterKnife.bind(this);
-
+        
         editInfo.setMovementMethod(new ScrollingMovementMethod());
         editUse.setMovementMethod(new ScrollingMovementMethod());
         toolbar = (Toolbar) findViewById(R.id.toolbar);

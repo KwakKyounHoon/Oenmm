@@ -19,7 +19,7 @@ public class FollowRecommendRequest extends AbstractRequest<NetWorkResultType<Fo
     public FollowRecommendRequest(Context context){
         HttpUrl url = getBaseUrlBuilder()
                 .addPathSegment("users")
-                .addQueryParameter("category", "0")
+                .addQueryParameter("type", "0")
                 .build();
 
         request = new Request.Builder()

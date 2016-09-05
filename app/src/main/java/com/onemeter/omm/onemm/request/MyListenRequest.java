@@ -18,7 +18,8 @@ public class MyListenRequest extends AbstractRequest<NetWorkResultType<Post[]>>{
     Request request;
     public MyListenRequest(Context context,int pageNo, int count){
         HttpUrl url = getBaseUrlBuilder()
-                .addPathSegment("pays")
+                .addPathSegment("questions")
+                .addQueryParameter("type","1")
                 .addQueryParameter("pageNo",pageNo+"")
                 .addQueryParameter("count",count+"")
                 .build();

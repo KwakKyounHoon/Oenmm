@@ -20,8 +20,7 @@ public class FollowPostListRequest extends AbstractRequest<NetWorkResultType<Pos
     public FollowPostListRequest(Context context, int pageNo, int count){
         HttpUrl url = getHttpsBaseUrlBuilder()
                 .addPathSegment("questions")
-                .addQueryParameter("direction", "to")
-                .addQueryParameter("celebrity", "true")
+                .addQueryParameter("type","0")
                 .addQueryParameter("pageNo", pageNo+"")
                 .addQueryParameter("count", count+"")
                 .build();

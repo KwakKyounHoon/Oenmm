@@ -18,8 +18,9 @@ public class OtherPostRequest extends AbstractRequest<NetWorkResultType<Post[]>>
     Request request;
     public OtherPostRequest(Context context, String id, String direction, String type, int pageNo, int count){
         HttpUrl url = getHttpsBaseUrlBuilder()
-                .addPathSegment("questions")
+                .addPathSegment("users")
                 .addPathSegment(id)
+                .addPathSegment("questions")
                 .addQueryParameter("direction", direction)
                 .addQueryParameter("type", type)
                 .addQueryParameter("pageNo", pageNo+"")

@@ -17,10 +17,10 @@ import okhttp3.Request;
 public class OtherDataRequest extends AbstractRequest<NetWorkResultType<OtherData[]>> {
     Request request;
 
-    public OtherDataRequest(Context context, String id){
+    public OtherDataRequest(Context context, String uid){
         HttpUrl url = getBaseUrlBuilder()
                 .addPathSegment("users")
-                .addPathSegment(id)
+                .addPathSegment(uid)
                 .build();
 
         request = new Request.Builder()

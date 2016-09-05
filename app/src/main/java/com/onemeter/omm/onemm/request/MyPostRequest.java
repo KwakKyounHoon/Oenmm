@@ -18,6 +18,8 @@ public class MyPostRequest extends AbstractRequest<NetWorkResultType<Post[]>> {
     Request request;
     public MyPostRequest(Context context,String direction, String answer, int pageNo, int count){
             HttpUrl url = getHttpsBaseUrlBuilder()
+                    .addPathSegment("users")
+                    .addPathSegment("me")
                     .addPathSegment("questions")
                     .addQueryParameter("direction", direction)
                     .addQueryParameter("answer", answer)

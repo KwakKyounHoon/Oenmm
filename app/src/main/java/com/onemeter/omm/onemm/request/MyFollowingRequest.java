@@ -18,6 +18,8 @@ public class MyFollowingRequest extends AbstractRequest<NetWorkResultType<Follow
     Request request;
     public MyFollowingRequest(Context context, int pageNo, int count){
         HttpUrl url = getBaseUrlBuilder()
+                .addPathSegment("users")
+                .addPathSegment("me")
                 .addPathSegment("follows")
                 .addQueryParameter("direction", "to")
                 .addQueryParameter("pageNo", pageNo+"")

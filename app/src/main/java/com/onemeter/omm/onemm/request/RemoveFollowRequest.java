@@ -15,10 +15,11 @@ import okhttp3.Request;
  */
 public class RemoveFollowRequest extends AbstractRequest<NetWorkResultType>{
     Request request;
-    public RemoveFollowRequest(Context context, String followId){
+    public RemoveFollowRequest(Context context, String uid){
         HttpUrl url = getHttpsBaseUrlBuilder()
+                .addPathSegment("users")
+                .addPathSegment(uid)
                 .addPathSegment("follows")
-                .addPathSegment(followId)
                 .build();
         request = new Request.Builder()
                 .url(url)

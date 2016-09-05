@@ -19,8 +19,8 @@ public class SettingSaveRequest extends AbstractRequest<NetWorkResultType<Settin
     public SettingSaveRequest(Context context){
         HttpUrl url = getBaseUrlBuilder()
                 .addPathSegment("users")
-                .addPathSegment("me")
-                .addQueryParameter("point", "1")
+                .addPathSegment("point")
+                .addQueryParameter("type", "0")
                 .build();
 
         request = new Request.Builder()
