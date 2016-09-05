@@ -20,6 +20,10 @@ android {
     }
 }
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
@@ -33,4 +37,5 @@ dependencies {
     compile 'com.github.franmontiel:PersistentCookieJar:v0.9.3'
     compile 'com.wefika:flowlayout:0.4.1'
     compile 'jp.wasabeef:glide-transformations:2.0.1'
+    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
 }

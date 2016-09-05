@@ -1,5 +1,6 @@
 package com.onemeter.omm.onemm;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -123,10 +124,17 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        tabs.addTab(tabs.newTab().setText("HOME").setTag(TAB_TAG_HOME));
-        tabs.addTab(tabs.newTab().setText("SEARCH").setTag(TAB_TAG_SEARCH));
-        tabs.addTab(tabs.newTab().setText("RANK").setTag(TAB_TAG_RANK));
-        tabs.addTab(tabs.newTab().setText("MY").setTag(TAB_TAG_MY));
+
+        TabLayout.Tab home = tabs.newTab().setIcon(R.drawable.main_home_tab).setTag(TAB_TAG_HOME);
+        TabLayout.Tab search = tabs.newTab().setIcon(R.drawable.main_search_tab).setTag(TAB_TAG_SEARCH);
+        TabLayout.Tab rank = tabs.newTab().setIcon(R.drawable.main_rank_tab).setTag(TAB_TAG_RANK);
+        TabLayout.Tab my = tabs.newTab().setIcon(R.drawable.main_search_tab).setTag(TAB_TAG_MY);
+
+        tabs.addTab(home);
+        tabs.addTab(search);
+        tabs.addTab(rank);
+        tabs.addTab(my);
+        tabs.setSelectedTabIndicatorColor(Color.WHITE);
     }
 
     public void changeHomeAsUp(boolean isBack) {

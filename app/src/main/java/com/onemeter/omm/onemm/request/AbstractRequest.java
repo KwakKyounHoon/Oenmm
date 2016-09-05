@@ -13,11 +13,14 @@ import okhttp3.ResponseBody;
  * Created by Tacademy on 2016-08-09.
  */
 public abstract class AbstractRequest<T> extends NetworkRequest<T> {
+    private String DUMY = "ec2-52-78-135-2.ap-northeast-2.compute.amazonaws.com";
+    private String REALURL = "ec2-52-78-139-46.ap-northeast-2.compute.amazonaws.com";
 
     protected HttpUrl.Builder getHttpsBaseUrlBuilder() {
         HttpUrl.Builder builder = new HttpUrl.Builder();
         builder.scheme("https");
-        builder.host("ec2-52-78-135-2.ap-northeast-2.compute.amazonaws.com");
+//        builder.host(DUMY);
+        builder.host(REALURL);
         builder.port(4433);
         return builder;
     }
@@ -25,7 +28,8 @@ public abstract class AbstractRequest<T> extends NetworkRequest<T> {
     protected HttpUrl.Builder getBaseUrlBuilder() {
         HttpUrl.Builder builder = new HttpUrl.Builder();
         builder.scheme("http");
-        builder.host("ec2-52-78-135-2.ap-northeast-2.compute.amazonaws.com");
+//        builder.host(DUMY);
+        builder.host(REALURL);
         builder.port(8080);
         return builder;
     }

@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">1mm</string>
 
+    <string name="facebook_app_id">515730275302789</string>
+
     <string name="user_name">user name</string>
     <string name="user_search">search</string>
 

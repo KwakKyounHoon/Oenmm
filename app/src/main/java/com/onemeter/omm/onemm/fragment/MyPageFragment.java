@@ -1,43 +1,43 @@
 package com.onemeter.omm.onemm.fragment;
 
 
-import android.app.Activity;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
+        import android.app.Activity;
+        import android.content.DialogInterface;
+        import android.content.Intent;
+        import android.database.Cursor;
+        import android.net.Uri;
+        import android.os.Bundle;
+        import android.os.Environment;
+        import android.provider.MediaStore;
+        import android.support.annotation.Nullable;
+        import android.support.v4.app.Fragment;
+        import android.support.v7.app.AlertDialog;
+        import android.support.v7.widget.LinearLayoutManager;
+        import android.support.v7.widget.RecyclerView;
+        import android.view.LayoutInflater;
+        import android.view.View;
+        import android.view.ViewGroup;
+        import android.widget.Toast;
 
-import com.onemeter.omm.onemm.MainActivity;
-import com.onemeter.omm.onemm.R;
-import com.onemeter.omm.onemm.adapter.MyAdapter;
-import com.onemeter.omm.onemm.data.MyData;
-import com.onemeter.omm.onemm.data.NetWorkResultType;
-import com.onemeter.omm.onemm.data.Post;
-import com.onemeter.omm.onemm.manager.NetworkManager;
-import com.onemeter.omm.onemm.manager.NetworkRequest;
-import com.onemeter.omm.onemm.request.ChangeImageRequest;
-import com.onemeter.omm.onemm.request.MyDataReqeust;
-import com.onemeter.omm.onemm.request.MyListenRequest;
-import com.onemeter.omm.onemm.request.MyPostRequest;
-import com.onemeter.omm.onemm.request.RemoveImageRequest;
+        import com.onemeter.omm.onemm.MainActivity;
+        import com.onemeter.omm.onemm.R;
+        import com.onemeter.omm.onemm.adapter.MyAdapter;
+        import com.onemeter.omm.onemm.data.MyData;
+        import com.onemeter.omm.onemm.data.NetWorkResultType;
+        import com.onemeter.omm.onemm.data.Post;
+        import com.onemeter.omm.onemm.manager.NetworkManager;
+        import com.onemeter.omm.onemm.manager.NetworkRequest;
+        import com.onemeter.omm.onemm.request.ChangeImageRequest;
+        import com.onemeter.omm.onemm.request.MyDataReqeust;
+        import com.onemeter.omm.onemm.request.MyListenRequest;
+        import com.onemeter.omm.onemm.request.MyPostRequest;
+        import com.onemeter.omm.onemm.request.RemoveImageRequest;
 
-import java.io.File;
+        import java.io.File;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+        import butterknife.BindView;
+        import butterknife.ButterKnife;
+        import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
