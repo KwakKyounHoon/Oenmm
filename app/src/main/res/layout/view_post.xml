@@ -2,90 +2,127 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
         android:id="@+id/question"
-        >
-    <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:id="@+id/image_questioner"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:src="@mipmap/ic_launcher"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/text_question"
-        android:layout_centerInParent="true"
-        android:layout_toRightOf="@+id/image_questioner"
-        android:layout_toEndOf="@+id/image_questioner" />
-    </RelativeLayout>
-
-    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/question"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/answer"
-        >
+        android:layout_alignParentTop="true">
+
         <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:id="@+id/image_answerner"
-            android:layout_alignParentTop="true"
+            android:id="@+id/image_questioner"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:src="@mipmap/ic_launcher"
-            />
-        <Button
+            android:layout_alignParentTop="true"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:layout_marginLeft="12dp"
+            android:id="@+id/text_question"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/post_btn_listen"
-            android:id="@+id/btn_listen"
             android:layout_centerInParent="true"
-            android:layout_toRightOf="@+id/image_answerner"
-            android:layout_toEndOf="@+id/image_answerner"
-            />
+            android:layout_toEndOf="@+id/image_questioner"
+            android:layout_toRightOf="@+id/image_questioner"
+            android:text="질문 내용" />
     </RelativeLayout>
+
     <RelativeLayout
+        android:id="@+id/answer"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/answer"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        android:layout_below="@+id/question">
+
+        <ImageView
+            android:id="@+id/image_answerner"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:id="@+id/text_listen"
-            android:text="456"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="60"
-            android:layout_toLeftOf="@+id/text_listen"
-            android:id="@+id/text_play_time"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="100,000원"
-            android:layout_toLeftOf="@+id/text_play_time"
-            android:id="@+id/text_cost"
-            />
+            android:src="@mipmap/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/btn_listen"
+            android:layout_width="151dp"
+            android:layout_height="28dp"
+            android:layout_marginLeft="12dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_answer_off"
+            android:layout_toEndOf="@+id/image_answerner"
+            android:layout_toRightOf="@+id/image_answerner" />
+
     </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/content"
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/answer">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/image_hearling"
+            android:src="@drawable/ic_hearing"
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@+id/text_play_time"/>
+        <TextView
+            android:id="@+id/text_listen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/image_hearling"
+            android:layout_marginLeft="2dp"
+            android:text="456" />
+
+        <ImageView
+            android:id="@+id/image_time"
+            android:src="@drawable/ic_time"
+            android:layout_toRightOf="@+id/text_cost"
+            android:layout_marginLeft="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/text_play_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/image_time"
+            android:layout_marginLeft="2dp"
+            android:text="60" />
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:id="@+id/image_coin"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="163dp"
+            android:src="@drawable/ic_coin"/>
+        <TextView
+            android:id="@+id/text_cost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/image_coin"
+            android:layout_marginLeft="2dp"
+            android:text="100,000원" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="12dp"
+        android:src="@drawable/post_underline"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/content"/>
 </RelativeLayout>
