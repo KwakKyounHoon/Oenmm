@@ -3,42 +3,57 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:id="@+id/image_profile"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:src="@mipmap/ic_launcher"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/layout_follow"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/text_nickname"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/image_profile"
-        android:layout_toEndOf="@+id/image_profile" />
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="24dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/text_questioner_name"
-        android:layout_alignBottom="@+id/image_profile"
-        android:layout_toRightOf="@+id/image_profile"
-        android:layout_toEndOf="@+id/image_profile" />
+        <ImageView
+            android:id="@+id/image_profile"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:src="@mipmap/ic_launcher" />
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New CheckBox"
-        android:id="@+id/check_follow"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:checked="false" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_toRightOf="@+id/image_profile"
+            android:layout_marginLeft="12dp"
+            android:layout_alignBottom="@+id/image_profile"
+            android:layout_alignParentTop="true"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/layout_follow">
 
+            <TextView
+                android:id="@+id/text_nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:text="New Text" />
+
+            <TextView
+                android:id="@+id/text_questioner_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text_nickname"
+                android:text="New Text" />
+
+        </RelativeLayout>
+
+        <CheckBox
+            android:id="@+id/check_follow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:button="@drawable/check_follow_on"
+            android:checked="false" />
+    </RelativeLayout>
 </RelativeLayout>
