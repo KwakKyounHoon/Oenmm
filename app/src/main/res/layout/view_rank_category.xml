@@ -1,28 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
-    <RadioGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/radiogroup"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/radio_btn_rank_listen"
-            android:checked="true"
-            android:id="@+id/btn_listen" />
+    android:layout_height="wrap_content">
 
-        <RadioButton
+    <RelativeLayout
+        android:id="@+id/layout_category"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+
+        <RadioGroup
+            android:id="@+id/radiogroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/radio_btn_rank_cost"
-            android:id="@+id/btn_cost"
-            android:checked="false" />
-    </RadioGroup>
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/btn_listen"
+                android:layout_width="80dp"
+                android:layout_height="24dp"
+                android:layout_marginRight="8dp"
+                android:button="@drawable/radio_other_on"
+                android:checked="true" />
+
+            <RadioButton
+                android:id="@+id/btn_cost"
+                android:layout_width="53dp"
+                android:layout_height="24dp"
+                android:layout_marginRight="16dp"
+                android:button="@drawable/radio_rank_off" />
+        </RadioGroup>
+    </RelativeLayout>
 
 </RelativeLayout>

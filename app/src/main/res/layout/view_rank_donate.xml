@@ -19,8 +19,12 @@
         android:id="@+id/text_user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/image_rank"
+        android:layout_alignLeft="@+id/image_profile"
+        android:layout_alignRight="@+id/image_profile"
+        android:layout_alignTop="@+id/image_rank"
         android:layout_below="@+id/image_profile"
-        android:layout_marginLeft="50dp"
+        android:gravity="center"
         android:text="사용자 이름" />
 
     <ImageView
@@ -47,19 +51,22 @@
         android:id="@+id/text_plcae_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="기부처 이름"
-        android:layout_below="@+id/image_place"
+        android:layout_alignBottom="@+id/image_rank"
         android:layout_alignRight="@+id/image_place"
-        android:layout_marginRight="13dp"
-        android:layout_alignEnd="@+id/image_place" />
+        android:layout_alignTop="@+id/image_rank"
+        android:layout_below="@+id/image_place"
+        android:layout_alignLeft="@+id/image_place"
+        android:gravity="center"
+        android:text="기부처 이름" />
 
     <ImageView
+        android:id="@+id/image_rank"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_one"
         android:layout_below="@+id/image_profile"
-        android:layout_alignLeft="@+id/image_profile"
-        android:layout_alignStart="@+id/image_profile" />
+        android:layout_marginTop="3dp"
+        android:layout_toLeftOf="@+id/text_user_name"
+        android:src="@drawable/ic_one" />
 
 
 </RelativeLayout>

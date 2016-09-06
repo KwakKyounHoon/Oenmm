@@ -5,10 +5,10 @@
     tools:context="com.onemeter.omm.onemm.fragment.ReplyFragment">
 
     <android.support.v7.widget.Toolbar
-        android:background="@drawable/toolbar_under"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_height">
+        android:layout_height="@dimen/toolbar_height"
+        android:background="@drawable/toolbar_under">
 
         <include
             layout="@layout/view_answer_toolbar"
@@ -18,133 +18,139 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar">
 
-        <LinearLayout
-            android:id="@+id/linearLayout2"
+    <RelativeLayout
+        android:id="@+id/user_info"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="16dp"
+        android:layout_below="@+id/toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/image_questioner"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:background="#0f0"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/text_questioner_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/image_questioner"
+            android:layout_alignRight="@+id/image_questioner"
+            android:layout_below="@+id/image_questioner"
+            android:layout_marginTop="2dp"
+            android:gravity="center"
+            android:text="질문자"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/text_question"
+            android:layout_marginRight="16dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/toolbar"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/activity_vertical_margin"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:weightSum="1">
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/image_questioner"
+            android:layout_alignTop="@+id/image_questioner"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/image_questioner"
+            android:text="질문 내용" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+    </RelativeLayout>
 
-                <ImageView
-                    android:id="@+id/image_questioner"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:background="#0f0"
-                    android:scaleType="centerCrop" />
-
-                <TextView
-                    android:id="@+id/text_questioner_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="질문자"
-                    android:layout_below="@+id/image_questioner"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/text_question"
-                    android:text="질문 내용"
-                    android:layout_toRightOf="@id/image_questioner" />
-
-            </RelativeLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/text_cost"
-                android:layout_gravity="right"
-                android:text="가격" />
+    <ImageView
+        android:layout_below="@+id/user_info"
+        android:id="@+id/image_coin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="280dp"
+        android:src="@drawable/ic_coin" />
 
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="440dp"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin">
+    <TextView
+        android:id="@+id/text_cost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dp"
+        android:layout_below="@+id/user_info"
+        android:layout_toRightOf="@id/image_coin"
+        android:text="질문가격" />
 
 
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_gravity="center_horizontal|top"
-                    android:text="최대 60초까지 녹음 가능합니다" />
 
-                <ImageView
-                    android:id="@+id/return_off"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@+id/image_before"
-                    android:paddingRight="50dp"
-                    android:src="@drawable/ic_record_return_off" />
+    <TextView
+        android:id="@+id/text_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:layout_below="@+id/image_coin"
+        android:text="최대 60초까지 녹음 가능합니다."
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-                <ImageView
-                    android:id="@+id/image_before"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_record_on" />
+    <ImageView
+        android:id="@+id/image_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_time"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/ic_record_on" />
 
-                <ImageView
-                    android:id="@+id/sound_off"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/image_before"
-                    android:paddingLeft="50dp"
-                    android:src="@drawable/ic_record_sound_off" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:id="@+id/image_return"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/image_play"
+        android:layout_alignTop="@+id/image_play"
+        android:layout_below="@+id/text_message"
+        android:layout_marginLeft="13dp"
+        android:src="@drawable/ic_record_return_off" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/image_sound"
+        android:src="@drawable/ic_record_sound_off"
+        android:layout_below="@+id/text_message"
+        android:layout_toRightOf="@+id/image_play"
+        android:layout_marginLeft="40dp"
+        android:layout_alignBottom="@+id/image_play"
+        android:layout_alignTop="@+id/image_play"/>
 
 
-                <CheckBox
-                    android:id="@+id/send_check"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_above="@+id/btn_send" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_checkbox_off"
+        android:layout_toLeftOf="@+id/text_use"
+        android:layout_below="@+id/image_play"
+        android:layout_alignBottom="@+id/text_use"
+        android:layout_alignTop="@+id/text_use"
+        android:layout_marginRight="8dp"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_above="@+id/btn_send"
-                    android:layout_toRightOf="@+id/send_check"
-                    android:text="~~~~~~~~~~~~~~~~ 기부됩니다" />
 
-                <Button
-                    android:id="@+id/btn_send"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:text="보내기"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true" />
+    <TextView
+        android:id="@+id/text_use"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/image_play"
+        android:layout_marginTop="40dp"
+        android:text="수수료를 제외한 질문비용의 40%는 본인에게 적립되며,
+50%는 설정하신 기부처에 기부됩니다" />
 
-            </RelativeLayout>
-        </LinearLayout>
-    </ScrollView>
+    <Button
+        android:id="@+id/btn_send"
+        android:layout_width="280dp"
+        android:layout_height="48dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/text_use"
+        android:layout_marginTop="20dp"
+        android:text="보내기" />
 
 </RelativeLayout>

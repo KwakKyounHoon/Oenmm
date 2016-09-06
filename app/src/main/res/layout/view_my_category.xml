@@ -1,26 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
-    <RadioGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/radiogroup"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/radio_btn_my_complete"
-            android:checked="true"
-            android:id="@+id/btn_com" />
+    android:layout_height="wrap_content">
 
-        <RadioButton
+    <RelativeLayout
+        android:id="@+id/layout_category"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/radio_btn_my_incomplete"
-            android:id="@+id/btn_incom"/>
-    </RadioGroup>
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:text="한 질문" />
+
+        <RadioGroup
+            android:id="@+id/radiogroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/btn_com"
+                android:layout_width="80dp"
+                android:layout_height="24dp"
+                android:layout_marginRight="8dp"
+                android:button="@drawable/radio_my_on"
+                android:checked="true" />
+
+            <RadioButton
+                android:id="@+id/btn_incom"
+                android:layout_width="53dp"
+                android:layout_height="24dp"
+                android:layout_marginRight="16dp"
+                android:button="@drawable/radio_my_off" />
+        </RadioGroup>
+    </RelativeLayout>
 </RelativeLayout>
