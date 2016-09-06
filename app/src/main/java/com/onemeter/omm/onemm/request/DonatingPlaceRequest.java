@@ -14,7 +14,7 @@ import okhttp3.Request;
 /**
  * Created by Tacademy on 2016-09-01.
  */
-public class DonatingPlaceRequest extends AbstractRequest<NetWorkResultType<DonatingPlace[]>> {
+public class DonatingPlaceRequest extends AbstractRequest<NetWorkResultType<DonatingPlace>> {
     Request request;
     public DonatingPlaceRequest(Context context, String id){
         HttpUrl url = getBaseUrlBuilder()
@@ -29,7 +29,7 @@ public class DonatingPlaceRequest extends AbstractRequest<NetWorkResultType<Dona
     }
     @Override
     protected Type getType() {
-        return new TypeToken<NetWorkResultType<DonatingPlace[]>>(){}.getType();
+        return new TypeToken<NetWorkResultType<DonatingPlace>>(){}.getType();
     }
 
     @Override

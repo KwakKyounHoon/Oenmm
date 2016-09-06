@@ -94,14 +94,14 @@ public class DonatingPlaceFragment extends Fragment {
         });
 
         DonatingPlaceRequest donatingPlaceRequest = new DonatingPlaceRequest(getContext(), id);
-        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, donatingPlaceRequest, new NetworkManager.OnResultListener<NetWorkResultType<DonatingPlace[]>>() {
+        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, donatingPlaceRequest, new NetworkManager.OnResultListener<NetWorkResultType<DonatingPlace>>() {
             @Override
-            public void onSuccess(NetworkRequest<NetWorkResultType<DonatingPlace[]>> request, NetWorkResultType<DonatingPlace[]> result) {
+            public void onSuccess(NetworkRequest<NetWorkResultType<DonatingPlace>> request, NetWorkResultType<DonatingPlace> result) {
                 mAdapter.addHeadPlace(result.getResult());
             }
 
             @Override
-            public void onFail(NetworkRequest<NetWorkResultType<DonatingPlace[]>> request, int errorCode, String errorMessage, Throwable e) {
+            public void onFail(NetworkRequest<NetWorkResultType<DonatingPlace>> request, int errorCode, String errorMessage, Throwable e) {
 
             }
         });

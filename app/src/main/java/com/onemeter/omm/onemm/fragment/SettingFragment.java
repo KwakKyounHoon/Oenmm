@@ -47,26 +47,26 @@ public class SettingFragment extends Fragment {
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         list.setLayoutManager(manager);
         SettingDonateRequest settingDonateRequest = new SettingDonateRequest(getContext());
-        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,settingDonateRequest, new NetworkManager.OnResultListener<NetWorkResultType<SettingDonate[]>>() {
+        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, settingDonateRequest, new NetworkManager.OnResultListener<NetWorkResultType<SettingDonate>>() {
             @Override
-            public void onSuccess(NetworkRequest<NetWorkResultType<SettingDonate[]>> request, NetWorkResultType<SettingDonate[]> result) {
+            public void onSuccess(NetworkRequest<NetWorkResultType<SettingDonate>> request, NetWorkResultType<SettingDonate> result) {
                 mAdatper.addDonate(result.getResult());
             }
 
             @Override
-            public void onFail(NetworkRequest<NetWorkResultType<SettingDonate[]>> request, int errorCode, String errorMessage, Throwable e) {
+            public void onFail(NetworkRequest<NetWorkResultType<SettingDonate>> request, int errorCode, String errorMessage, Throwable e) {
 
             }
         });
         SettingSaveRequest settingSaveRequest = new SettingSaveRequest(getContext());
-        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,settingSaveRequest, new NetworkManager.OnResultListener<NetWorkResultType<SettingSave[]>>() {
+        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, settingSaveRequest, new NetworkManager.OnResultListener<NetWorkResultType<SettingSave>>() {
             @Override
-            public void onSuccess(NetworkRequest<NetWorkResultType<SettingSave[]>> request, NetWorkResultType<SettingSave[]> result) {
+            public void onSuccess(NetworkRequest<NetWorkResultType<SettingSave>> request, NetWorkResultType<SettingSave> result) {
                 mAdatper.addSave(result.getResult());
             }
 
             @Override
-            public void onFail(NetworkRequest<NetWorkResultType<SettingSave[]>> request, int errorCode, String errorMessage, Throwable e) {
+            public void onFail(NetworkRequest<NetWorkResultType<SettingSave>> request, int errorCode, String errorMessage, Throwable e) {
 
             }
         });

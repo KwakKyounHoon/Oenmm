@@ -14,7 +14,7 @@ import okhttp3.Request;
 /**
  * Created by Tacademy on 2016-08-30.
  */
-public class SettingDonateRequest extends AbstractRequest<NetWorkResultType<SettingDonate[]>> {
+public class SettingDonateRequest extends AbstractRequest<NetWorkResultType<SettingDonate>> {
     Request request;
     public SettingDonateRequest(Context context){
         HttpUrl url = getBaseUrlBuilder()
@@ -30,7 +30,7 @@ public class SettingDonateRequest extends AbstractRequest<NetWorkResultType<Sett
     }
     @Override
     protected Type getType() {
-        return new TypeToken<NetWorkResultType<SettingDonate[]>>(){}.getType();
+        return new TypeToken<NetWorkResultType<SettingDonate>>(){}.getType();
     }
 
     @Override

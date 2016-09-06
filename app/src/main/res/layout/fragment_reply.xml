@@ -34,7 +34,6 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:background="#0f0"
             android:scaleType="centerCrop" />
 
         <TextView
@@ -58,7 +57,8 @@
             android:layout_alignTop="@+id/image_questioner"
             android:layout_marginLeft="8dp"
             android:layout_toRightOf="@id/image_questioner"
-            android:text="질문 내용" />
+            android:text="질문 내용"
+            android:gravity="center_vertical" />
 
     </RelativeLayout>
 
@@ -90,66 +90,69 @@
         android:layout_marginTop="40dp"
         android:layout_below="@+id/image_coin"
         android:text="최대 60초까지 녹음 가능합니다."
-        android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-    <ImageView
-        android:id="@+id/image_play"
-        android:layout_width="wrap_content"
+        />
+    <LinearLayout
+        android:layout_marginTop="55dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/text_time"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:src="@drawable/ic_record_on" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:id="@+id/image_return"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/image_play"
-        android:layout_alignTop="@+id/image_play"
-        android:layout_below="@+id/text_message"
-        android:layout_marginLeft="13dp"
-        android:src="@drawable/ic_record_return_off" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/image_sound"
-        android:src="@drawable/ic_record_sound_off"
-        android:layout_below="@+id/text_message"
-        android:layout_toRightOf="@+id/image_play"
-        android:layout_marginLeft="40dp"
-        android:layout_alignBottom="@+id/image_play"
-        android:layout_alignTop="@+id/image_play"/>
-
+        android:layout_below="@id/text_time"
+        android:orientation="horizontal"
+        android:id="@+id/layout_play"
+        android:gravity="top">
+        <ImageView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:id="@+id/image_return"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_record_return_off"
+            android:layout_gravity="center"/>
+        <ImageView
+            android:layout_weight="1"
+            android:id="@+id/image_play"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_record_on" />
+        <ImageView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/image_sound"
+            android:src="@drawable/ic_record_sound_off"
+            android:layout_gravity="center" />
+    </LinearLayout>
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_checkbox_off"
-        android:layout_toLeftOf="@+id/text_use"
-        android:layout_below="@+id/image_play"
-        android:layout_alignBottom="@+id/text_use"
-        android:layout_alignTop="@+id/text_use"
-        android:layout_marginRight="8dp"/>
+        android:layout_below="@+id/layout_play"
+        android:layout_toLeftOf="@+id/text_use" />
 
 
-    <TextView
+    <CheckBox
+        android:layout_marginTop="48dp"
+        android:layout_marginLeft="28dp"
+        android:layout_marginRight="28dp"
         android:id="@+id/text_use"
-        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/image_play"
-        android:layout_marginTop="40dp"
         android:text="수수료를 제외한 질문비용의 40%는 본인에게 적립되며,
-50%는 설정하신 기부처에 기부됩니다" />
+50%는 설정하신 기부처에 기부됩니다"
+        android:gravity="center"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/layout_play"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textSize="12sp"
+        />
 
     <Button
         android:id="@+id/btn_send"
         android:layout_width="280dp"
         android:layout_height="48dp"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/text_use"
+        android:layout_alignParentBottom="true"
         android:layout_marginTop="20dp"
         android:text="보내기" />
 

@@ -25,13 +25,19 @@ public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     SettingData settingData = new SettingData();
 
-    public void addSave(SettingSave[] settingSaves){
-        settingData.setSettingSave(settingSaves[0]);
+    public void addSave(SettingSave settingSaves){
+        settingData.setSettingSave(settingSaves);
         notifyDataSetChanged();
     }
 
+
     public void addDonate(SettingDonate[] settingDonates){
         settingData.setSettingDonate(settingDonates[0]);
+        notifyDataSetChanged();
+    }
+
+    public void addDonate(SettingDonate settingDonates){
+        settingData.setSettingDonate(settingDonates);
         notifyDataSetChanged();
     }
 

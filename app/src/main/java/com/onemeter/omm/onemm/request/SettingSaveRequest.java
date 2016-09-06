@@ -14,7 +14,7 @@ import okhttp3.Request;
 /**
  * Created by Tacademy on 2016-08-30.
  */
-public class SettingSaveRequest extends AbstractRequest<NetWorkResultType<SettingSave[]>> {
+public class SettingSaveRequest extends AbstractRequest<NetWorkResultType<SettingSave>> {
     Request request;
     public SettingSaveRequest(Context context){
         HttpUrl url = getBaseUrlBuilder()
@@ -30,7 +30,7 @@ public class SettingSaveRequest extends AbstractRequest<NetWorkResultType<Settin
     }
     @Override
     protected Type getType() {
-        return new TypeToken<NetWorkResultType<SettingSave[]>>(){}.getType();
+        return new TypeToken<NetWorkResultType<SettingSave>>(){}.getType();
     }
 
     @Override

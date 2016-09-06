@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -9,9 +10,7 @@
         android:id="@+id/question"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true">
+        >
 
         <ImageView
             android:id="@+id/image_questioner"
@@ -32,6 +31,30 @@
             android:layout_toRightOf="@+id/image_questioner"
             android:text="질문 내용" />
     </RelativeLayout>
+    <RelativeLayout
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/layout_no_re"
+        android:layout_marginRight="16dp"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:id="@+id/image_no_coin"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_coin"
+            android:layout_toLeftOf="@+id/text_no_cost"
+            />
+        <TextView
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:id="@+id/text_no_cost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100,000원"
+            android:layout_marginLeft="2dp" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/answer"
@@ -39,9 +62,7 @@
         android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/question">
+       >
 
         <ImageView
             android:id="@+id/image_answerner"
@@ -56,73 +77,78 @@
             android:id="@+id/btn_listen"
             android:layout_width="151dp"
             android:layout_height="28dp"
-            android:layout_marginLeft="12dp"
-            android:layout_centerInParent="true"
             android:src="@drawable/ic_answer_off"
-            android:layout_toEndOf="@+id/image_answerner"
-            android:layout_toRightOf="@+id/image_answerner" />
+            android:layout_alignBottom="@+id/image_answerner"
+            android:layout_toRightOf="@+id/image_answerner"
+            android:layout_toEndOf="@+id/image_answerner" />
 
+        <RelativeLayout
+            android:id="@+id/content"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/btn_listen">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/image_hearling"
+                android:src="@drawable/ic_hearing"
+                android:layout_marginLeft="16dp"
+                android:layout_toLeftOf="@+id/text_listen"/>
+            <TextView
+                android:id="@+id/text_listen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="2dp"
+                android:text="456"
+                android:layout_marginRight="16dp" />
+
+            <ImageView
+                android:id="@+id/image_time"
+                android:src="@drawable/ic_time"
+                android:layout_toLeftOf="@+id/text_play_time"
+                android:layout_marginLeft="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/text_play_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/image_hearling"
+                android:layout_marginLeft="2dp"
+                android:text="60" />
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:id="@+id/image_coin"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/text_cost"
+                android:src="@drawable/ic_coin"/>
+            <TextView
+                android:id="@+id/text_cost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/image_time"
+                android:layout_marginLeft="2dp"
+                android:text="100,000원" />
+        </RelativeLayout>
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/content"
-        android:layout_marginTop="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/answer">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/image_hearling"
-            android:src="@drawable/ic_hearing"
-            android:layout_marginLeft="16dp"
-            android:layout_toRightOf="@+id/text_play_time"/>
-        <TextView
-            android:id="@+id/text_listen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/image_hearling"
-            android:layout_marginLeft="2dp"
-            android:text="456" />
-
-        <ImageView
-            android:id="@+id/image_time"
-            android:src="@drawable/ic_time"
-            android:layout_toRightOf="@+id/text_cost"
-            android:layout_marginLeft="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/text_play_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/image_time"
-            android:layout_marginLeft="2dp"
-            android:text="60" />
-
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:id="@+id/image_coin"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="163dp"
-            android:src="@drawable/ic_coin"/>
-        <TextView
-            android:id="@+id/text_cost"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/image_coin"
-            android:layout_marginLeft="2dp"
-            android:text="100,000원" />
-    </RelativeLayout>
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="12dp"
         android:src="@drawable/post_underline"
         android:layout_marginTop="12dp"
-        android:layout_below="@+id/content"/>
-</RelativeLayout>
+        android:id="@+id/imageView3" />
+
+</LinearLayout>

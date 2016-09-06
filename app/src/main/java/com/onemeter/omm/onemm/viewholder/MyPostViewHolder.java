@@ -35,6 +35,10 @@ public class MyPostViewHolder extends RecyclerView.ViewHolder {
     TextView costView;
     @BindView(R.id.answer)
     RelativeLayout answerLayout;
+    @BindView(R.id.layout_no_re)
+    RelativeLayout noRipleLayout;
+    @BindView(R.id.text_no_cost)
+    TextView noCostView;
 
     public MyPostViewHolder(View itemView) {
         super(itemView);
@@ -54,12 +58,15 @@ public class MyPostViewHolder extends RecyclerView.ViewHolder {
     public void setComFlag(boolean flag, int tabPosition){
         if (flag){
             answerLayout.setVisibility(View.VISIBLE);
+            noRipleLayout.setVisibility(View.GONE);
         }else{
             answerLayout.setVisibility(View.GONE);
+            noRipleLayout.setVisibility(View.VISIBLE);
         }
 
         if(tabPosition == 3){
             answerLayout.setVisibility(View.VISIBLE);
+            noRipleLayout.setVisibility(View.GONE);
         }
     }
 
@@ -70,6 +77,7 @@ public class MyPostViewHolder extends RecyclerView.ViewHolder {
         playTimeView.setText(post.getLength());
         listenView.setText(post.getListenCount());
         costView.setText(post.getPrice());
+        noCostView.setText(post.getPrice());
         Glide.with(questionerImgView.getContext())
                 .load(post.getQuestionerPhoto())
                 .bitmapTransform(new CropCircleTransformation(MyApplication.getContext()))
