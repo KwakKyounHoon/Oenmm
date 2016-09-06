@@ -48,10 +48,19 @@ public class NetworkManager {
         return instance;
     }
 
+    public static int MYOKHTTP = 0;
+    public static int STANDARDOKHTTP = 1;
+
+    OkHttpClient myClient;
+    OkHttpClient standardClient;
     OkHttpClient client;
 
     private NetworkManager() {
+        setMYOKHTTP();
+        setSTANDARDOKHTTP();
+    }
 
+    public void setMYOKHTTP(){
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         Context context = MyApplication.getContext();
         ClearableCookieJar cookieJar =
@@ -71,7 +80,29 @@ public class NetworkManager {
         builder.readTimeout(10, TimeUnit.SECONDS);
         builder.writeTimeout(10, TimeUnit.SECONDS);
         disablecertificateValidation(context, builder);
-        client = builder.build();
+        myClient = builder.build();
+    }
+
+    public void setSTANDARDOKHTTP(){
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        Context context = MyApplication.getContext();
+        ClearableCookieJar cookieJar =
+                new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(context));
+        builder.cookieJar(cookieJar);
+        builder.followRedirects(true);
+        builder.addInterceptor(new RedirectInterceptor());
+
+        File cacheDir = new File(context.getCacheDir(), "network");
+        if (!cacheDir.exists()) {
+            cacheDir.mkdirs();
+        }
+        Cache cache = new Cache(cacheDir, 10 * 1024 * 1024);
+        builder.cache(cache);
+
+        builder.connectTimeout(30, TimeUnit.SECONDS);
+        builder.readTimeout(10, TimeUnit.SECONDS);
+        builder.writeTimeout(10, TimeUnit.SECONDS);
+        standardClient = builder.build();
     }
 
     public OkHttpClient getClient() {
@@ -113,7 +144,12 @@ public class NetworkManager {
         mHandler.sendMessage(msg);
     }
 
-    public <T> void getNetworkData(NetworkRequest<T> request, OnResultListener<T> listener) {
+    public <T> void getNetworkData(int type, NetworkRequest<T> request, OnResultListener<T> listener) {
+        if(type == MYOKHTTP){
+            client = myClient;
+        }else{
+            client = standardClient;
+        }
         request.setOnResultListener(listener);
         request.process(client);
     }

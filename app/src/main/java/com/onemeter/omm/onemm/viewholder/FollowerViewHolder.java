@@ -60,6 +60,7 @@ public class FollowerViewHolder extends RecyclerView.ViewHolder {
         Glide.with(profileView.getContext())
                 .load(follower.getPhoto())
                 .bitmapTransform(new CropCircleTransformation(MyApplication.getContext()))
+                .error(R.drawable.ic_profile_image_default)
                 .into(profileView);
     }
 

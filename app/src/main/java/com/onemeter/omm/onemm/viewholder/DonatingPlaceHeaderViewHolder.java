@@ -37,6 +37,7 @@ public class DonatingPlaceHeaderViewHolder extends RecyclerView.ViewHolder{
         Glide.with(headerView.getContext())
                 .load(donatingPlace.getPhoto())
                 .bitmapTransform(new CropCircleTransformation(MyApplication.getContext()))
+                .error(R.drawable.ic_profile_image_default)
                 .into(headerView);
     }
 }

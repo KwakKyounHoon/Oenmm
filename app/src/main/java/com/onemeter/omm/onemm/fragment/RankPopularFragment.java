@@ -67,7 +67,7 @@ public class RankPopularFragment extends Fragment {
                 if(tabType){
                     mAdapter.clearRankPopular();
                     PopularPostListRequest request = new PopularPostListRequest(getContext(), 0);
-                    NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                    NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                         @Override
                         public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                             mAdapter.addAll(result.getResult());
@@ -81,7 +81,7 @@ public class RankPopularFragment extends Fragment {
                 }else{
                     mAdapter.clearRankPopular();
                     PopularPostListRequest request = new PopularPostListRequest(getContext(), 1);
-                    NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                    NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                         @Override
                         public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                             mAdapter.addAll(result.getResult());
@@ -97,7 +97,7 @@ public class RankPopularFragment extends Fragment {
         });
 
         PopularPostListRequest request = new PopularPostListRequest(getContext(), 0);
-        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
             @Override
             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                 mAdapter.addAll(result.getResult());

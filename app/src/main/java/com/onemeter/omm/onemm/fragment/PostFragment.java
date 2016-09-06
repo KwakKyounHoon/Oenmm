@@ -65,7 +65,7 @@ public class PostFragment extends Fragment {
 
 //        init();
         FollowPostListRequest request = new FollowPostListRequest(getContext(), 1, 20);
-        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
             @Override
             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                 mAdapter.addAll(result.getResult());

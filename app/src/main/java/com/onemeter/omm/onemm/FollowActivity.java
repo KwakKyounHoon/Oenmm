@@ -63,7 +63,7 @@ public class FollowActivity extends AppCompatActivity {
 //            mAdapter.add(p);
 //        }
         FollowRecommendRequest request = new FollowRecommendRequest(this);
-        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<FollowPerson[]>>() {
+        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<FollowPerson[]>>() {
             @Override
             public void onSuccess(NetworkRequest<NetWorkResultType<FollowPerson[]>> request, NetWorkResultType<FollowPerson[]> result) {
                 mAdapter.addAll(result.getResult());

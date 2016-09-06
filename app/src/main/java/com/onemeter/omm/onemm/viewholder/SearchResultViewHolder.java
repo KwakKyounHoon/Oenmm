@@ -46,6 +46,7 @@ public class SearchResultViewHolder extends RecyclerView.ViewHolder {
             Glide.with(photoView.getContext())
                     .load(searchResult.getPhoto())
                     .bitmapTransform(new CropCircleTransformation(MyApplication.getContext()))
+                    .error(R.drawable.ic_profile_image_default)
                     .into(photoView);
     }
 

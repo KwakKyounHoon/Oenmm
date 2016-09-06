@@ -52,6 +52,7 @@ public class FollowPersonViewHolder extends RecyclerView.ViewHolder implements C
         Glide.with(photoView.getContext())
                 .load(followPerson.getPhoto())
                 .bitmapTransform(new CropCircleTransformation(MyApplication.getContext()))
+                .error(R.drawable.ic_profile_image_default)
                 .into(photoView);
     }
 

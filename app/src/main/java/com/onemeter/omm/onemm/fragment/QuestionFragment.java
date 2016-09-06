@@ -88,7 +88,7 @@ public class QuestionFragment extends Fragment {
             Date date = new Date(today);
             String time = Utils.convertTimeToString(date);
             QuestionsRequest request = new QuestionsRequest(getContext(), cost, time, content, otherData.getUserId());
-            NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType>() {
                 @Override
                 public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
                     Toast.makeText(getContext(), result.getMessage(), Toast.LENGTH_SHORT).show();

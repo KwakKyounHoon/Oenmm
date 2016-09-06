@@ -17,6 +17,7 @@ package com.onemeter.omm.onemm.fragment;
         import android.view.LayoutInflater;
         import android.view.View;
         import android.view.ViewGroup;
+        import android.widget.TextView;
         import android.widget.Toast;
 
         import com.onemeter.omm.onemm.MainActivity;
@@ -46,6 +47,9 @@ public class MyPageFragment extends Fragment {
 
     @BindView(R.id.list)
     RecyclerView list;
+
+    @BindView(R.id.text_nickname)
+    TextView nickNameView;
 
     public static final String POST_TYPE_RECEIVE = "from";
     public static final String POST_TYPE_INCOM = "0";
@@ -126,7 +130,7 @@ public class MyPageFragment extends Fragment {
                     switch (tabType) {
                         case 1: {
                             MyPostRequest request = new MyPostRequest(getContext(), "from", "1", 1, 20);
-                            NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                                 @Override
                                 public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                                     mAdapter.addAllPost(result.getResult());
@@ -141,7 +145,7 @@ public class MyPageFragment extends Fragment {
                         break;
                         case 2: {
                             MyPostRequest request = new MyPostRequest(getContext(), "to", "1", 1, 20);
-                            NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                                 @Override
                                 public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                                     mAdapter.addAllPost(result.getResult());
@@ -161,7 +165,7 @@ public class MyPageFragment extends Fragment {
                     switch (tabType) {
                         case 1: {
                             MyPostRequest request = new MyPostRequest(getContext(), "from", "0", 1, 20);
-                            NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                                 @Override
                                 public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                                     mAdapter.addAllPost(result.getResult());
@@ -176,7 +180,7 @@ public class MyPageFragment extends Fragment {
                         break;
                         case 2: {
                             MyPostRequest request = new MyPostRequest(getContext(), "to", "0", 1, 20);
-                            NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                                 @Override
                                 public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                                     mAdapter.addAllPost(result.getResult());
@@ -200,7 +204,7 @@ public class MyPageFragment extends Fragment {
                     mAdapter.clearPost();
                     if (comFlag) {
                         MyPostRequest request = new MyPostRequest(getContext(), "from", "1", 1, 20);
-                        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                                 mAdapter.addAllPost(result.getResult());
@@ -213,7 +217,7 @@ public class MyPageFragment extends Fragment {
                         });
                     } else {
                         MyPostRequest request = new MyPostRequest(getContext(), "from", "0", 1, 20);
-                        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                                 mAdapter.addAllPost(result.getResult());
@@ -229,7 +233,7 @@ public class MyPageFragment extends Fragment {
                     mAdapter.clearPost();
                     if (comFlag) {
                         MyPostRequest request = new MyPostRequest(getContext(), "to", "1", 1, 20);
-                        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                                 mAdapter.addAllPost(result.getResult());
@@ -242,7 +246,7 @@ public class MyPageFragment extends Fragment {
                         });
                     } else {
                         MyPostRequest request = new MyPostRequest(getContext(), "to", "0", 1, 20);
-                        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                                 mAdapter.addAllPost(result.getResult());
@@ -257,7 +261,7 @@ public class MyPageFragment extends Fragment {
                 } else if (num == 3) {
                     mAdapter.clearPost();
                     MyListenRequest request = new MyListenRequest(getContext(), 1, 20);
-                    NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                    NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                         @Override
                         public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                             mAdapter.addAllPost(result.getResult());
@@ -306,21 +310,25 @@ public class MyPageFragment extends Fragment {
         });
 
 
-        MyDataReqeust reqeust = new MyDataReqeust(getContext());
-        NetworkManager.getInstance().getNetworkData(reqeust, new NetworkManager.OnResultListener<NetWorkResultType<MyData[]>>() {
-            @Override
-            public void onSuccess(NetworkRequest<NetWorkResultType<MyData[]>> request, NetWorkResultType<MyData[]> result) {
-                mAdapter.addMyData(result.getResult());
-            }
+        final MyDataReqeust reqeust = new MyDataReqeust(getContext());
+        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,reqeust, new NetworkManager.OnResultListener<NetWorkResultType<MyData>>() {
+                    @Override
+                    public void onSuccess(NetworkRequest<NetWorkResultType<MyData>> request, NetWorkResultType<MyData> result) {
+                        String nickName = "User NickName";
+                        if(result.getResult().getNickname() != null) {
+                            nickName = result.getResult().getNickname();
+                        }
+                        mAdapter.addMyData(result.getResult());
+                        nickNameView.setText(nickName);
+                    }
+                    @Override
+                    public void onFail(NetworkRequest<NetWorkResultType<MyData>> request, int errorCode, String errorMessage, Throwable e) {
 
-            @Override
-            public void onFail(NetworkRequest<NetWorkResultType<MyData[]>> request, int errorCode, String errorMessage, Throwable e) {
-                Toast.makeText(getContext(), errorCode + ", " + errorMessage, Toast.LENGTH_SHORT).show();
-            }
-        });
-        mAdapter.clearPost();
+                    }
+                });
+                mAdapter.clearPost();
         MyPostRequest request = new MyPostRequest(getContext(), "from", "1", 1, 20);
-        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
             @Override
             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                 mAdapter.addAllPost(result.getResult());
@@ -352,7 +360,7 @@ public class MyPageFragment extends Fragment {
                     }
                     case 2 : {
                         RemoveImageRequest request = new RemoveImageRequest(getContext());
-                        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+                        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
                                 Toast.makeText(getContext(), result.getMessage(), Toast.LENGTH_SHORT).show();
@@ -411,7 +419,7 @@ public class MyPageFragment extends Fragment {
                     String path = c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA));
                     uploadFile = new File(path);
                     ChangeImageRequest request = new ChangeImageRequest(getContext(), uploadFile);
-                    NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+                    NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType>() {
                         @Override
                         public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
                             Toast.makeText(getContext(),result.getMessage(),Toast.LENGTH_SHORT).show();
@@ -427,7 +435,7 @@ public class MyPageFragment extends Fragment {
             if (resultCode == Activity.RESULT_OK) {
                 uploadFile = savedFile;
                 ChangeImageRequest request = new ChangeImageRequest(getContext(), uploadFile);
-                NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+                NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType>() {
                     @Override
                     public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
                         Toast.makeText(getContext(),result.getMessage(),Toast.LENGTH_SHORT).show();

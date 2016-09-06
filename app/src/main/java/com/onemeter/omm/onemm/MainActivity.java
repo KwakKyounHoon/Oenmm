@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         TabLayout.Tab home = tabs.newTab().setIcon(R.drawable.main_home_tab).setTag(TAB_TAG_HOME);
         TabLayout.Tab search = tabs.newTab().setIcon(R.drawable.main_search_tab).setTag(TAB_TAG_SEARCH);
         TabLayout.Tab rank = tabs.newTab().setIcon(R.drawable.main_rank_tab).setTag(TAB_TAG_RANK);
-        TabLayout.Tab my = tabs.newTab().setIcon(R.drawable.main_search_tab).setTag(TAB_TAG_MY);
+        TabLayout.Tab my = tabs.newTab().setIcon(R.drawable.main_my_tab).setTag(TAB_TAG_MY);
 
         tabs.addTab(home);
         tabs.addTab(search);

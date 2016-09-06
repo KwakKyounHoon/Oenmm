@@ -48,10 +48,12 @@ public class RankDonationViewHolder extends RecyclerView.ViewHolder {
         Glide.with(plcaeView.getContext())
                 .load(donationRank.getDonationPhoto())
                 .bitmapTransform(new CropCircleTransformation(MyApplication.getContext()))
+                .error(R.drawable.ic_profile_image_default)
                 .into(plcaeView);
         Glide.with(profileView.getContext())
                 .load(donationRank.getPhoto())
                 .bitmapTransform(new CropCircleTransformation(MyApplication.getContext()))
+                .error(R.drawable.ic_profile_image_default)
                 .into(profileView);
     }
 

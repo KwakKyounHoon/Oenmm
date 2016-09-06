@@ -27,8 +27,8 @@ public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
 
 
-    public void addOtherData(OtherPageData otherPageData) {
-        this.otherPageData = otherPageData;
+    public void addOtherData(OtherData otherData) {
+        this.otherPageData.setOtherData(otherData);
         notifyDataSetChanged();
     }
 

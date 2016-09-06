@@ -47,7 +47,7 @@ public class SearchFragment extends Fragment {
         params = new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT, FlowLayout.LayoutParams.WRAP_CONTENT);
 
         SearchRecommendRequest request = new SearchRecommendRequest(getContext());
-        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<SearchRecommend[]>>() {
+        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<SearchRecommend[]>>() {
             @Override
             public void onSuccess(NetworkRequest<NetWorkResultType<SearchRecommend[]>> request, NetWorkResultType<SearchRecommend[]> result) {
                 for(SearchRecommend s : result.getResult()){

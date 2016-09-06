@@ -86,7 +86,7 @@ public class ProfileModifyFragment extends Fragment {
         String nickname = nickNameView.getText().toString();
         String message = messageView.getText().toString();
         ModifyProfileRequest request = new ModifyProfileRequest(getContext(), nickname, name, message, null);
-        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType>() {
             @Override
             public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
                 Toast.makeText(getContext(),result.getMessage(),Toast.LENGTH_SHORT).show();

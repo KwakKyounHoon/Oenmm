@@ -60,7 +60,7 @@ public class SearchResultFragment extends Fragment {
                 String keyword = charSequence.toString();
                 SearchRequest request = new SearchRequest(getContext(), keyword, 1, 20);
                 mAdapter.clear();
-                NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<SearchResult[]>>() {
+                NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<SearchResult[]>>() {
                     @Override
                     public void onSuccess(NetworkRequest<NetWorkResultType<SearchResult[]>> request, NetWorkResultType<SearchResult[]> result) {
                         mAdapter.addAll(result.getResult());

@@ -81,7 +81,7 @@ public class DonatingPlaceFragment extends Fragment {
 //        DonatingPlace[] d = {new DonatingPlace(), new DonatingPlace(), new DonatingPlace(), new DonatingPlace(), new DonatingPlace()};
 //        mAdapter.addPlaces(d);
         DonatingPlacesRequest request = new DonatingPlacesRequest(getContext(), 1, 20);
-        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<DonatingPlace[]>>() {
+        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<DonatingPlace[]>>() {
             @Override
             public void onSuccess(NetworkRequest<NetWorkResultType<DonatingPlace[]>> request, NetWorkResultType<DonatingPlace[]> result) {
                 mAdapter.addPlaces(result.getResult());
@@ -94,7 +94,7 @@ public class DonatingPlaceFragment extends Fragment {
         });
 
         DonatingPlaceRequest donatingPlaceRequest = new DonatingPlaceRequest(getContext(), id);
-        NetworkManager.getInstance().getNetworkData(donatingPlaceRequest, new NetworkManager.OnResultListener<NetWorkResultType<DonatingPlace[]>>() {
+        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, donatingPlaceRequest, new NetworkManager.OnResultListener<NetWorkResultType<DonatingPlace[]>>() {
             @Override
             public void onSuccess(NetworkRequest<NetWorkResultType<DonatingPlace[]>> request, NetWorkResultType<DonatingPlace[]> result) {
                 mAdapter.addHeadPlace(result.getResult());

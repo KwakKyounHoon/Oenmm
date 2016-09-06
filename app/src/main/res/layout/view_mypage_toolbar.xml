@@ -9,6 +9,7 @@
         android:text="User name"
         android:textColor="@color/toolbar_text_color"
         android:textSize="@dimen/toolbar_text_size"
+        android:id="@+id/text_nickname"
         android:layout_centerVertical="true" />
 
     <ImageView

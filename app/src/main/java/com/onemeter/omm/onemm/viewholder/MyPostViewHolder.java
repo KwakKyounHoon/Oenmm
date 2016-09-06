@@ -73,10 +73,12 @@ public class MyPostViewHolder extends RecyclerView.ViewHolder {
         Glide.with(questionerImgView.getContext())
                 .load(post.getQuestionerPhoto())
                 .bitmapTransform(new CropCircleTransformation(MyApplication.getContext()))
+                .error(R.drawable.ic_profile_image_default)
                 .into(questionerImgView);
         Glide.with(answernerImgView.getContext())
                 .load(post.getAnswernerPhoto())
                 .bitmapTransform(new CropCircleTransformation(MyApplication.getContext()))
+                .error(R.drawable.ic_profile_image_default)
                 .into(answernerImgView);
     }
 

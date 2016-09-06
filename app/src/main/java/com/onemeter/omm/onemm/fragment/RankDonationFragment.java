@@ -53,7 +53,7 @@ public class RankDonationFragment extends Fragment {
             }
         });
         RankDonationRequest request = new RankDonationRequest(getContext());
-        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<DonationRank[]>>() {
+        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<DonationRank[]>>() {
             @Override
             public void onSuccess(NetworkRequest<NetWorkResultType<DonationRank[]>> request, NetWorkResultType<DonationRank[]> result) {
                 mAdatper.addAllDonationRank(result.getResult());

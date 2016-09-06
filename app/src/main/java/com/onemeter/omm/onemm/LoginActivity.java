@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -83,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
         if (accessToken != null) {
             String token = accessToken.getToken();
             FacebookLoginRequest request = new FacebookLoginRequest(LoginActivity.this, token);
-            NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType>() {
                 @Override
                 public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
                     String facebookId = accessToken.getUserId();
@@ -109,6 +108,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode,resultCode,data);
-        Toast.makeText(this,data.getStringExtra("email"),Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this,data.getStringExtra("email"),Toast.LENGTH_SHORT).show();
     }
 }

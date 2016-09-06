@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.onemeter.omm.onemm.R;
@@ -55,6 +56,9 @@ public class OtherFragment extends Fragment {
 
     @BindView(R.id.list)
     RecyclerView list;
+
+    @BindView(R.id.text_nickname)
+    TextView nickNameView;
 
     @BindView(R.id.btn_back)
     ImageView backView;
@@ -107,10 +111,9 @@ public class OtherFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_other, container, false);
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
-//        changeHomeAsUp(true);
         mAdapter = new OtherAdapter();
         list.setAdapter(mAdapter);
-        LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        final LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         list.setLayoutManager(manager);
         mAdapter.setOnAdapterItemClickListener(new OtherAdapter.OnAdapterItemClickLIstener() {
 
@@ -131,7 +134,7 @@ public class OtherFragment extends Fragment {
             public void onAdapterFollowClick(View view, boolean flag) {
                 if(flag){
                     AddFollowReqeust request = new AddFollowReqeust(getContext(), id);
-                    NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+                    NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType>() {
                         @Override
                         public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
                             Toast.makeText(getContext(), result.getMessage()+"",Toast.LENGTH_SHORT).show();
@@ -144,7 +147,7 @@ public class OtherFragment extends Fragment {
                     });
                 }else{
                     RemoveFollowRequest request = new RemoveFollowRequest(getContext(), id);
-                    NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+                    NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType>() {
                         @Override
                         public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
                             Toast.makeText(getContext(), result.getMessage(),Toast.LENGTH_SHORT).show();
@@ -195,7 +198,7 @@ public class OtherFragment extends Fragment {
                 if(tabType == 1){
                     if(categoryType){
                         OtherPostRequest request = new OtherPostRequest(getContext(), id, "from", "0", 1, 20);
-                        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                                 mAdapter.addAllPost(result.getResult());
@@ -208,7 +211,7 @@ public class OtherFragment extends Fragment {
                         });
                     }else{
                         OtherPostRequest request = new OtherPostRequest(getContext(), id, "from", "1", 1, 20);
-                        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                                 mAdapter.addAllPost(result.getResult());
@@ -223,7 +226,7 @@ public class OtherFragment extends Fragment {
                 }else{
                     if(categoryType){
                         OtherPostRequest request = new OtherPostRequest(getContext(), id, "to", "0", 1, 20);
-                        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                                 mAdapter.addAllPost(result.getResult());
@@ -236,7 +239,7 @@ public class OtherFragment extends Fragment {
                         });
                     }else{
                         OtherPostRequest request = new OtherPostRequest(getContext(), id, "to", "1", 1, 20);
-                        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                                 mAdapter.addAllPost(result.getResult());
@@ -258,7 +261,7 @@ public class OtherFragment extends Fragment {
                 if(flag){
                     if(tabType == 1){
                         OtherPostRequest request = new OtherPostRequest(getContext(), id, "from", "0", 1, 20);
-                        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                                 mAdapter.addAllPost(result.getResult());
@@ -271,7 +274,7 @@ public class OtherFragment extends Fragment {
                         });
                     }else{
                         OtherPostRequest request = new OtherPostRequest(getContext(), id, "to", "0", 1, 20);
-                        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                                 mAdapter.addAllPost(result.getResult());
@@ -286,7 +289,7 @@ public class OtherFragment extends Fragment {
                 }else{
                     if(tabType == 1){
                         OtherPostRequest request = new OtherPostRequest(getContext(), id, "from", "1", 1, 20);
-                        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                                 mAdapter.addAllPost(result.getResult());
@@ -299,7 +302,7 @@ public class OtherFragment extends Fragment {
                         });
                     }else{
                         OtherPostRequest request = new OtherPostRequest(getContext(), id, "to", "1", 1, 20);
-                        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                                 mAdapter.addAllPost(result.getResult());
@@ -346,22 +349,25 @@ public class OtherFragment extends Fragment {
         });
 
         OtherDataRequest request = new OtherDataRequest(getContext(), id);
-        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<OtherData[]>>() {
-            @Override
-            public void onSuccess(NetworkRequest<NetWorkResultType<OtherData[]>> request, NetWorkResultType<OtherData[]> result) {
-                mAdapter.addOtherData(result.getResult());
-            }
+        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<OtherData>>() {
+                    @Override
+                    public void onSuccess(NetworkRequest<NetWorkResultType<OtherData>> request, NetWorkResultType<OtherData> result) {
+                        mAdapter.addOtherData(result.getResult());
+                        if(result.getResult().getNickname() != null){
+                            nickNameView.setText(result.getResult().getName());
+                        }
+                    }
 
-            @Override
-            public void onFail(NetworkRequest<NetWorkResultType<OtherData[]>> request, int errorCode, String errorMessage, Throwable e) {
+                    @Override
+                    public void onFail(NetworkRequest<NetWorkResultType<OtherData>> request, int errorCode, String errorMessage, Throwable e) {
 
-            }
-        });
+                    }
+                });
 
-        mAdapter.clearPost();
+                mAdapter.clearPost();
 
         OtherPostRequest otherPostRequest = new OtherPostRequest(getContext(),id,"from","0", 20, 1);
-        NetworkManager.getInstance().getNetworkData(otherPostRequest, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,otherPostRequest, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
             @Override
             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                 mAdapter.addAllPost(result.getResult());
@@ -437,7 +443,7 @@ public class OtherFragment extends Fragment {
             public void onClick(DialogInterface dialogInterface, int i) {
 //                Toast.makeText(getContext(), "확인버튼 동작 구현",Toast.LENGTH_SHORT).show();
                 BlockRequest request = new BlockRequest(getContext(), id);
-                NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+                NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType>() {
                     @Override
                     public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
                         Toast.makeText(getContext(), result.getMessage() ,Toast.LENGTH_SHORT).show();
@@ -475,7 +481,7 @@ public class OtherFragment extends Fragment {
                         switch (listPosition){
                             case 0 : {
                                 ReportRequest request = new ReportRequest(getContext(), id, 1);
-                                NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+                                NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType>() {
                                     @Override
                                     public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
                                         Toast.makeText(getContext(), result.getMessage(),Toast.LENGTH_SHORT).show();
@@ -490,7 +496,7 @@ public class OtherFragment extends Fragment {
                             }
                             case 1 :{
                                 ReportRequest request = new ReportRequest(getContext(), id, 2);
-                                NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+                                NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType>() {
                                     @Override
                                     public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
                                         Toast.makeText(getContext(), result.getMessage(),Toast.LENGTH_SHORT).show();
@@ -505,7 +511,7 @@ public class OtherFragment extends Fragment {
                             }
                             case 2 :{
                                 ReportRequest request = new ReportRequest(getContext(), id, 3);
-                                NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+                                NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType>() {
                                     @Override
                                     public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
                                         Toast.makeText(getContext(), result.getMessage(),Toast.LENGTH_SHORT).show();

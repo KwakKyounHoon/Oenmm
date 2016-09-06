@@ -93,7 +93,7 @@ public class FollowerFragment extends Fragment {
 //        init();
         if(id != "-1"){
             OtherFollowerRequest request = new OtherFollowerRequest(getContext(), id, 1, 20);
-            NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Follower[]>>() {
+            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<Follower[]>>() {
                 @Override
                 public void onSuccess(NetworkRequest<NetWorkResultType<Follower[]>> request, NetWorkResultType<Follower[]> result) {
                     mAdapter.addAll(result.getResult());
@@ -106,7 +106,7 @@ public class FollowerFragment extends Fragment {
             });
         }else{
             MyFollowerRequest request = new MyFollowerRequest(getContext(), 1, 20);
-            NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetWorkResultType<Follower[]>>() {
+            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<Follower[]>>() {
                 @Override
                 public void onSuccess(NetworkRequest<NetWorkResultType<Follower[]>> request, NetWorkResultType<Follower[]> result) {
                     mAdapter.addAll(result.getResult());

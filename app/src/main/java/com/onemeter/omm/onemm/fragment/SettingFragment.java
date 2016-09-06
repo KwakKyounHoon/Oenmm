@@ -47,7 +47,7 @@ public class SettingFragment extends Fragment {
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         list.setLayoutManager(manager);
         SettingDonateRequest settingDonateRequest = new SettingDonateRequest(getContext());
-        NetworkManager.getInstance().getNetworkData(settingDonateRequest, new NetworkManager.OnResultListener<NetWorkResultType<SettingDonate[]>>() {
+        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,settingDonateRequest, new NetworkManager.OnResultListener<NetWorkResultType<SettingDonate[]>>() {
             @Override
             public void onSuccess(NetworkRequest<NetWorkResultType<SettingDonate[]>> request, NetWorkResultType<SettingDonate[]> result) {
                 mAdatper.addDonate(result.getResult());
@@ -59,7 +59,7 @@ public class SettingFragment extends Fragment {
             }
         });
         SettingSaveRequest settingSaveRequest = new SettingSaveRequest(getContext());
-        NetworkManager.getInstance().getNetworkData(settingSaveRequest, new NetworkManager.OnResultListener<NetWorkResultType<SettingSave[]>>() {
+        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,settingSaveRequest, new NetworkManager.OnResultListener<NetWorkResultType<SettingSave[]>>() {
             @Override
             public void onSuccess(NetworkRequest<NetWorkResultType<SettingSave[]>> request, NetWorkResultType<SettingSave[]> result) {
                 mAdatper.addSave(result.getResult());
