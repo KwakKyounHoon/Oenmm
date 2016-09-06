@@ -17,15 +17,16 @@
             android:background="@color/colorWhite" />
 
     </android.support.v7.widget.Toolbar>
-    <!-- TODO: Update blank fragment layout -->
-
 
     <TextView
         android:id="@+id/text_star"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_marginLeft="16dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
         android:layout_centerVertical="true"
+        android:layout_marginTop="24dp"
+        android:paddingBottom="24dp"
         android:text="1mm 추천 스타"
         android:textColor="@color/toolbar_text_color" />
 
