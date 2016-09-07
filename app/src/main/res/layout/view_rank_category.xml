@@ -28,7 +28,7 @@
 
             <RadioButton
                 android:id="@+id/btn_cost"
-                android:layout_width="53dp"
+                android:layout_width="70dp"
                 android:layout_height="24dp"
                 android:layout_marginRight="16dp"
                 android:button="@drawable/radio_rank_off" />

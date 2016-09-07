@@ -2,6 +2,7 @@ package com.onemeter.omm.onemm.viewholder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,7 +34,7 @@ public class OtherHeaderViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.image_profile)
     ImageView profileView;
     @BindView(R.id.image_like)
-    ImageView likeView;
+    CheckBox likeView;
     public OtherHeaderViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
