@@ -48,6 +48,9 @@ public class ListenToOffFragment extends Fragment {
     @BindView(R.id.btn_pay)
     Button payBtn;
 
+    Boolean info = false;
+    Boolean use = false;
+
     public ListenToOffFragment() {
         // Required empty public constructor
     }
@@ -71,7 +74,7 @@ public class ListenToOffFragment extends Fragment {
     }
 
     public boolean payCheck() {
-        if (checkUse.isClickable() && checkInfo.isClickable()) {
+        if (use && info) {
             payBtn.setBackgroundColor(Color.parseColor("#f82040"));
             return true;
 
@@ -93,6 +96,13 @@ public class ListenToOffFragment extends Fragment {
         checkInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!info) {
+                    checkInfo.setImageResource(R.drawable.ic_checkbox_on);
+                    info = true;
+                } else  {
+                    checkInfo.setImageResource(R.drawable.ic_checkbox_off);
+                    info = false;
+                }
                 payCheck();
             }
         });
@@ -100,6 +110,13 @@ public class ListenToOffFragment extends Fragment {
         checkUse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!use) {
+                    checkUse.setImageResource(R.drawable.ic_checkbox_on);
+                    use = true;
+                } else  {
+                    checkUse.setImageResource(R.drawable.ic_checkbox_off);
+                    use = false;
+                }
                 payCheck();
             }
         });
@@ -107,7 +124,7 @@ public class ListenToOffFragment extends Fragment {
         payBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 결제완료 버튼 누를 떄 구현
+                // 결제완료 버튼 누를 떄 구현 - > ListenToOnFragment로 View Chagne 및 답변듣기 버튼 활성화
             }
         });
 
