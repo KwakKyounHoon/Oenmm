@@ -32,10 +32,12 @@
     <string name="btn_save_withdraw">출금 하기</string>
     <string name="donate_total">누적 기부 금액 : </string>
     <string name="donate_monthly">이번 달 기부 금액 : </string>
+    <string name="return_pay_text">48시간 내에 답변을 받지 못하면 전액환불 됩니다.</string>
     <string name="listen_to_on">나도 듣기 음성은 나도듣기 보관함에 3일 동안 활성화됩니다.</string>
     <string name="listen_to_off">이 질문을 나도 듣기 하시겠습니까?</string>
     <string name="follow_activity_text">팔로우 할 연예인을 선택해주세요.</string>
     <string name="profile_setting_text">최대 20초까지 녹음 가능 합니다.</string>
     <string name="listen_to_check_use">나도 듣기 음성은 나도듣기 보관함에 3일동안 활성화 됩니다.</string>
     <string name="listen_to_check_info">나도 듣기 음성 유출 시, 법적 책임을 물어야 합니다. <u>이용약관확인</u></string>
+    <string name="question_message">질문을 입력해 주세요. (결제 후 수정불가) </string>
 </resources>
