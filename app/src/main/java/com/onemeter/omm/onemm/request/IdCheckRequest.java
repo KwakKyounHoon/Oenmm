@@ -7,33 +7,26 @@ import com.onemeter.omm.onemm.data.NetWorkResultType;
 
 import java.lang.reflect.Type;
 
-import okhttp3.FormBody;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 
 /**
- * Created by Tacademy on 2016-09-02.
+ * Created by Tacademy on 2016-09-07.
  */
-public class RemoveImageRequest extends AbstractRequest<NetWorkResultType> {
+public class IdCheckRequest extends AbstractRequest<NetWorkResultType> {
     Request request;
-    public RemoveImageRequest(Context context){
-        HttpUrl.Builder builder = getBaseUrlBuilder();
-        builder.addPathSegment("users")
+    public IdCheckRequest(Context context, String nickname){
+        HttpUrl url = getBaseUrlBuilder()
+                .addPathSegment("users")
                 .addPathSegment("me")
-                .addQueryParameter("type","2");
-
-        RequestBody body = new FormBody.Builder()
-                .add("photo","delete")
+                .addQueryParameter("nickname", nickname)
                 .build();
 
         request = new Request.Builder()
-                .url(builder.build())
-                .put(body)
+                .url(url)
                 .tag(context)
                 .build();
     }
-
     @Override
     protected Type getType() {
         return new TypeToken<NetWorkResultType>(){}.getType();

@@ -5,6 +5,7 @@ import android.content.Context;
 import com.google.gson.reflect.TypeToken;
 import com.onemeter.omm.onemm.data.NetWorkResultType;
 
+import java.io.File;
 import java.lang.reflect.Type;
 
 import okhttp3.FormBody;
@@ -13,23 +14,22 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 
 /**
- * Created by Tacademy on 2016-09-02.
+ * Created by Tacademy on 2016-09-07.
  */
-public class RemoveImageRequest extends AbstractRequest<NetWorkResultType> {
+public class ReplyRequest extends AbstractRequest<NetWorkResultType> {
     Request request;
-    public RemoveImageRequest(Context context){
+
+    public ReplyRequest(Context context, String questionId, String length, String date, File voiceContent){
         HttpUrl.Builder builder = getBaseUrlBuilder();
-        builder.addPathSegment("users")
-                .addPathSegment("me")
-                .addQueryParameter("type","2");
+        builder.addPathSegment("answers");
 
         RequestBody body = new FormBody.Builder()
-                .add("photo","delete")
+                .add("questionId",questionId)
                 .build();
 
         request = new Request.Builder()
                 .url(builder.build())
-                .put(body)
+                .post(body)
                 .tag(context)
                 .build();
     }

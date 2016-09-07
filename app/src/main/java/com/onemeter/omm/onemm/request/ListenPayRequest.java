@@ -13,23 +13,21 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 
 /**
- * Created by Tacademy on 2016-09-02.
+ * Created by Tacademy on 2016-09-07.
  */
-public class RemoveImageRequest extends AbstractRequest<NetWorkResultType> {
+public class ListenPayRequest extends AbstractRequest<NetWorkResultType> {
     Request request;
-    public RemoveImageRequest(Context context){
+    public ListenPayRequest(Context context, String answerId){
         HttpUrl.Builder builder = getBaseUrlBuilder();
-        builder.addPathSegment("users")
-                .addPathSegment("me")
-                .addQueryParameter("type","2");
+        builder.addPathSegment("pays");
 
         RequestBody body = new FormBody.Builder()
-                .add("photo","delete")
+                .add("answerId",answerId)
                 .build();
 
         request = new Request.Builder()
                 .url(builder.build())
-                .put(body)
+                .post(body)
                 .tag(context)
                 .build();
     }

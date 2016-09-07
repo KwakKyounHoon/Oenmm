@@ -32,13 +32,20 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
 /**
  * A simple {@link Fragment} subclass.
  */
+
+
+
 public class ReplyFragment extends Fragment {
     Post post;
     MediaPlayer player;
     MediaRecorder recorder;
     int playbackPosition = 0;
     static final String RECORDED_FILE = "/sdcard/recorded.3GP";
-
+    int endTime = 60;
+    private final int PLATING = 2;
+    private final int STOPPING = 0;
+    private final int RECORDDING = 1;
+    private final int LSTOPPING = 3;
     int state = 0;
 
     public ReplyFragment() {
@@ -114,19 +121,19 @@ public class ReplyFragment extends Fragment {
     @OnClick(R.id.image_play)
     public void playClick(View view){
         switch (state){
-            case 0:{
+            case STOPPING:{
                 startRecord();
                 break;
             }
-            case 1 :{
+            case RECORDDING :{
                 endRecord();
                 break;
             }
-            case 2 :{
+            case PLATING :{
                 playVoice();
                 break;
             }
-            case 3 :{
+            case LSTOPPING :{
                 stopVoice();
                 break;
             }
@@ -136,7 +143,7 @@ public class ReplyFragment extends Fragment {
     @OnClick(R.id.image_return)
     public void returnClick(View view){
         if (state == 2 || state == 3) {
-            state = 0;
+            state = STOPPING;
             timeView.setText("0:00");
             playImage.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_record_on));
             returnImage.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_record_return_off));
@@ -147,10 +154,10 @@ public class ReplyFragment extends Fragment {
 
     Handler mHandler = new Handler(Looper.getMainLooper());
 
-    Runnable downRunnable = new Runnable() {
+    Runnable countRunnable = new Runnable() {
         @Override
         public void run() {
-            if (state == 1) {
+            if (state == RECORDDING || state == LSTOPPING) {
                 long time = SystemClock.elapsedRealtime();
                 if (startTime == -1) {
                     startTime = time;
@@ -158,13 +165,18 @@ public class ReplyFragment extends Fragment {
                 int gap = (int) (time - startTime);
                 int count = 0 + gap / 1000;
                 int rest = 1000 - gap % 1000;
-                if (count < 60) {
+                if (count < endTime) {
                     timeView.setText("0 : " + count);
                     mHandler.postDelayed(this, rest);
-                } else {
+                } else if(state == RECORDDING) {
                     timeView.setText("1.00");
                     recorder.stop();
                     recorder.release();
+                    playImage.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_record_play));
+                    returnImage.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_record_return_on));
+                } else if(state == LSTOPPING){
+                    timeView.setText("0 : " + count);
+                    state = PLATING;
                     playImage.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_record_play));
                     returnImage.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_record_return_on));
                 }
@@ -188,12 +200,13 @@ public class ReplyFragment extends Fragment {
                     "녹음을 시작합니다.", Toast.LENGTH_LONG).show();
             recorder.prepare();
             recorder.start();
-            state = 1;
+            state = RECORDDING;
             startTime = -1;
+            endTime = 60;
             playImage.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_record_stop));
             soundImage.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_record_sound_on));
-            mHandler.removeCallbacks(downRunnable);
-            mHandler.post(downRunnable);
+            mHandler.removeCallbacks(countRunnable);
+            mHandler.post(countRunnable);
         }catch (Exception ex){
             Log.e("SampleAudioRecorder", "Exception : ", ex);
         }
@@ -204,7 +217,7 @@ public class ReplyFragment extends Fragment {
         recorder.stop();
         recorder.release();
         recorder = null;
-        state = 2;
+        state = PLATING;
         playImage.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_record_play));
         returnImage.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_record_return_on));
         soundImage.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_record_sound_off));
@@ -219,7 +232,9 @@ public class ReplyFragment extends Fragment {
         } catch(Exception e){
             e.printStackTrace();
         }
-        state = 3;
+        timeView.setText("0:00");
+        startTime = -1;
+        state = LSTOPPING;
         playImage.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_record_stop));
     }
 
@@ -229,6 +244,9 @@ public class ReplyFragment extends Fragment {
         player.setDataSource(url);
         player.prepare();
         player.start();
+        endTime = player.getDuration()/1000;
+        mHandler.removeCallbacks(countRunnable);
+        mHandler.post(countRunnable);
     }
 
     private void stopVoice(){
@@ -237,7 +255,7 @@ public class ReplyFragment extends Fragment {
             player.pause();
             Toast.makeText(getContext(), "음악 파일 재생 중지됨.",Toast.LENGTH_SHORT).show();
             playImage.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_record_play));
-            state = 2;
+            state = PLATING;
         }
     }
 

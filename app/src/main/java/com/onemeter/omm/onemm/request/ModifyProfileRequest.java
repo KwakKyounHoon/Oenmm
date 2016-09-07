@@ -44,6 +44,28 @@ public class ModifyProfileRequest extends AbstractRequest<NetWorkResultType> {
                 .tag(context)
                 .build();
     }
+
+    public ModifyProfileRequest(Context context, File voiceMessage){
+        HttpUrl url = getBaseUrlBuilder()
+                .addPathSegment("users")
+                .addPathSegment("me")
+                .addQueryParameter("type","0")
+                .build();
+
+        MultipartBody.Builder builder = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM);
+
+        if (voiceMessage != null) {
+            builder.addFormDataPart("voiceMessage", voiceMessage.getName(),
+                    RequestBody.create(mediaType, voiceMessage));
+        }
+        RequestBody body = builder.build();
+        request = new Request.Builder()
+                .url(url)
+                .put(body)
+                .tag(context)
+                .build();
+    }
     @Override
     protected Type getType() {
         return new TypeToken<NetWorkResultType>(){}.getType();
