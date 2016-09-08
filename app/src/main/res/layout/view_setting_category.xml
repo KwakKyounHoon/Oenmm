@@ -5,7 +5,8 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:textSize="15sp"
+        android:background="@drawable/ic_setting_underline"
         android:id="@+id/text_setting_category"
-        android:text="@string/setting_notify_text"
-        />
+        android:text="@string/setting_notify_text" />
 </LinearLayout>
