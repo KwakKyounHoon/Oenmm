@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -133,23 +132,6 @@ public class FollowingFragment extends Fragment {
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            if(getParentFragment() instanceof TabMyFragment){
-                ((TabMyFragment) (getParentFragment())).popFragment();
-            }else if(getParentFragment() instanceof TabHomeFragment){
-                ((TabHomeFragment) (getParentFragment())).popFragment();
-            }else if(getParentFragment() instanceof TabRankFragment){
-                ((TabRankFragment) (getParentFragment())).popFragment();
-            }else{
-                ((TabSearchFragment) (getParentFragment())).popFragment();
-            }
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @OnClick(R.id.btn_back)
     public void backclick(View view){

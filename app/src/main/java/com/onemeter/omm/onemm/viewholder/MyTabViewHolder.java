@@ -63,9 +63,9 @@ public class MyTabViewHolder extends RecyclerView.ViewHolder {
 
             }
         });
-        receiveTab = tabs.newTab().setText("RECEIVE").setTag(TAB_TAG_MY_RECEIVE);
-        sendTab = tabs.newTab().setText("SEND").setTag(TAB_TAG_MY_SEND);
-        listenTab = tabs.newTab().setText("LISTEN").setTag(TAB_TAG_LISTEN_RANK);
+        receiveTab = tabs.newTab().setIcon(R.drawable.mypage_receive_tab).setTag(TAB_TAG_MY_RECEIVE);
+        sendTab = tabs.newTab().setIcon(R.drawable.mypage_send_tab).setTag(TAB_TAG_MY_SEND);
+        listenTab = tabs.newTab().setIcon(R.drawable.mypage_hearing_tab).setTag(TAB_TAG_LISTEN_RANK);
         tabs.addTab(receiveTab);
         tabs.addTab(sendTab);
         tabs.addTab(listenTab);

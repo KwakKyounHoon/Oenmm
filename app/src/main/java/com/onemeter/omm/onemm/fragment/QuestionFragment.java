@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.data.NetWorkResultType;
 import com.onemeter.omm.onemm.data.OtherData;
@@ -68,7 +69,7 @@ public class QuestionFragment extends Fragment {
             otherData = (OtherData) getArguments().getSerializable(OTHER_DATA);
         }
     }
-    
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -106,12 +107,26 @@ public class QuestionFragment extends Fragment {
         messageView.setText(otherData.getStateMessage());
         nicknameView.setText(otherData.getNickname());
         nameView.setText(otherData.getName());
-//        Glide.with(imageVIew.getContext())
-//                .load(otherData.getPhoto())
-//                .into(imageVIew);
+        Glide.with(imageVIew.getContext())
+                .load(otherData.getPhoto())
+                .error(R.drawable.ic_profile_image_default)
+                .into(imageVIew);
     }
 
     private void popFragment(){
+        if(getParentFragment() instanceof TabMyFragment){
+            ((TabMyFragment) (getParentFragment())).popFragment();
+        }else if(getParentFragment() instanceof TabHomeFragment){
+            ((TabHomeFragment) (getParentFragment())).popFragment();
+        }else if(getParentFragment() instanceof TabRankFragment){
+            ((TabRankFragment) (getParentFragment())).popFragment();
+        }else{
+            ((TabSearchFragment) (getParentFragment())).popFragment();
+        }
+    }
+
+    @OnClick(R.id.btn_back)
+    public void backclick(View view){
         if(getParentFragment() instanceof TabMyFragment){
             ((TabMyFragment) (getParentFragment())).popFragment();
         }else if(getParentFragment() instanceof TabHomeFragment){

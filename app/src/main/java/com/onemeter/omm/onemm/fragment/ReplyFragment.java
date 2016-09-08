@@ -168,8 +168,12 @@ public class ReplyFragment extends Fragment {
                 if (count < endTime) {
                     timeView.setText("0 : " + count);
                     mHandler.postDelayed(this, rest);
+                    if(recorder != null) {
+                        int a = recorder.getMaxAmplitude();
+                        Log.i("test", a + "");
+                    }
                 } else if(state == RECORDDING) {
-                    timeView.setText("1.00");
+                    timeView.setText("1 : 00");
                     recorder.stop();
                     recorder.release();
                     playImage.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_record_play));

@@ -56,14 +56,16 @@
 
         <CheckBox
             android:id="@+id/image_like"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:button="@null"
+            android:background="@drawable/check_follow_on"
+            android:checked="false"
             android:layout_alignTop="@+id/btn_question"
-            android:layout_alignBottom="@+id/btn_question"
-            android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/btn_question"
-            android:button="@drawable/check_follow_on"
-            android:checked="false"/>
+            android:layout_toEndOf="@+id/btn_question"
+            android:layout_alignBottom="@+id/btn_question" />
 
         <Button
             android:id="@+id/btn_question"

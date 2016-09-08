@@ -16,6 +16,8 @@ import butterknife.ButterKnife;
 public class OtherTabViewHolder extends RecyclerView.ViewHolder{
     @BindView(R.id.tabs)
     TabLayout tabs;
+    TabLayout.Tab receiveTab;
+    TabLayout.Tab sendTab;
     FragmentManager fragmentManager;
 
     public static String TAB_TAG_MY_RECEIVE = "receive";
@@ -53,10 +55,10 @@ public class OtherTabViewHolder extends RecyclerView.ViewHolder{
 
             }
         });
-
-        tabs.addTab(tabs.newTab().setText("RECEIVE").setTag(TAB_TAG_MY_RECEIVE));
-        tabs.addTab(tabs.newTab().setText("SEND").setTag(TAB_TAG_MY_SEND));
-
+        receiveTab = tabs.newTab().setIcon(R.drawable.mypage_receive_tab).setTag(TAB_TAG_MY_RECEIVE);
+        sendTab = tabs.newTab().setIcon(R.drawable.mypage_send_tab).setTag(TAB_TAG_MY_SEND);
+        tabs.addTab(receiveTab.setTag(TAB_TAG_MY_RECEIVE));
+        tabs.addTab(sendTab.setTag(TAB_TAG_MY_SEND));
     }
 
     public interface OnTabItemClickListener {
