@@ -66,6 +66,13 @@ public class OtherHeaderViewHolder extends RecyclerView.ViewHolder {
         });
     }
 
+    @OnClick(R.id.btn_sound)
+    public void voiceClick(View view){
+        if(listener != null){
+            listener.onSoundItemClick(view, otherData, getAdapterPosition());
+        }
+    }
+
 //    @OnClick(R.id.btn_like)
 //    public void onSoundClick(View view){
 //        if (listener != null) {

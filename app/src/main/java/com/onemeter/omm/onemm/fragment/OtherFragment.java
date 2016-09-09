@@ -2,6 +2,7 @@ package com.onemeter.omm.onemm.fragment;
 
 
 import android.content.DialogInterface;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -62,6 +63,8 @@ public class OtherFragment extends Fragment {
     @BindView(R.id.btn_back)
     ImageView backView;
     ShareActionProvider mShareActionProvider;
+
+    MediaPlayer player;
 
     public OtherFragment() {
         // Required empty public constructor
@@ -190,6 +193,11 @@ public class OtherFragment extends Fragment {
             @Override
             public void onAdapterSoundClick(View view, OtherData otherData, int position) {
                 Toast.makeText(getContext(), "소리", Toast.LENGTH_SHORT).show();
+                try {
+                    playAudio(otherData.getVoiceMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -547,6 +555,24 @@ public class OtherFragment extends Fragment {
         }else{
             ((TabSearchFragment) (getParentFragment())).popFragment();
         }
+    }
+
+    private void killMediaPlayer() {
+        if(player != null){
+            try {
+                player.release();
+            } catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void playAudio(String url) throws Exception{
+        killMediaPlayer();
+        player = new MediaPlayer();
+        player.setDataSource(url);
+        player.prepare();
+        player.start();
     }
 
 }

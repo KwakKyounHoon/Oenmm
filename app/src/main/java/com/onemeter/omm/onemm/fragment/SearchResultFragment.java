@@ -7,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,11 @@ import android.widget.EditText;
 
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.adapter.SearchResultAdapter;
+import com.onemeter.omm.onemm.data.NetWorkResultType;
 import com.onemeter.omm.onemm.data.SearchResult;
+import com.onemeter.omm.onemm.manager.NetworkManager;
+import com.onemeter.omm.onemm.manager.NetworkRequest;
+import com.onemeter.omm.onemm.request.SearchRequest;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,22 +57,22 @@ public class SearchResultFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                Log.i("test",charSequence.length()+"");
                 String keyword = charSequence.toString();
+                if(charSequence.length()>2) {
+                SearchRequest request = new SearchRequest(getContext(), keyword, 1, 20);
+                mAdapter.clear();
+                NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<SearchResult[]>>() {
+                    @Override
+                    public void onSuccess(NetworkRequest<NetWorkResultType<SearchResult[]>> request, NetWorkResultType<SearchResult[]> result) {
+                        mAdapter.addAll(result.getResult());
+                    }
 
-//                SearchRequest request = new SearchRequest(getContext(), keyword, 1, 20);
-//                mAdapter.clear();
-//                NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<SearchResult[]>>() {
-//                    @Override
-//                    public void onSuccess(NetworkRequest<NetWorkResultType<SearchResult[]>> request, NetWorkResultType<SearchResult[]> result) {
-//                        mAdapter.addAll(result.getResult());
-//                    }
-//
-//                    @Override
-//                    public void onFail(NetworkRequest<NetWorkResultType<SearchResult[]>> request, int errorCode, String errorMessage, Throwable e) {
-//
-//                    }
-//                });
+                    @Override
+                    public void onFail(NetworkRequest<NetWorkResultType<SearchResult[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                    }
+                });
+                }
             }
 
             @Override

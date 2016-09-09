@@ -41,6 +41,23 @@ public class SettingSaveViewHolder extends RecyclerView.ViewHolder{
     public SettingSaveViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(listener != null){
+                    listener.onExpandClick(view, getAdapterPosition(), expandFlag);
+                }
+                if(expandFlag){
+                    childView.setVisibility(View.VISIBLE);
+                    expandView.setImageDrawable(ContextCompat.getDrawable(MyApplication.getContext(), R.drawable.ic_setting_fold));
+                    expandFlag = !expandFlag;
+                }else{
+                    childView.setVisibility(View.GONE);
+                    expandView.setImageDrawable(ContextCompat.getDrawable(MyApplication.getContext(), R.drawable.ic_setting_spread));
+                    expandFlag = !expandFlag;
+                }
+            }
+        });
     }
 
     public void setPoin(SettingSave settingSave){
@@ -59,18 +76,7 @@ public class SettingSaveViewHolder extends RecyclerView.ViewHolder{
 
     @OnClick(R.id.image_expand)
     public void expandClick(View view){
-        if(listener != null){
-            listener.onExpandClick(view, getAdapterPosition(), expandFlag);
-        }
-        if(expandFlag){
-            childView.setVisibility(View.VISIBLE);
-            expandView.setImageDrawable(ContextCompat.getDrawable(MyApplication.getContext(), R.drawable.ic_setting_fold));
-            this.expandFlag = !this.expandFlag;
-        }else{
-            childView.setVisibility(View.GONE);
-            expandView.setImageDrawable(ContextCompat.getDrawable(MyApplication.getContext(), R.drawable.ic_setting_spread));
-            this.expandFlag = !this.expandFlag;
-        }
+
     }
 
     public interface OnSettingSaveItemClickListener {

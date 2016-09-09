@@ -1,5 +1,6 @@
 package com.onemeter.omm.onemm.viewholder;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -26,6 +27,8 @@ public class RankDonationViewHolder extends RecyclerView.ViewHolder {
     ImageView profileView;
     @BindView(R.id.image_place)
     ImageView plcaeView;
+    @BindView(R.id.image_rank)
+    ImageView rankView;
 
     public RankDonationViewHolder(View itemView) {
         super(itemView);
@@ -55,6 +58,23 @@ public class RankDonationViewHolder extends RecyclerView.ViewHolder {
                 .bitmapTransform(new CropCircleTransformation(MyApplication.getContext()))
                 .error(R.drawable.ic_profile_image_default)
                 .into(profileView);
+        switch (getAdapterPosition()){
+            case 0:
+                rankView.setImageDrawable(ContextCompat.getDrawable(MyApplication.getContext(),R.drawable.ic_one));
+                break;
+            case 1:
+                rankView.setImageDrawable(ContextCompat.getDrawable(MyApplication.getContext(),R.drawable.ic_two));
+                break;
+            case 2:
+                rankView.setImageDrawable(ContextCompat.getDrawable(MyApplication.getContext(),R.drawable.ic_three));
+                break;
+            case 3:
+                rankView.setImageDrawable(ContextCompat.getDrawable(MyApplication.getContext(),R.drawable.ic_four));
+                break;
+            case 4:
+                rankView.setImageDrawable(ContextCompat.getDrawable(MyApplication.getContext(),R.drawable.ic_five));
+                break;
+        }
     }
 
     public interface OnRankDonationItemClickListener {
