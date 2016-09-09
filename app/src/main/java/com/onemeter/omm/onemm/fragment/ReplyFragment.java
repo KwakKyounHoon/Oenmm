@@ -3,6 +3,7 @@ package com.onemeter.omm.onemm.fragment;
 
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.media.audiofx.Visualizer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -46,6 +47,8 @@ public class ReplyFragment extends Fragment {
     private final int STOPPING = 0;
     private final int RECORDDING = 1;
     private final int LSTOPPING = 3;
+    int volLevel = 0;
+    Visualizer mVisualizer;
     int state = 0;
 
     public ReplyFragment() {
@@ -168,21 +171,53 @@ public class ReplyFragment extends Fragment {
                 if (count < endTime) {
                     timeView.setText("0 : " + count);
                     mHandler.postDelayed(this, rest);
-                    if(recorder != null) {
-                        int a = recorder.getMaxAmplitude();
-                        Log.i("test", a + "");
-                    }
                 } else if(state == RECORDDING) {
                     timeView.setText("1 : 00");
-                    recorder.stop();
-                    recorder.release();
+                    endRecord();
                     playImage.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_record_play));
                     returnImage.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_record_return_on));
-                } else if(state == LSTOPPING){
+                }else if(state == LSTOPPING){
                     timeView.setText("0 : " + count);
                     state = PLATING;
                     playImage.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_record_play));
                     returnImage.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_record_return_on));
+                }
+            }
+        }
+    };
+
+    Runnable volRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (state == RECORDDING && recorder != null) {
+                mHandler.postDelayed(this, 200);
+                if (recorder != null) {
+                    int a = recorder.getMaxAmplitude();
+                    if (a < 500) {
+                        volLevel = 0;
+                    } else if (a < 7000) {
+                        volLevel = 1;
+                    } else if (a < 20000) {
+                        volLevel = 2;
+                    } else {
+                        volLevel = 3;
+                    }
+                }else{
+                    volLevel = 0;
+                }
+                switch (volLevel) {
+                    case 0:
+                        soundImage.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_record_sound_off));
+                        break;
+                    case 1:
+                        soundImage.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_record_sound_1));
+                        break;
+                    case 2:
+                        soundImage.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_record_sound_2));
+                        break;
+                    case 3:
+                        soundImage.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_record_sound_on));
+                        break;
                 }
             }
         }
@@ -208,9 +243,10 @@ public class ReplyFragment extends Fragment {
             startTime = -1;
             endTime = 60;
             playImage.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_record_stop));
-            soundImage.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_record_sound_on));
             mHandler.removeCallbacks(countRunnable);
+            mHandler.removeCallbacks(volRunnable);
             mHandler.post(countRunnable);
+            mHandler.post(volRunnable);
         }catch (Exception ex){
             Log.e("SampleAudioRecorder", "Exception : ", ex);
         }
@@ -245,10 +281,19 @@ public class ReplyFragment extends Fragment {
     private void playAudio(String url) throws Exception{
         killMediaPlayer();
         player = new MediaPlayer();
-        player.setDataSource(url);
+        player.setDataSource("http://ec2-52-78-137-47.ap-northeast-2.compute.amazonaws.com/avs/whiparam.mp3");
+        setupVisualizerFxAndUI();
+        mVisualizer.setEnabled(true);
+        player
+                .setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    public void onCompletion(MediaPlayer mediaPlayer) {
+                        mVisualizer.setEnabled(false);
+                    }
+                });
         player.prepare();
         player.start();
-        endTime = player.getDuration()/1000;
+        float a = player.getDuration();
+        endTime = Math.round(a/1000);
         mHandler.removeCallbacks(countRunnable);
         mHandler.post(countRunnable);
     }
@@ -271,7 +316,35 @@ public class ReplyFragment extends Fragment {
                 e.printStackTrace();
             }
         }
+    }
 
+    private void setupVisualizerFxAndUI(){
+        mVisualizer = new Visualizer(player.getAudioSessionId());
+        mVisualizer.setCaptureSize(Visualizer.getCaptureSizeRange()[1]);
+        mVisualizer.setDataCaptureListener(
+                new Visualizer.OnDataCaptureListener() {
+                    public void onWaveFormDataCapture(Visualizer visualizer,
+                                                      byte[] bytes, int samplingRate) {
+                        int max = 0;
+                        for(int i = 0; i < bytes.length; i++){
+                            if(max < bytes[i] + 128)
+                                max = bytes[i];
+                        }
+                        if (max < 10) {
+                            soundImage.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_record_sound_off));
+                        } else if (max < 100) {
+                            soundImage.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_record_sound_1));
+                        } else if (max < 120) {
+                            soundImage.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_record_sound_2));
+                        } else {
+                            soundImage.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_record_sound_on));
+                        }
+                    }
+
+                    public void onFftDataCapture(Visualizer visualizer,
+                                                 byte[] bytes, int samplingRate) {
+                    }
+                }, Visualizer.getMaxCaptureRate() / 5, true, false);
     }
 
     @OnClick(R.id.btn_back)

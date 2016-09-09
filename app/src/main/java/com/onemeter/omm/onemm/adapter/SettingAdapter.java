@@ -15,7 +15,6 @@ import com.onemeter.omm.onemm.viewholder.SettingCategoryViewHolder;
 import com.onemeter.omm.onemm.viewholder.SettingDonateViewHolder;
 import com.onemeter.omm.onemm.viewholder.SettingLogoutViewHolder;
 import com.onemeter.omm.onemm.viewholder.SettingNotifyViewHolder;
-import com.onemeter.omm.onemm.viewholder.SettingSaveExpandViewHolder;
 import com.onemeter.omm.onemm.viewholder.SettingSaveViewHolder;
 
 /**
@@ -44,7 +43,7 @@ public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public static final int VIEW_TYPE_CATEGORY = 1;
     public static final int VIEW_TYPE_NOTIFY = 2;
     public static final int VIEW_TYPE_SAVE_PARENT = 3;
-    public static final int VIEW_TYPE_SAVE_CHILD = 30;
+//    public static final int VIEW_TYPE_SAVE_CHILD = 30;
     public static final int VIEW_TYPE_DONATE = 4;
     public static final int VIEW_TYPE_LOGOUT = 5;
     public static final int VIEW_TYPE_AGREE = 6;
@@ -59,8 +58,6 @@ public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             if (position == 0) return VIEW_TYPE_CATEGORY;
             position--;
             if (position == 0) return VIEW_TYPE_SAVE_PARENT;
-            position--;
-            if (position == 0) return VIEW_TYPE_SAVE_CHILD;
             position--;
         }
         if(settingData.getSettingDonate() != null) {
@@ -89,9 +86,6 @@ public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             case VIEW_TYPE_SAVE_PARENT :{
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_setting_savemoney, parent, false);
                 return new SettingSaveViewHolder(view);
-            }case VIEW_TYPE_SAVE_CHILD :{
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_setting_savemoney_expand, parent, false);
-                return new SettingSaveExpandViewHolder(view);
             }
             case VIEW_TYPE_DONATE :{
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_setting_donate, parent, false);
@@ -131,12 +125,7 @@ public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             if (position == 0){
                 SettingSaveViewHolder ssvh = (SettingSaveViewHolder)holder;
                 ssvh.setPoin(settingData.getSettingSave());
-                return;
-            }
-            position--;
-            if (position == 0) {
-                SettingSaveExpandViewHolder ssevh = (SettingSaveExpandViewHolder)holder;
-                ssevh.setSettingSave(settingData.getSettingSave());
+                ssvh.setSettingSave(settingData.getSettingSave());
                 return;
             }
             position--;
@@ -174,7 +163,7 @@ public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         int ctn = 0;
         if (settingData == null) return 0;
         if(settingData.getSettingDonate() == null) ctn += 2;
-        if(settingData.getSettingSave() == null) ctn += 3;
-        return 9-ctn;
+        if(settingData.getSettingSave() == null) ctn += 2;
+        return 8-ctn;
     }
 }

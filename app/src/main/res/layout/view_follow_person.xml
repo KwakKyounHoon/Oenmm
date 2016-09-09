@@ -14,8 +14,8 @@
         android:id="@+id/image_blur"
         android:src="@drawable/blur"
         android:visibility="gone"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:scaleType="centerCrop"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
