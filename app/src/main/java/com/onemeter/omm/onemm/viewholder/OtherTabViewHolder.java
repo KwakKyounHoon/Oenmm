@@ -14,6 +14,7 @@ import butterknife.ButterKnife;
  * Created by Tacademy on 2016-08-24.
  */
 public class OtherTabViewHolder extends RecyclerView.ViewHolder{
+
     @BindView(R.id.tabs)
     TabLayout tabs;
     TabLayout.Tab receiveTab;
@@ -37,6 +38,7 @@ public class OtherTabViewHolder extends RecyclerView.ViewHolder{
                 if (tag.equals(TAB_TAG_MY_RECEIVE)){
                     if(listener != null){
                         listener.onTabType(itemView, 1);
+
                     }
                 }else if(tag.equals(TAB_TAG_MY_SEND)){
                     if(listener != null){
@@ -70,5 +72,6 @@ public class OtherTabViewHolder extends RecyclerView.ViewHolder{
     public void setOnTabClickListener(OnTabItemClickListener listener) {
         this.listener = listener;
     }
+
 
 }

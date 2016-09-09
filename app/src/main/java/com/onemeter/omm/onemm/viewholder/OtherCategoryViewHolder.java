@@ -15,6 +15,7 @@ import butterknife.ButterKnife;
  */
 public class OtherCategoryViewHolder extends RecyclerView.ViewHolder {
 
+
     @BindView(R.id.radiogroup)
     RadioGroup radioGroup;
     @BindView(R.id.btn_listen)
@@ -53,4 +54,5 @@ public class OtherCategoryViewHolder extends RecyclerView.ViewHolder {
     public void setOnOtherCategoryItemClickListener(OnOtherCategoryItemClickListener listener) {
         this.listener = listener;
     }
+
 }

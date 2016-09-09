@@ -1,5 +1,6 @@
 package com.onemeter.omm.onemm;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -11,6 +12,7 @@ import com.onemeter.omm.onemm.fragment.TabHomeFragment;
 import com.onemeter.omm.onemm.fragment.TabMyFragment;
 import com.onemeter.omm.onemm.fragment.TabRankFragment;
 import com.onemeter.omm.onemm.fragment.TabSearchFragment;
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,6 +30,11 @@ public class MainActivity extends AppCompatActivity {
     BackKeyFragment currentFragment = null;
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -38,58 +45,58 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 
-                String tag = (String)tab.getTag();
+                String tag = (String) tab.getTag();
 
-                if (tag.equals(TAB_TAG_HOME)){
+                if (tag.equals(TAB_TAG_HOME)) {
                     Fragment f = getSupportFragmentManager().findFragmentByTag(tag);
                     if (f != null) {
                         getSupportFragmentManager().beginTransaction()
                                 .attach(f)
                                 .commit();
                         currentFragment = (TabHomeFragment) f;
-                    }else{
+                    } else {
                         f = new TabHomeFragment();
                         getSupportFragmentManager().beginTransaction()
-                                .add(R.id.container, f , (String)tab.getTag())
+                                .add(R.id.container, f, (String) tab.getTag())
                                 .commit();
                         currentFragment = (TabHomeFragment) f;
                     }
-                }else if(tag.equals(TAB_TAG_MY)){
+                } else if (tag.equals(TAB_TAG_MY)) {
                     Fragment f = getSupportFragmentManager().findFragmentByTag(tag);
                     if (f != null) {
                         getSupportFragmentManager().beginTransaction()
                                 .attach(f)
                                 .commit();
                         currentFragment = (TabMyFragment) f;
-                    }else {
+                    } else {
                         f = new TabMyFragment();
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.container, f, (String) tab.getTag())
                                 .commit();
                         currentFragment = (TabMyFragment) f;
                     }
-                }else if(tag.equals(TAB_TAG_SEARCH)){
+                } else if (tag.equals(TAB_TAG_SEARCH)) {
                     Fragment f = getSupportFragmentManager().findFragmentByTag(tag);
                     if (f != null) {
                         getSupportFragmentManager().beginTransaction()
                                 .attach(f)
                                 .commit();
                         currentFragment = (TabSearchFragment) f;
-                    }else {
+                    } else {
                         f = new TabSearchFragment();
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.container, f, (String) tab.getTag())
                                 .commit();
                         currentFragment = (TabSearchFragment) f;
                     }
-                }else if(tag.equals(TAB_TAG_RANK)){
+                } else if (tag.equals(TAB_TAG_RANK)) {
                     Fragment f = getSupportFragmentManager().findFragmentByTag(tag);
                     if (f != null) {
                         getSupportFragmentManager().beginTransaction()
                                 .attach(f)
                                 .commit();
                         currentFragment = (TabRankFragment) f;
-                    }else {
+                    } else {
                         f = new TabRankFragment();
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.container, f, (String) tab.getTag())
@@ -100,11 +107,10 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
-
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
                 if (tab == null) return;
-                String tag = (String)tab.getTag();
+                String tag = (String) tab.getTag();
                 Fragment f = getSupportFragmentManager().findFragmentByTag(tag);
                 if (f != null) {
                     getSupportFragmentManager().beginTransaction()
@@ -115,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                String tag = (String)tab.getTag();
+                String tag = (String) tab.getTag();
                 Fragment f = getSupportFragmentManager().findFragmentByTag(tag);
                 if (f != null) {
                     getSupportFragmentManager().beginTransaction()
@@ -158,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    public void actionBarHide(){
+    public void actionBarHide() {
 //        getSupportActionBar().setShowHideAnimationEnabled(false);
 //        getSupportActionBar().hide();
     }
