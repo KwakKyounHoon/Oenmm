@@ -50,7 +50,6 @@ public class OtherFragment extends Fragment {
     int tabType = 1;
     boolean categoryType = true;
 
-
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -115,6 +114,7 @@ public class OtherFragment extends Fragment {
         list.setAdapter(mAdapter);
         final LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         list.setLayoutManager(manager);
+
         mAdapter.setOnAdapterItemClickListener(new OtherAdapter.OnAdapterItemClickLIstener() {
 
             @Override

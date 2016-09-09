@@ -1,15 +1,18 @@
 package com.onemeter.omm.onemm.fragment;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.onemeter.omm.onemm.MainActivity;
 import com.onemeter.omm.onemm.R;
@@ -87,7 +90,20 @@ public class FollowerFragment extends Fragment {
 
             @Override
             public void onAdapterLikeClick(View view, Follower follower, int position) {
-
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("정말 팔로우하시겠습니까?")
+                        .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Toast.makeText(getContext(), "follow dial cancel", Toast.LENGTH_SHORT).show();
+                            }
+                        }).setPositiveButton("예, 확실합니다.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(getContext(), "follow dial ok", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                builder.show();
             }
         });
 //        init();

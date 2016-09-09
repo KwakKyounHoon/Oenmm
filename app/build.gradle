@@ -38,4 +38,6 @@ dependencies {
     compile 'com.wefika:flowlayout:0.4.1'
     compile 'jp.wasabeef:glide-transformations:2.0.1'
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
+    compile 'com.tsengvn:Typekit:1.0.0'
+
 }
