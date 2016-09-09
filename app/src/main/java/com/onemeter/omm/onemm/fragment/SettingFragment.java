@@ -36,6 +36,7 @@ public class SettingFragment extends Fragment {
     @BindView(R.id.list)
     RecyclerView list;
     SettingAdapter mAdatper;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -68,6 +69,13 @@ public class SettingFragment extends Fragment {
             @Override
             public void onFail(NetworkRequest<NetWorkResultType<SettingSave>> request, int errorCode, String errorMessage, Throwable e) {
 
+            }
+        });
+        mAdatper.setOnMyDataItemClickListener(new SettingAdapter.OnSettingAdapterItemClickListener() {
+
+
+            @Override
+            public void onExpandClick(View view, int position, boolean expandFlag) {
             }
         });
         return view;

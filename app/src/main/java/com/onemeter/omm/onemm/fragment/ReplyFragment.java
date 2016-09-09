@@ -281,7 +281,7 @@ public class ReplyFragment extends Fragment {
     private void playAudio(String url) throws Exception{
         killMediaPlayer();
         player = new MediaPlayer();
-        player.setDataSource("http://ec2-52-78-137-47.ap-northeast-2.compute.amazonaws.com/avs/whiparam.mp3");
+        player.setDataSource(url);
         setupVisualizerFxAndUI();
         mVisualizer.setEnabled(true);
         player

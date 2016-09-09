@@ -6,6 +6,10 @@ import com.google.gson.reflect.TypeToken;
 import com.onemeter.omm.onemm.data.NetWorkResultType;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import okhttp3.FormBody;
 import okhttp3.HttpUrl;
@@ -20,7 +24,7 @@ public class AddFollowReqeust extends AbstractRequest<NetWorkResultType> {
     public AddFollowReqeust(Context context, String uid){
         HttpUrl.Builder builder = getBaseUrlBuilder();
         builder.addPathSegment("users")
-                .addPathSegment(uid)
+                .addPathSegment("me")
                 .addPathSegment("follows");
 
         RequestBody body = new FormBody.Builder()
@@ -33,6 +37,27 @@ public class AddFollowReqeust extends AbstractRequest<NetWorkResultType> {
                 .tag(context)
                 .build();
     }
+    Map<String, String> ids = new HashMap<>();
+    List<String> uids = new ArrayList<>();
+    public AddFollowReqeust(Context context, List<String> uid){
+        HttpUrl.Builder builder = getBaseUrlBuilder();
+        builder.addPathSegment("users")
+                .addPathSegment("me")
+                .addPathSegment("follows");
+
+        FormBody.Builder builder1 = new FormBody.Builder();
+        for(int i=0; i<uids.size(); i++){
+            builder1.add("userId",uids.get(i));
+        }
+        RequestBody body = builder1.build();
+
+        request = new Request.Builder()
+                .url(builder.build())
+                .post(body)
+                .tag(context)
+                .build();
+    }
+
 
     @Override
     protected Type getType() {

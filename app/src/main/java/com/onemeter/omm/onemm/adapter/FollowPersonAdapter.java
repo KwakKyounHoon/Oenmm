@@ -27,6 +27,14 @@ public class FollowPersonAdapter extends RecyclerView.Adapter<FollowPersonViewHo
         notifyDataSetChanged();
     }
 
+    public String getPersonId(int position){
+        return items.get(position).getUserId();
+    }
+
+    public List<FollowPerson> getPerson(){
+        return this.items;
+    }
+
     public void addAll(FollowPerson[] followPersons) {
         items.addAll(Arrays.asList(followPersons));
         notifyDataSetChanged();
@@ -56,6 +64,9 @@ public class FollowPersonAdapter extends RecyclerView.Adapter<FollowPersonViewHo
     public void onPersonItemClick(View view, FollowPerson followPerson, int position) {
         boolean checked = itemSelected.get(position);
         setItemChecked(position, !checked);
+        if(listener != null){
+            listener.onAdapterItemClick(view, followPerson, position);
+        }
     }
 
     public void setItemChecked(int position, boolean isChecked) {
@@ -64,5 +75,18 @@ public class FollowPersonAdapter extends RecyclerView.Adapter<FollowPersonViewHo
             itemSelected.put(position, isChecked);
             notifyDataSetChanged();
         }
+    }
+
+    public interface OnAdapterItemClickLIstener {
+        public void onAdapterItemClick(View view, FollowPerson followPerson, int position);
+    }
+
+    OnAdapterItemClickLIstener listener;
+    public void setOnAdapterItemClickListener(OnAdapterItemClickLIstener listener) {
+        this.listener = listener;
+    }
+
+    public SparseBooleanArray getii(){
+        return itemSelected;
     }
 }

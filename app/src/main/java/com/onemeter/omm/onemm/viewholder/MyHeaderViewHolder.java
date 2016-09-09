@@ -1,5 +1,6 @@
 package com.onemeter.omm.onemm.viewholder;
 
+import android.media.MediaPlayer;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,6 +32,8 @@ public class MyHeaderViewHolder extends RecyclerView.ViewHolder {
     TextView followingView;
     @BindView(R.id.image_profile)
     ImageView profileView;
+
+    MediaPlayer player;
 
     public MyHeaderViewHolder(View itemView) {
         super(itemView);
@@ -67,6 +70,11 @@ public class MyHeaderViewHolder extends RecyclerView.ViewHolder {
     public void onSoundClick(View view){
         if (listener != null) {
             listener.onSoundItemClick(view, mydata, getAdapterPosition());
+            try {
+//                playAudio(mydata.getVoiceMessage());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -96,6 +104,7 @@ public class MyHeaderViewHolder extends RecyclerView.ViewHolder {
         Glide.with(profileView.getContext())
                 .load(myData.getPhoto())
                 .bitmapTransform(new CropCircleTransformation(MyApplication.getContext()))
+                .error(R.drawable.ic_profile_image_default)
                 .into(profileView);
     }
 
@@ -112,6 +121,24 @@ public class MyHeaderViewHolder extends RecyclerView.ViewHolder {
 
     public void setOnMyDataItemClickListener(OnMyDataItemClickListener listener) {
         this.listener = listener;
+    }
+
+    private void killMediaPlayer() {
+        if(player != null){
+            try {
+                player.release();
+            } catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void playAudio(String url) throws Exception{
+        killMediaPlayer();
+        player = new MediaPlayer();
+        player.setDataSource(url);
+        player.prepare();
+        player.start();
     }
 
 }

@@ -13,7 +13,7 @@ import okhttp3.Request;
 /**
  * Created by Tacademy on 2016-09-07.
  */
-public class IdCheckRequest extends AbstractRequest<NetWorkResultType> {
+public class IdCheckRequest extends AbstractRequest<NetWorkResultType<String>> {
     Request request;
     public IdCheckRequest(Context context, String nickname){
         HttpUrl url = getBaseUrlBuilder()
@@ -29,7 +29,7 @@ public class IdCheckRequest extends AbstractRequest<NetWorkResultType> {
     }
     @Override
     protected Type getType() {
-        return new TypeToken<NetWorkResultType>(){}.getType();
+        return new TypeToken<NetWorkResultType<String>>(){}.getType();
     }
 
     @Override

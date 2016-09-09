@@ -99,6 +99,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_answer_off"
+                android:id="@+id/btn_answer"
                 android:layout_toRightOf="@+id/image_answerner"
                 android:layout_marginLeft="12dp"
                 android:layout_alignBottom="@+id/image_answerner"

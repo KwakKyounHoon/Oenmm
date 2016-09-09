@@ -91,7 +91,11 @@ public class OtherHeaderViewHolder extends RecyclerView.ViewHolder {
         Glide.with(profileView.getContext())
                 .load(otherData.getPhoto())
                 .bitmapTransform(new CropCircleTransformation(MyApplication.getContext()))
+                .error(R.drawable.ic_profile_image_default)
                 .into(profileView);
+        if(otherData.getFollowInfo().equals("1")){
+            likeView.setChecked(true);
+        }
     }
 
     public interface OnOtherDataItemClickListener {

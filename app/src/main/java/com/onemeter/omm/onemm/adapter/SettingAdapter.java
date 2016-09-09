@@ -20,7 +20,7 @@ import com.onemeter.omm.onemm.viewholder.SettingSaveViewHolder;
 /**
  * Created by Tacademy on 2016-08-30.
  */
-public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements SettingSaveViewHolder.OnSettingSaveItemClickListener {
 
     SettingData settingData = new SettingData();
 
@@ -126,6 +126,7 @@ public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 SettingSaveViewHolder ssvh = (SettingSaveViewHolder)holder;
                 ssvh.setPoin(settingData.getSettingSave());
                 ssvh.setSettingSave(settingData.getSettingSave());
+                ssvh.setSettingSaveItemClickListener(this);
                 return;
             }
             position--;
@@ -165,5 +166,22 @@ public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if(settingData.getSettingDonate() == null) ctn += 2;
         if(settingData.getSettingSave() == null) ctn += 2;
         return 8-ctn;
+    }
+
+    @Override
+    public void onExpandClick(View view, int position, boolean expandFlag) {
+        if(listener != null){
+            listener.onExpandClick(view, position, expandFlag);
+        }
+    }
+
+    public interface OnSettingAdapterItemClickListener {
+        public void onExpandClick(View view, int position, boolean expandFlag);
+    }
+
+    OnSettingAdapterItemClickListener listener;
+
+    public void setOnMyDataItemClickListener(OnSettingAdapterItemClickListener listener) {
+        this.listener = listener;
     }
 }

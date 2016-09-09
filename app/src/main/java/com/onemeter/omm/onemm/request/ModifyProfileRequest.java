@@ -19,7 +19,7 @@ import okhttp3.RequestBody;
  */
 public class ModifyProfileRequest extends AbstractRequest<NetWorkResultType> {
     Request request;
-    MediaType mediaType  = MediaType.parse("THREE_GPP");
+    MediaType mediaType  = MediaType.parse("audio/three_gpp");
     public ModifyProfileRequest(Context context, String nickname, String name, String stateMessage, File voiceMessage){
         HttpUrl url = getBaseUrlBuilder()
                 .addPathSegment("users")

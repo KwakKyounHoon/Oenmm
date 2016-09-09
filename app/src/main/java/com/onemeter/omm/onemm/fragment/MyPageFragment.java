@@ -5,7 +5,8 @@ package com.onemeter.omm.onemm.fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
+        import android.media.MediaPlayer;
+        import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -55,6 +56,8 @@ public class MyPageFragment extends Fragment {
     public static final String POST_TYPE_SEND = "to";
     public static final String POST_TYPE_COM = "1";
     public static final String POST_TYPE_LISTEN = "3";
+
+    MediaPlayer player;
 
     //    int type;
     int tabType = 1;
@@ -106,7 +109,11 @@ public class MyPageFragment extends Fragment {
 
             @Override
             public void onAdapterSoundClick(View view, MyData myData, int position) {
-                Toast.makeText(getContext(), "프로필 음성 듣기", Toast.LENGTH_SHORT).show();
+                try {
+                    playAudio(myData.getVoiceMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -521,4 +528,21 @@ public class MyPageFragment extends Fragment {
         super.onDestroyView();
     }
 
+    private void killMediaPlayer() {
+        if(player != null){
+            try {
+                player.release();
+            } catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void playAudio(String url) throws Exception{
+        killMediaPlayer();
+        player = new MediaPlayer();
+        player.setDataSource(url);
+        player.prepare();
+        player.start();
+    }
 }

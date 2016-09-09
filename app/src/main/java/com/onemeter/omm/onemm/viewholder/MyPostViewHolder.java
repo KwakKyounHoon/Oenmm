@@ -39,6 +39,8 @@ public class MyPostViewHolder extends RecyclerView.ViewHolder {
     RelativeLayout noRipleLayout;
     @BindView(R.id.text_no_cost)
     TextView noCostView;
+    @BindView(R.id.btn_listen)
+    ImageView listenbtnView;
 
     public MyPostViewHolder(View itemView) {
         super(itemView);
@@ -111,11 +113,13 @@ public class MyPostViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
+
     public interface OnMyItemClickListener {
         public void onPostItemClick(View view, Post post, int position);
         public void onPlayClick(View view, Post post, int position);
         public void onQuestionerClick(View view, Post post, int position);
         public void onAnswerClick(View view, Post post, int position);
+
     }
 
     OnMyItemClickListener listener;

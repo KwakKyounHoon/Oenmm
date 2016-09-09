@@ -35,8 +35,11 @@
             android:id="@+id/edit_nickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             android:hint="아이디"
-            android:background="@null"/>
+            android:background="@null"
+            android:autoText="false"
+            android:inputType="textVisiblePassword" />
         </android.support.design.widget.TextInputLayout>
 
 

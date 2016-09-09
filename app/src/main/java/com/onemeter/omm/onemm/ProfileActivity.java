@@ -5,11 +5,14 @@ import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.media.audiofx.Visualizer;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +27,9 @@ import com.onemeter.omm.onemm.manager.NetworkRequest;
 import com.onemeter.omm.onemm.request.IdCheckRequest;
 import com.onemeter.omm.onemm.request.ModifyProfileRequest;
 
+
+import java.io.File;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,11 +70,14 @@ public class ProfileActivity extends AppCompatActivity {
     int volLevel = 0;
     Visualizer mVisualizer;
     int count = 0;
+    File mSavedFile;
+    boolean checkIdFlag = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         ButterKnife.bind(this);
+        nicknameView.setFilters(new InputFilter[]{filterAlphaNum});
         nicknameView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
@@ -77,20 +86,22 @@ public class ProfileActivity extends AppCompatActivity {
                     if(!TextUtils.isEmpty(nicknameView.getText().toString())) {
                         nickname = nicknameView.getText().toString();
                         IdCheckRequest request = new IdCheckRequest(ProfileActivity.this, nickname);
-                        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+                        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<String>>() {
                             @Override
-                            public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
-                                if(result.getMessage().equals("0")){
+                            public void onSuccess(NetworkRequest<NetWorkResultType<String>> request, NetWorkResultType<String> result) {
+                                if(result.getResult().equals("0")){
                                     checkView.setVisibility(View.VISIBLE);
                                     checkView.setImageDrawable(ContextCompat.getDrawable(ProfileActivity.this, R.drawable.ic_id_check_yes));
+                                    checkIdFlag = true;
                                 }else{
                                     checkView.setVisibility(View.VISIBLE);
                                     checkView.setImageDrawable(ContextCompat.getDrawable(ProfileActivity.this, R.drawable.ic_id_check_no));
+                                    checkIdFlag = false;
                                 }
                             }
 
                             @Override
-                            public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
+                            public void onFail(NetworkRequest<NetWorkResultType<String>> request, int errorCode, String errorMessage, Throwable e) {
 
                             }
                         });
@@ -147,26 +158,31 @@ public class ProfileActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_check)
     public void checkClick(View view){
-        String name = null;
+        String name = nameVIew.getText().toString();
         String nickname = nicknameView.getText().toString();
         String message = messageView.getText().toString();
-        if(!TextUtils.isEmpty(nameVIew.getText().toString())){
-            name = nameVIew.getText().toString();
+        if(TextUtils.isEmpty(nameVIew.getText().toString())){
+            Toast.makeText(this,"닉네임을 입력하세요.",Toast.LENGTH_SHORT).show();
+        }else if(TextUtils.isEmpty(nicknameView.getText().toString())){
+            Toast.makeText(this,"이름을 입력하세요.",Toast.LENGTH_SHORT).show();
+        }else if(!checkIdFlag){
+
+        }else {
+            ModifyProfileRequest request = new ModifyProfileRequest(ProfileActivity.this, nickname, name, message, mSavedFile);
+            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+                @Override
+                public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
+                    Intent intent = new Intent(ProfileActivity.this, FollowActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+
+                @Override
+                public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
+                    Toast.makeText(ProfileActivity.this, errorCode + ","+ errorMessage,Toast.LENGTH_SHORT).show();
+                }
+            });
         }
-//        ModifyProfileRequest request = new ModifyProfileRequest(ProfileActivity.this, nickname, name, message, null);
-//        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType>() {
-//            @Override
-//            public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
-//                Toast.makeText(ProfileActivity.this,result.getMessage(),Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
-//            }
-//        });
-            Intent intent = new Intent(ProfileActivity.this, FollowActivity.class);
-            startActivity(intent);
-            finish();
     }
 
     long startTime = -1;
@@ -249,7 +265,9 @@ public class ProfileActivity extends AppCompatActivity {
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
-        recorder.setOutputFile(RECORDED_FILE);
+//        recorder.setOutputFile(RECORDED_FILE);
+        File file = getSavedFile();
+        recorder.setOutputFile(file.getAbsolutePath());
         try{
             Toast.makeText(ProfileActivity.this,
                     "녹음을 시작합니다.", Toast.LENGTH_LONG).show();
@@ -282,7 +300,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void playVoice(){
         try{
-            playAudio(RECORDED_FILE);
+            playAudio(mSavedFile);
             Toast.makeText(ProfileActivity.this, "음악파일 재생 시작됨.", Toast.LENGTH_SHORT).show();
         } catch(Exception e){
             e.printStackTrace();
@@ -293,10 +311,10 @@ public class ProfileActivity extends AppCompatActivity {
         playImage.setImageDrawable(ContextCompat.getDrawable(ProfileActivity.this,R.drawable.ic_record_stop));
     }
 
-    private void playAudio(String url) throws Exception{
+    private void playAudio(File file) throws Exception{
         killMediaPlayer();
         player = new MediaPlayer();
-        player.setDataSource(url);
+        player.setDataSource(file.getPath());
         setupVisualizerFxAndUI();
         mVisualizer.setEnabled(true);
         player
@@ -336,6 +354,15 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
+    public File getSavedFile() {
+        File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES), "my_audio");
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        mSavedFile = new File(dir, "S_" + System.currentTimeMillis() + ".3GP");
+        return mSavedFile;
+    }
+
     private void setupVisualizerFxAndUI(){
         mVisualizer = new Visualizer(player.getAudioSessionId());
         mVisualizer.setCaptureSize(Visualizer.getCaptureSizeRange()[1]);
@@ -364,5 +391,18 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                 }, Visualizer.getMaxCaptureRate() / 5, true, false);
     }
+
+    protected InputFilter filterAlphaNum = new InputFilter() {
+        public CharSequence filter(CharSequence source, int start, int end,
+                                   Spanned dest, int dstart, int dend) {
+
+            Pattern ps = Pattern.compile("^[a-zA-Z0-9]+$");
+            if (!ps.matcher(source).matches()) {
+                return "";
+            }
+            return null;
+        }
+    };
+
 
 }

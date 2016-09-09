@@ -1,10 +1,13 @@
 package com.onemeter.omm.onemm.viewholder;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.onemeter.omm.onemm.MyApplication;
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.data.SettingSave;
 
@@ -30,6 +33,10 @@ public class SettingSaveViewHolder extends RecyclerView.ViewHolder{
     TextView questionCostView;
     @BindView(R.id.text_withdraw_total)
     TextView withdrawTotalView;
+    @BindView(R.id.layout_save_child)
+    RelativeLayout childView;
+
+    boolean expandFlag = false;
 
     public SettingSaveViewHolder(View itemView) {
         super(itemView);
@@ -52,6 +59,27 @@ public class SettingSaveViewHolder extends RecyclerView.ViewHolder{
 
     @OnClick(R.id.image_expand)
     public void expandClick(View view){
+        if(listener != null){
+            listener.onExpandClick(view, getAdapterPosition(), expandFlag);
+        }
+        if(expandFlag){
+            childView.setVisibility(View.VISIBLE);
+            expandView.setImageDrawable(ContextCompat.getDrawable(MyApplication.getContext(), R.drawable.ic_setting_fold));
+            this.expandFlag = !this.expandFlag;
+        }else{
+            childView.setVisibility(View.GONE);
+            expandView.setImageDrawable(ContextCompat.getDrawable(MyApplication.getContext(), R.drawable.ic_setting_spread));
+            this.expandFlag = !this.expandFlag;
+        }
+    }
 
+    public interface OnSettingSaveItemClickListener {
+        public void onExpandClick(View view, int position, boolean expandFlag);
+    }
+
+    OnSettingSaveItemClickListener listener;
+
+    public void setSettingSaveItemClickListener(OnSettingSaveItemClickListener listener) {
+        this.listener = listener;
     }
 }

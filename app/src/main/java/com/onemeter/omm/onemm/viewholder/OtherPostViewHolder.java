@@ -1,5 +1,6 @@
 package com.onemeter.omm.onemm.viewholder;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,6 +32,8 @@ public class OtherPostViewHolder extends RecyclerView.ViewHolder {
     TextView listenView;
     @BindView(R.id.text_cost)
     TextView costView;
+    @BindView(R.id.btn_listen)
+    ImageView listenbtnView;
 
     public OtherPostViewHolder(View itemView) {
         super(itemView);
@@ -62,6 +65,11 @@ public class OtherPostViewHolder extends RecyclerView.ViewHolder {
                 .bitmapTransform(new CropCircleTransformation(MyApplication.getContext()))
                 .error(R.drawable.ic_profile_image_default)
                 .into(answernerImgView);
+        if(post.getPayInfo().equals("1")){
+            listenbtnView.setImageDrawable(ContextCompat.getDrawable(MyApplication.getContext(),R.drawable.ic_answer_on));
+        }else{
+            listenbtnView.setImageDrawable(ContextCompat.getDrawable(MyApplication.getContext(),R.drawable.ic_answer_off));
+        }
     }
 
     @OnClick(R.id.btn_listen)
