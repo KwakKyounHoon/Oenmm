@@ -12,6 +12,7 @@ import com.onemeter.omm.onemm.data.SettingDonate;
 import com.onemeter.omm.onemm.data.SettingSave;
 import com.onemeter.omm.onemm.viewholder.SettingAgreeViewHolder;
 import com.onemeter.omm.onemm.viewholder.SettingCategoryViewHolder;
+import com.onemeter.omm.onemm.viewholder.SettingChargeViewHolder;
 import com.onemeter.omm.onemm.viewholder.SettingDonateViewHolder;
 import com.onemeter.omm.onemm.viewholder.SettingLogoutViewHolder;
 import com.onemeter.omm.onemm.viewholder.SettingNotifyViewHolder;
@@ -47,6 +48,7 @@ public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public static final int VIEW_TYPE_DONATE = 4;
     public static final int VIEW_TYPE_LOGOUT = 5;
     public static final int VIEW_TYPE_AGREE = 6;
+    public static final int VIEW_TYPE_CHARGE = 7;
 
     @Override
     public int getItemViewType(int position) {
@@ -60,6 +62,8 @@ public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             if (position == 0) return VIEW_TYPE_SAVE_PARENT;
             position--;
         }
+        if(position == 0) return VIEW_TYPE_CHARGE;
+        position--;
         if(settingData.getSettingDonate() != null) {
             if (position == 0) return VIEW_TYPE_CATEGORY;
             position--;
@@ -97,6 +101,9 @@ public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             }case VIEW_TYPE_LOGOUT :{
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_setting_category, parent, false);
                 return new SettingLogoutViewHolder(view);
+            }case VIEW_TYPE_CHARGE : {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_setting_charge, parent, false);
+                return new SettingChargeViewHolder(view);
             }
         }
         throw new IllegalArgumentException("invalid viewtype");
@@ -131,10 +138,16 @@ public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             }
             position--;
         }
+        if(position == 0) {
+            SettingChargeViewHolder slvh = (SettingChargeViewHolder) holder;
+            slvh.setTextCharge(MyApplication.getContext().getString(R.string.setting_charge_text));
+            return;
+        }
+        position--;
         if(settingData.getSettingDonate() != null) {
             if (position == 0){
-                SettingCategoryViewHolder scvh = (SettingCategoryViewHolder) holder;
-                scvh.setCategory(MyApplication.getContext().getString(R.string.setting_donate_text));
+                SettingCategoryViewHolder sccvh = (SettingCategoryViewHolder) holder;
+                sccvh.setCategory(MyApplication.getContext().getString(R.string.setting_donate_text));
                 return;
             }
             position--;
@@ -165,7 +178,7 @@ public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (settingData == null) return 0;
         if(settingData.getSettingDonate() == null) ctn += 2;
         if(settingData.getSettingSave() == null) ctn += 2;
-        return 8-ctn;
+        return 9-ctn;
     }
 
     @Override
