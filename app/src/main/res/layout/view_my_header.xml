@@ -127,6 +127,7 @@
             android:layout_alignLeft="@+id/image_profile"
             android:layout_below="@+id/btn_sound"
             android:layout_marginTop="8dp"
+            android:layout_alignParentBottom="true"
             android:text="New Text" />
 
     </RelativeLayout>

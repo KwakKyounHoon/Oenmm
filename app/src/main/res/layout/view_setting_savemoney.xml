@@ -26,6 +26,7 @@
         android:layout_toRightOf="@+id/textView12"
         android:text="New Text"
         android:textAppearance="?android:textAppearanceMedium"
+        android:layout_marginBottom="30dp"
         android:textStyle="bold" />
 
     <ImageView
@@ -43,7 +44,6 @@
         android:id="@+id/layout_save_child"
         android:layout_width="match_parent"
         android:layout_marginLeft="25dp"
-        android:layout_marginTop="12dp"
         android:layout_marginBottom="30dp"
         android:layout_height="wrap_content">
         <TextView
@@ -141,13 +141,14 @@
             android:layout_toEndOf="@+id/textView11" />
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="70dp"
+            android:layout_height="20dp"
             android:id="@+id/btn_withdraw"
             android:layout_below="@+id/text_listening_cost"
-            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/text_withdraw_total"
             android:background="@drawable/ic_setting_point_outbtn"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"/>
     </RelativeLayout>
 
 </RelativeLayout>
