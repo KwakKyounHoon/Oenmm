@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.adapter.SettingAdapter;
@@ -76,6 +77,21 @@ public class SettingFragment extends Fragment {
 
             @Override
             public void onExpandClick(View view, int position, boolean expandFlag) {
+            }
+
+            @Override
+            public void onAdatperAgreeClick(View view) {
+                Toast.makeText(getContext(), "어그리 버튼 클릭", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdapterChargeClick(View view) {
+                Toast.makeText(getContext(), "충전 버튼 클릭", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdapterLogoutClick(View view) {
+                Toast.makeText(getContext(), "로그아웃 버튼 클릭", Toast.LENGTH_SHORT).show();
             }
         });
         return view;

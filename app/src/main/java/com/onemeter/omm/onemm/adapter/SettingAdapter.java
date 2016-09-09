@@ -21,7 +21,9 @@ import com.onemeter.omm.onemm.viewholder.SettingSaveViewHolder;
 /**
  * Created by Tacademy on 2016-08-30.
  */
-public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements SettingSaveViewHolder.OnSettingSaveItemClickListener {
+public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements SettingSaveViewHolder.OnSettingSaveItemClickListener
+        ,SettingAgreeViewHolder.OnSettingAgreeClickListener, SettingChargeViewHolder.OnSettingChargeClickListener
+,SettingLogoutViewHolder.OnSettingLogoutClickListener{
 
     SettingData settingData = new SettingData();
 
@@ -140,6 +142,7 @@ public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
         if(position == 0) {
             SettingChargeViewHolder slvh = (SettingChargeViewHolder) holder;
+            slvh.setOnRankCategoryItemClickListener(this);
             slvh.setTextCharge(MyApplication.getContext().getString(R.string.setting_charge_text));
             return;
         }
@@ -161,12 +164,14 @@ public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if(position == 0) {
             SettingAgreeViewHolder savh = (SettingAgreeViewHolder)holder;
             savh.setText(MyApplication.getContext().getString(R.string.setting_agree_text));
+            savh.setOnRankCategoryItemClickListener(this);
             return;
         }
         position--;
         if(position == 0){
             SettingLogoutViewHolder slvh = (SettingLogoutViewHolder)holder;
             slvh.setCategory(MyApplication.getContext().getString(R.string.setting_logout_text));
+            slvh.setOnRankCategoryItemClickListener(this);
             return;
         }
         throw new IllegalArgumentException("invalid position");
@@ -188,8 +193,32 @@ public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
+    @Override
+    public void onSettingAgreeClick(View view) {
+        if(listener != null){
+            listener.onAdatperAgreeClick(view);
+        }
+    }
+
+    @Override
+    public void onSettingChargeClick(View view) {
+        if(listener != null){
+            listener.onAdapterChargeClick(view);
+        }
+    }
+
+    @Override
+    public void onSettingLogoutClick(View view) {
+        if(listener != null){
+            listener.onAdapterLogoutClick(view);
+        }
+    }
+
     public interface OnSettingAdapterItemClickListener {
         public void onExpandClick(View view, int position, boolean expandFlag);
+        public void onAdatperAgreeClick(View view);
+        public void onAdapterChargeClick(View view);
+        public void onAdapterLogoutClick(View view);
     }
 
     OnSettingAdapterItemClickListener listener;

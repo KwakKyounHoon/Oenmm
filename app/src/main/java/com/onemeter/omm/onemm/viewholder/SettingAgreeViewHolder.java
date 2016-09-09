@@ -19,8 +19,26 @@ public class SettingAgreeViewHolder extends RecyclerView.ViewHolder {
     public SettingAgreeViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(listener != null){
+                    listener.onSettingAgreeClick(view);
+                }
+            }
+        });
     }
     public void setText(String text){
         agreeView.setText(text);
+    }
+
+    public interface OnSettingAgreeClickListener {
+        public void onSettingAgreeClick(View view);
+    }
+
+    OnSettingAgreeClickListener listener;
+
+    public void setOnRankCategoryItemClickListener(OnSettingAgreeClickListener listener) {
+        this.listener = listener;
     }
 }

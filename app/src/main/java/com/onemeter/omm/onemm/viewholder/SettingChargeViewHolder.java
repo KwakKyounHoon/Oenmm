@@ -20,11 +20,27 @@ public class SettingChargeViewHolder extends RecyclerView.ViewHolder{
     public SettingChargeViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(listener != null)
+                    listener.onSettingChargeClick(view);
+            }
+        });
     }
 
     public void setTextCharge(String text){
         chargeView.setText(text);
     }
 
+    public interface OnSettingChargeClickListener {
+        public void onSettingChargeClick(View view);
+    }
+
+    OnSettingChargeClickListener listener;
+
+    public void setOnRankCategoryItemClickListener(OnSettingChargeClickListener listener) {
+        this.listener = listener;
+    }
 }
 

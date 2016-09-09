@@ -24,4 +24,6 @@ public class SettingCategoryViewHolder extends RecyclerView.ViewHolder{
     public void setCategory(String text){
         categoryView.setText(text);
     }
+
+
 }

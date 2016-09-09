@@ -19,10 +19,27 @@ public class SettingLogoutViewHolder extends RecyclerView.ViewHolder{
     public SettingLogoutViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(listener != null){
+                    listener.onSettingLogoutClick(view);
+                }
+            }
+        });
     }
 
     public void setCategory(String text){
         categoryView.setText(text);
     }
 
+    public interface OnSettingLogoutClickListener {
+        public void onSettingLogoutClick(View view);
+    }
+
+    OnSettingLogoutClickListener listener;
+
+    public void setOnRankCategoryItemClickListener(OnSettingLogoutClickListener listener) {
+        this.listener = listener;
+    }
 }
