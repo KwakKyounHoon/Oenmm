@@ -189,6 +189,7 @@ public class OtherFragment extends Fragment {
 
             @Override
             public void onAdapterSoundClick(View view, OtherData otherData, int position) {
+                Toast.makeText(getContext(), "소리", Toast.LENGTH_SHORT).show();
             }
 
             @Override
