@@ -29,13 +29,16 @@ public class FollowerViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.check_follow)
     CheckBox followView;
 
+    public boolean isForced = false;
+
     public FollowerViewHolder(final View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(listener != null){
+
+                if (listener != null) {
                     listener.onItemClick(view, follower, getAdapterPosition());
                 }
             }
@@ -44,8 +47,10 @@ public class FollowerViewHolder extends RecyclerView.ViewHolder {
         followView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(listener != null){
-                    listener.onlikeClick(itemView, follower, getAdapterPosition());
+                if (!isForced) {
+                    if (listener != null) {
+                        listener.onlikeClick(itemView, follower, getAdapterPosition(), b);
+                    }
                 }
             }
         });
@@ -62,11 +67,20 @@ public class FollowerViewHolder extends RecyclerView.ViewHolder {
                 .bitmapTransform(new CropCircleTransformation(MyApplication.getContext()))
                 .error(R.drawable.ic_profile_image_default)
                 .into(profileView);
+        if(follower.getFollowInfo().equals("1")){
+            isForced = true;
+            followView.setChecked(true);
+            isForced = false;
+        }else{
+            isForced = true;
+            followView.setChecked(false);
+            isForced = false;
+        }
     }
 
     public interface OnFollowerItemClickListener {
         public void onItemClick(View view, Follower follower, int position);
-        public void onlikeClick(View view, Follower follower, int position);
+        public void onlikeClick(View view, Follower follower, int position, boolean followFlag);
     }
 
     OnFollowerItemClickListener listener;
@@ -74,4 +88,5 @@ public class FollowerViewHolder extends RecyclerView.ViewHolder {
     public void setOnFollowerClickListener(OnFollowerItemClickListener listener) {
         this.listener = listener;
     }
+
 }

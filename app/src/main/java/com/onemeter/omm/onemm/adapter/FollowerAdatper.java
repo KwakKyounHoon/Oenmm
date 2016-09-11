@@ -38,7 +38,8 @@ public class FollowerAdatper extends RecyclerView.Adapter<FollowerViewHolder> im
     @Override
     public FollowerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_follower_item, parent, false);
-        return new FollowerViewHolder(view);
+        FollowerViewHolder viewHolder = new FollowerViewHolder(view);
+        return viewHolder;
     }
 
     @Override
@@ -61,19 +62,21 @@ public class FollowerAdatper extends RecyclerView.Adapter<FollowerViewHolder> im
     }
 
     @Override
-    public void onlikeClick(View view, Follower follower, int position) {
+    public void onlikeClick(View view, Follower follower, int position, boolean followFlag) {
         if(listener != null){
-            listener.onAdapterLikeClick(view, follower, position);
+            listener.onAdapterLikeClick(view, follower, position, followFlag);
         }
     }
 
     public interface OnAdapterItemClickLIstener {
         public void onAdapterItemClick(View view, Follower follower, int position);
-        public void onAdapterLikeClick(View view, Follower follower, int position);
+        public void onAdapterLikeClick(View view, Follower follower, int position, boolean followFlag);
     }
 
     OnAdapterItemClickLIstener listener;
     public void setOnAdapterItemClickListener(OnAdapterItemClickLIstener listener) {
         this.listener = listener;
     }
+
+
 }

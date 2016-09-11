@@ -11,13 +11,21 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.onemeter.omm.onemm.MyApplication;
 import com.onemeter.omm.onemm.R;
+import com.onemeter.omm.onemm.data.NetWorkResultType;
 import com.onemeter.omm.onemm.data.Post;
+import com.onemeter.omm.onemm.manager.NetworkManager;
+import com.onemeter.omm.onemm.manager.NetworkRequest;
+import com.onemeter.omm.onemm.request.ListenPayRequest;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -121,15 +129,26 @@ public class ListenToOffFragment extends Fragment {
             }
         });
 
-        payBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 결제완료 버튼 누를 떄 구현 - > ListenToOnFragment로 View Chagne 및 답변듣기 버튼 활성화
-            }
-        });
 
         init();
         return view;
+    }
+
+    @OnClick(R.id.btn_pay)
+    public void payClick(View view){
+        // 결제완료 버튼 누를 떄 구현 - > ListenToOnFragment로 View Chagne 및 답변듣기 버튼 활성화
+        ListenPayRequest request = new ListenPayRequest(getContext(), post.getAnswerId());
+        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+            @Override
+            public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
+                Toast.makeText(getContext(), ""+result.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
+
+            }
+        });
     }
 
     public void init(){
@@ -139,13 +158,18 @@ public class ListenToOffFragment extends Fragment {
         timeView.setText(post.getLength());
         listenView.setText(post.getListenCount());
         moneyView.setText(post.getPrice());
-
+        Glide.with(qImageVIew.getContext())
+                .load(post.getQuestionerPhoto())
+                .bitmapTransform(new CropCircleTransformation(MyApplication.getContext()))
+                .error(R.drawable.ic_profile_image_default)
+                .into(qImageVIew);
+        Glide.with(aImageview.getContext())
+                .load(post.getAnswernerPhoto())
+                .bitmapTransform(new CropCircleTransformation(MyApplication.getContext()))
+                .error(R.drawable.ic_profile_image_default)
+                .into(aImageview);
     }
 
-    @OnClick(R.id.btn_pay)
-    public void payClick(View view){
-
-    }
 
     @OnClick(R.id.btn_back)
     public void backClick(View view){

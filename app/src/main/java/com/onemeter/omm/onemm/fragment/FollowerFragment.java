@@ -21,8 +21,10 @@ import com.onemeter.omm.onemm.data.Follower;
 import com.onemeter.omm.onemm.data.NetWorkResultType;
 import com.onemeter.omm.onemm.manager.NetworkManager;
 import com.onemeter.omm.onemm.manager.NetworkRequest;
+import com.onemeter.omm.onemm.request.AddFollowReqeust;
 import com.onemeter.omm.onemm.request.MyFollowerRequest;
 import com.onemeter.omm.onemm.request.OtherFollowerRequest;
+import com.onemeter.omm.onemm.request.RemoveFollowRequest;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -89,21 +91,64 @@ public class FollowerFragment extends Fragment {
             }
 
             @Override
-            public void onAdapterLikeClick(View view, Follower follower, int position) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("정말 팔로우하시겠습니까?")
-                        .setNegativeButton("취소", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                Toast.makeText(getContext(), "follow dial cancel", Toast.LENGTH_SHORT).show();
-                            }
-                        }).setPositiveButton("예, 확실합니다.", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(getContext(), "follow dial ok", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                builder.show();
+            public void onAdapterLikeClick(View view, final Follower follower, int position, boolean followFlag) {
+                if(followFlag){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("정말 팔로우하시겠습니까?")
+                            .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Toast.makeText(getContext(), "취소 되었습니다.", Toast.LENGTH_SHORT).show();
+                                    mAdapter.notifyDataSetChanged();
+                                }
+                            }).setPositiveButton("예, 확실합니다.", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            AddFollowReqeust reqeust = new AddFollowReqeust(getContext(), follower.getUserId());
+                            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, reqeust, new NetworkManager.OnResultListener<NetWorkResultType>() {
+                                @Override
+                                public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
+                                    Toast.makeText(getContext(), "" + result.getMessage(), Toast.LENGTH_SHORT).show();
+                                    mAdapter.notifyDataSetChanged();
+                                }
+
+                                @Override
+                                public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
+                                    mAdapter.notifyDataSetChanged();
+                                }
+                            });
+                        }
+                    });
+                    builder.show();
+                }else{
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("정말 팔로우를 삭제 하시겠습니까?")
+                            .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Toast.makeText(getContext(), "취소 되었습니다.", Toast.LENGTH_SHORT).show();
+                                    mAdapter.notifyDataSetChanged();
+                                }
+                            }).setPositiveButton("예, 확실합니다.", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            RemoveFollowRequest reqeust = new RemoveFollowRequest(getContext(), follower.getUserId());
+                            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, reqeust, new NetworkManager.OnResultListener<NetWorkResultType>() {
+                                @Override
+                                public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
+                                    Toast.makeText(getContext(), "" + result.getMessage(), Toast.LENGTH_SHORT).show();
+                                    mAdapter.notifyDataSetChanged();
+                                }
+
+                                @Override
+                                public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
+                                    mAdapter.notifyDataSetChanged();
+                                }
+                            });
+                        }
+                    });
+                    builder.show();
+                }
             }
         });
 //        init();

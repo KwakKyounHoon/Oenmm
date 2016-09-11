@@ -8,8 +8,9 @@ import com.onemeter.omm.onemm.data.NetWorkResultType;
 import java.io.File;
 import java.lang.reflect.Type;
 
-import okhttp3.FormBody;
 import okhttp3.HttpUrl;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
@@ -18,18 +19,25 @@ import okhttp3.RequestBody;
  */
 public class ReplyRequest extends AbstractRequest<NetWorkResultType> {
     Request request;
-
-    public ReplyRequest(Context context, String questionId, String length, String date, File voiceContent){
-        HttpUrl.Builder builder = getBaseUrlBuilder();
-        builder.addPathSegment("answers");
-
-        RequestBody body = new FormBody.Builder()
-                .add("questionId",questionId)
+    MediaType mediaType  = MediaType.parse("audio/three_gpp");
+    public ReplyRequest(Context context, String questionId, String length, File voiceContent){
+        HttpUrl url = getBaseUrlBuilder()
+                .addPathSegment("answers")
                 .build();
 
+        MultipartBody.Builder builder = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("questionId", questionId)
+                .addFormDataPart("length", length);
+
+        if (voiceContent != null) {
+            builder.addFormDataPart("voiceContent", voiceContent.getName(),
+                    RequestBody.create(mediaType, voiceContent));
+        }
+        RequestBody body = builder.build();
         request = new Request.Builder()
-                .url(builder.build())
-                .post(body)
+                .url(url)
+                .put(body)
                 .tag(context)
                 .build();
     }

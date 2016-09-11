@@ -359,7 +359,7 @@ public class ProfileActivity extends AppCompatActivity {
         if (!dir.exists()) {
             dir.mkdirs();
         }
-        mSavedFile = new File(dir, "S_" + System.currentTimeMillis() + ".3GP");
+        mSavedFile = new File(dir, "1MM_" + System.currentTimeMillis() + ".3GP");
         return mSavedFile;
     }
 

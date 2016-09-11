@@ -50,11 +50,8 @@ public class PostFragment extends Fragment {
             public void onAdapterPostItemClick(View view, Post post, int position) {
                 Toast.makeText(getContext(), post.getAnswernerId(), Toast.LENGTH_SHORT).show();
                 if (post.getPayInfo().equals("0")) {
-                    ((TabHomeFragment) (getParentFragment())).showListenToOn(post);
-                } else {
                     ((TabHomeFragment) (getParentFragment())).showListenToOff(post);
                 }
-
             }
 
             @Override

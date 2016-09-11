@@ -7,9 +7,7 @@ import com.onemeter.omm.onemm.data.NetWorkResultType;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import okhttp3.FormBody;
 import okhttp3.HttpUrl;
@@ -28,7 +26,7 @@ public class AddFollowReqeust extends AbstractRequest<NetWorkResultType> {
                 .addPathSegment("follows");
 
         RequestBody body = new FormBody.Builder()
-                .add("uid",uid)
+                .add("userId",uid)
                 .build();
 
         request = new Request.Builder()
@@ -37,18 +35,21 @@ public class AddFollowReqeust extends AbstractRequest<NetWorkResultType> {
                 .tag(context)
                 .build();
     }
-    Map<String, String> ids = new HashMap<>();
+
     List<String> uids = new ArrayList<>();
     public AddFollowReqeust(Context context, List<String> uid){
+        this.uids = uid;
         HttpUrl.Builder builder = getBaseUrlBuilder();
         builder.addPathSegment("users")
                 .addPathSegment("me")
                 .addPathSegment("follows");
 
         FormBody.Builder builder1 = new FormBody.Builder();
+
         for(int i=0; i<uids.size(); i++){
             builder1.add("userId",uids.get(i));
         }
+
         RequestBody body = builder1.build();
 
         request = new Request.Builder()

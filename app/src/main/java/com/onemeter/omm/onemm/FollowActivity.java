@@ -89,7 +89,6 @@ public class FollowActivity extends AppCompatActivity {
         }
     }
 
-
     private void initData() {
 //        Random r = new Random();
 //        for (int i = 0; i < 27; i++) {

@@ -5,6 +5,7 @@ import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.media.audiofx.Visualizer;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
@@ -23,7 +24,14 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.onemeter.omm.onemm.MyApplication;
 import com.onemeter.omm.onemm.R;
+import com.onemeter.omm.onemm.data.NetWorkResultType;
 import com.onemeter.omm.onemm.data.Post;
+import com.onemeter.omm.onemm.manager.NetworkManager;
+import com.onemeter.omm.onemm.manager.NetworkRequest;
+import com.onemeter.omm.onemm.request.ReplyRequest;
+
+import java.io.File;
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,7 +49,8 @@ public class ReplyFragment extends Fragment {
     MediaPlayer player;
     MediaRecorder recorder;
     int playbackPosition = 0;
-    static final String RECORDED_FILE = "/sdcard/recorded.3GP";
+    //    static final String RECORDED_FILE = "/sdcard/recorded.3GP";
+    File mSavedFile;
     int endTime = 60;
     private final int PLATING = 2;
     private final int STOPPING = 0;
@@ -109,6 +118,24 @@ public class ReplyFragment extends Fragment {
                 .load(post.getQuestionerPhoto())
                 .bitmapTransform(new CropCircleTransformation(MyApplication.getContext()))
                 .into(qustionerView);
+    }
+
+    @OnClick(R.id.btn_send)
+    public void sendClick(View view){
+        if(state > 1) {
+            ReplyRequest request = new ReplyRequest(getContext(), post.getQuestionId(), endTime + "", mSavedFile);
+            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+                @Override
+                public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
+                    Toast.makeText(getContext(), result.getMessage() + "", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
+
+                }
+            });
+        }
     }
 
     @Override
@@ -233,7 +260,9 @@ public class ReplyFragment extends Fragment {
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
-        recorder.setOutputFile(RECORDED_FILE);
+//        recorder.setOutputFile(RECORDED_FILE);
+        File file = getSavedFile();
+        recorder.setOutputFile(file.getAbsolutePath());
         try{
             Toast.makeText(getContext(),
                     "녹음을 시작합니다.", Toast.LENGTH_LONG).show();
@@ -261,13 +290,22 @@ public class ReplyFragment extends Fragment {
         playImage.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_record_play));
         returnImage.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_record_return_on));
         soundImage.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_record_sound_off));
+        player = new MediaPlayer();
+        try {
+            player.setDataSource(mSavedFile.getPath());
+            player.prepare();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        float a = player.getDuration();
+        endTime = Math.round(a/1000);
     }
 
     private void playVoice(){
         try{
 //                    playAudio("http://ec2-52-78-124-76.ap-northeast-2.compute.amazonaws.com/images/recorded.mp4");
 //                    playAudio("https://drive.google.com/open?id=0Bw3ZvGKva8tGOG93U19Wam52YWc");
-            playAudio(RECORDED_FILE);
+            playAudio(mSavedFile);
             Toast.makeText(getContext(), "음악파일 재생 시작됨.", Toast.LENGTH_SHORT).show();
         } catch(Exception e){
             e.printStackTrace();
@@ -278,10 +316,10 @@ public class ReplyFragment extends Fragment {
         playImage.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_record_stop));
     }
 
-    private void playAudio(String url) throws Exception{
+    private void playAudio(File file) throws Exception{
         killMediaPlayer();
         player = new MediaPlayer();
-        player.setDataSource(url);
+        player.setDataSource(file.getPath());
         setupVisualizerFxAndUI();
         mVisualizer.setEnabled(true);
         player
@@ -292,8 +330,8 @@ public class ReplyFragment extends Fragment {
                 });
         player.prepare();
         player.start();
-        float a = player.getDuration();
-        endTime = Math.round(a/1000);
+//        float a = player.getDuration();
+//        endTime = Math.round(a/1000);
         mHandler.removeCallbacks(countRunnable);
         mHandler.post(countRunnable);
     }
@@ -316,6 +354,15 @@ public class ReplyFragment extends Fragment {
                 e.printStackTrace();
             }
         }
+    }
+
+    public File getSavedFile() {
+        File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES), "my_audio");
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        mSavedFile = new File(dir, "1MM_" + System.currentTimeMillis() + ".3GP");
+        return mSavedFile;
     }
 
     private void setupVisualizerFxAndUI(){

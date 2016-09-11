@@ -18,12 +18,24 @@ public class Post implements Serializable {
     private String questionerName;
     private String answernerNickname;
     private String answernerName;
+    private String answerId;
+    private String questionId;
 
-//    private String photo;
-//    private String myId;
-//    private String name;
-//    private String nickname;
-//    private String content;
+    public String getQuestionId() {
+        return questionId;
+    }
+
+    public void setQuestionId(String questionId) {
+        this.questionId = questionId;
+    }
+
+    public String getAnswerId() {
+        return answerId;
+    }
+
+    public void setAnswerId(String answerId) {
+        this.answerId = answerId;
+    }
 
     public String getQuestionerNickname() {
         return questionerNickname;
