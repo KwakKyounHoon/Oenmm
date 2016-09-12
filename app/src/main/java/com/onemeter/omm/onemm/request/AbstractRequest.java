@@ -19,7 +19,6 @@ public abstract class AbstractRequest<T> extends NetworkRequest<T> {
     protected HttpUrl.Builder getHttpsBaseUrlBuilder() {
         HttpUrl.Builder builder = new HttpUrl.Builder();
         builder.scheme("https");
-//        builder.host(DUMY);
         builder.host(REALURL);
         builder.port(443);
         return builder;

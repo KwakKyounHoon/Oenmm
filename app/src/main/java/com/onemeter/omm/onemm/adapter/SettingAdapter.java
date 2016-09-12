@@ -194,6 +194,13 @@ public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     @Override
+    public void onWithdrawClick(View view, SettingSave settingSave, int position) {
+        if(listener != null){
+            listener.onAdapterWithdrawClick(view, settingSave, position);
+        }
+    }
+
+    @Override
     public void onSettingAgreeClick(View view) {
         if(listener != null){
             listener.onAdatperAgreeClick(view);
@@ -219,6 +226,7 @@ public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         public void onAdatperAgreeClick(View view);
         public void onAdapterChargeClick(View view);
         public void onAdapterLogoutClick(View view);
+        public void onAdapterWithdrawClick(View view, SettingSave settingSave, int position);
     }
 
     OnSettingAdapterItemClickListener listener;

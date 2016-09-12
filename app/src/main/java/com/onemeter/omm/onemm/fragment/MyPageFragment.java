@@ -1,14 +1,17 @@
 package com.onemeter.omm.onemm.fragment;
 
 
-        import android.app.Activity;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-        import android.media.MediaPlayer;
-        import android.net.Uri;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -32,7 +35,9 @@ import com.onemeter.omm.onemm.request.ChangeImageRequest;
 import com.onemeter.omm.onemm.request.MyDataReqeust;
 import com.onemeter.omm.onemm.request.MyListenRequest;
 import com.onemeter.omm.onemm.request.MyPostRequest;
+import com.onemeter.omm.onemm.request.ProfileVoiceRequest;
 import com.onemeter.omm.onemm.request.RemoveImageRequest;
+import com.onemeter.omm.onemm.request.ReplyListenRequest;
 
 import java.io.File;
 
@@ -109,11 +114,22 @@ public class MyPageFragment extends Fragment {
 
             @Override
             public void onAdapterSoundClick(View view, MyData myData, int position) {
-                try {
-                    playAudio(myData.getVoiceMessage());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                ProfileVoiceRequest request = new ProfileVoiceRequest(getContext(), "me");
+                NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<String>>() {
+                    @Override
+                    public void onSuccess(NetworkRequest<NetWorkResultType<String>> request, NetWorkResultType<String> result) {
+                        try {
+                            playAudio(result.getResult());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFail(NetworkRequest<NetWorkResultType<String>> request, int errorCode, String errorMessage, Throwable e) {
+
+                    }
+                });
             }
 
             @Override
@@ -293,9 +309,30 @@ public class MyPageFragment extends Fragment {
             }
 
             @Override
-            public void onAdapterPlayItemClick(View view, Post post, int position) {
+            public void onAdapterPlayItemClick(View view, final Post post, int position) {
+                timePosition = position;
+                startTime = -1;
                 if (comFlag || tabType == 3) {
                     Toast.makeText(getContext(), "음성 듣기", Toast.LENGTH_SHORT).show();
+                    ReplyListenRequest request = new ReplyListenRequest(getContext(), post.getAnswerId());
+                    NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<String>>() {
+                        @Override
+                        public void onSuccess(NetworkRequest<NetWorkResultType<String>> request, NetWorkResultType<String> result) {
+                            endTime = post.getLength();
+                            try {
+                                playAudio(result.getResult());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            mHandler.removeCallbacks(countRunnable);
+                            mHandler.post(countRunnable);
+                        }
+
+                        @Override
+                        public void onFail(NetworkRequest<NetWorkResultType<String>> request, int errorCode, String errorMessage, Throwable e) {
+
+                        }
+                    });
                 }
             }
 
@@ -316,23 +353,23 @@ public class MyPageFragment extends Fragment {
         });
 
 
-        final MyDataReqeust reqeust = new MyDataReqeust(getContext());
+        MyDataReqeust reqeust = new MyDataReqeust(getContext());
         NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,reqeust, new NetworkManager.OnResultListener<NetWorkResultType<MyData>>() {
-                    @Override
-                    public void onSuccess(NetworkRequest<NetWorkResultType<MyData>> request, NetWorkResultType<MyData> result) {
-                        String nickName = "User NickName";
-                        if(result.getResult().getNickname() != null) {
-                            nickName = result.getResult().getNickname();
-                        }
-                        mAdapter.addMyData(result.getResult());
-                        nickNameView.setText(nickName);
-                    }
-                    @Override
-                    public void onFail(NetworkRequest<NetWorkResultType<MyData>> request, int errorCode, String errorMessage, Throwable e) {
+            @Override
+            public void onSuccess(NetworkRequest<NetWorkResultType<MyData>> request, NetWorkResultType<MyData> result) {
+                String nickName = "User NickName";
+                if(result.getResult().getNickname() != null) {
+                    nickName = result.getResult().getNickname();
+                }
+                mAdapter.addMyData(result.getResult());
+                nickNameView.setText(nickName);
+            }
+            @Override
+            public void onFail(NetworkRequest<NetWorkResultType<MyData>> request, int errorCode, String errorMessage, Throwable e) {
 
-                    }
-                });
-                mAdapter.clearPost();
+            }
+        });
+        mAdapter.clearPost();
         MyPostRequest request = new MyPostRequest(getContext(), "from", "1", 1, 20);
         NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
             @Override
@@ -545,4 +582,31 @@ public class MyPageFragment extends Fragment {
         player.prepare();
         player.start();
     }
+
+    long startTime = -1;
+    String endTime = "";
+    int timePosition;
+    Handler mHandler = new Handler(Looper.getMainLooper());
+
+    Runnable countRunnable = new Runnable() {
+        @Override
+        public void run() {
+            long time = SystemClock.elapsedRealtime();
+            if (startTime == -1) {
+                startTime = time;
+            }
+            int gap = (int) (time - startTime);
+            int endTimeV = Integer.parseInt(endTime);
+            int count = endTimeV - gap / 1000;
+            int rest = 1000 - gap % 1000;
+            if (count > 0) {
+//                listenView.("0 : " + count);
+                mAdapter.setTime("0 : " + count, timePosition);
+                mHandler.postDelayed(this, rest);
+            }else{
+                killMediaPlayer();
+                mAdapter.setTime("닫변 듣기", timePosition);
+            }
+        }
+    };
 }

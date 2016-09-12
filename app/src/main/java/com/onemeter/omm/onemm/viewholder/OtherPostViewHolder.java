@@ -33,7 +33,7 @@ public class OtherPostViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.text_cost)
     TextView costView;
     @BindView(R.id.btn_listen)
-    ImageView listenbtnView;
+    TextView listenbtnView;
 
     public OtherPostViewHolder(View itemView) {
         super(itemView);
@@ -66,9 +66,11 @@ public class OtherPostViewHolder extends RecyclerView.ViewHolder {
                 .error(R.drawable.ic_profile_image_default)
                 .into(answernerImgView);
         if(post.getPayInfo().equals("1")){
-            listenbtnView.setImageDrawable(ContextCompat.getDrawable(MyApplication.getContext(),R.drawable.ic_answer_on));
+            listenbtnView.setBackgroundResource(R.drawable.ic_answer_on);
+            listenbtnView.setTextColor(ContextCompat.getColor(MyApplication.getContext(),R.color.colorWhite));
         }else{
-            listenbtnView.setImageDrawable(ContextCompat.getDrawable(MyApplication.getContext(),R.drawable.ic_answer_off));
+            listenbtnView.setBackgroundResource(R.drawable.ic_answer_off);
+            listenbtnView.setTextColor(ContextCompat.getColor(MyApplication.getContext(),R.color.colorBlack));
         }
     }
 

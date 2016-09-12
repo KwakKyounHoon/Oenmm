@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -83,19 +82,25 @@ public class LoginActivity extends AppCompatActivity {
         if (accessToken != null) {
             String token = accessToken.getToken();
             FacebookLoginRequest request = new FacebookLoginRequest(LoginActivity.this, token);
-            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<String>>() {
                 @Override
-                public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
+                public void onSuccess(NetworkRequest<NetWorkResultType<String>> request, NetWorkResultType<String> result) {
                     String facebookId = accessToken.getUserId();
                     PropertyManager.getInstance().setFacebookId(facebookId);
-                    Intent intent = new Intent(LoginActivity.this, AgreeActivity.class);
-                    startActivity(intent);
-                    finish();
+                    if(result.getResult().equals("1")) {
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }else if(result.getResult().equals("0")){
+                        Intent intent = new Intent(LoginActivity.this, AgreeActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
                 }
 
                 @Override
-                public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
-                    Toast.makeText(LoginActivity.this, errorCode + ","+ errorMessage,Toast.LENGTH_SHORT).show();
+                public void onFail(NetworkRequest<NetWorkResultType<String>> request, int errorCode, String errorMessage, Throwable e) {
+
                 }
             });
 

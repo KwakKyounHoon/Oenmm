@@ -59,7 +59,7 @@ public class SearchResultFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String keyword = charSequence.toString();
-                if(charSequence.length()>2) {
+                if(charSequence.length()>1) {
                 SearchRequest request = new SearchRequest(getContext(), keyword, 1, 20);
                 mAdapter.clear();
                 NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<SearchResult[]>>() {

@@ -21,7 +21,7 @@ public class ReplyRequest extends AbstractRequest<NetWorkResultType> {
     Request request;
     MediaType mediaType  = MediaType.parse("audio/three_gpp");
     public ReplyRequest(Context context, String questionId, String length, File voiceContent){
-        HttpUrl url = getBaseUrlBuilder()
+        HttpUrl url = getHttpsBaseUrlBuilder()
                 .addPathSegment("answers")
                 .build();
 
@@ -37,7 +37,7 @@ public class ReplyRequest extends AbstractRequest<NetWorkResultType> {
         RequestBody body = builder.build();
         request = new Request.Builder()
                 .url(url)
-                .put(body)
+                .post(body)
                 .tag(context)
                 .build();
     }

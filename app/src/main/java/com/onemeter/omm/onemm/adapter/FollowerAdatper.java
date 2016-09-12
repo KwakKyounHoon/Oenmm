@@ -35,6 +35,8 @@ public class FollowerAdatper extends RecyclerView.Adapter<FollowerViewHolder> im
         notifyDataSetChanged();
     }
 
+
+
     @Override
     public FollowerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_follower_item, parent, false);

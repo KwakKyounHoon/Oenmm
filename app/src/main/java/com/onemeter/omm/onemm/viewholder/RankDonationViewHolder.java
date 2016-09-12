@@ -46,7 +46,7 @@ public class RankDonationViewHolder extends RecyclerView.ViewHolder {
     DonationRank donationRank;
     public void setDonationRank(DonationRank donationRank){
         this.donationRank = donationRank;
-        userNameView.setText(donationRank.getName());
+        userNameView.setText(donationRank.getUserName());
         placeNameView.setText(donationRank.getDonationName());
         Glide.with(plcaeView.getContext())
                 .load(donationRank.getDonationPhoto())
@@ -54,7 +54,7 @@ public class RankDonationViewHolder extends RecyclerView.ViewHolder {
                 .error(R.drawable.ic_profile_image_default)
                 .into(plcaeView);
         Glide.with(profileView.getContext())
-                .load(donationRank.getPhoto())
+                .load(donationRank.getUserPhoto())
                 .bitmapTransform(new CropCircleTransformation(MyApplication.getContext()))
                 .error(R.drawable.ic_profile_image_default)
                 .into(profileView);

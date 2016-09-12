@@ -34,6 +34,7 @@ import com.onemeter.omm.onemm.request.AddFollowReqeust;
 import com.onemeter.omm.onemm.request.BlockRequest;
 import com.onemeter.omm.onemm.request.OtherDataRequest;
 import com.onemeter.omm.onemm.request.OtherPostRequest;
+import com.onemeter.omm.onemm.request.ProfileVoiceRequest;
 import com.onemeter.omm.onemm.request.RemoveFollowRequest;
 import com.onemeter.omm.onemm.request.ReportRequest;
 
@@ -193,6 +194,22 @@ public class OtherFragment extends Fragment {
             @Override
             public void onAdapterSoundClick(View view, OtherData otherData, int position) {
                 Toast.makeText(getContext(), "소리", Toast.LENGTH_SHORT).show();
+                ProfileVoiceRequest request = new ProfileVoiceRequest(getContext(), otherData.getUserId());
+                NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<String>>() {
+                    @Override
+                    public void onSuccess(NetworkRequest<NetWorkResultType<String>> request, NetWorkResultType<String> result) {
+                        try {
+                            playAudio(result.getResult());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFail(NetworkRequest<NetWorkResultType<String>> request, int errorCode, String errorMessage, Throwable e) {
+
+                    }
+                });
                 try {
                     playAudio(otherData.getVoiceMessage());
                 } catch (Exception e) {
@@ -375,7 +392,7 @@ public class OtherFragment extends Fragment {
 
                 mAdapter.clearPost();
 
-        OtherPostRequest otherPostRequest = new OtherPostRequest(getContext(),id,"from","0", 20, 1);
+        OtherPostRequest otherPostRequest = new OtherPostRequest(getContext(),id,"from","0", 1, 20);
         NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,otherPostRequest, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
             @Override
             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
@@ -486,7 +503,6 @@ public class OtherFragment extends Fragment {
                         }).setPositiveButton("예, 확실합니다", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(getContext(), "확인버튼 동작 구현"+listPosition,Toast.LENGTH_SHORT).show();
                         switch (listPosition){
                             case 0 : {
                                 ReportRequest request = new ReportRequest(getContext(), id, 1);

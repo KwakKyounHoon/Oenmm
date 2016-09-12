@@ -3,8 +3,8 @@ package com.onemeter.omm.onemm.data;
 public class DonationRank {
     private String donationName;
     private String nickname;
-    private String name;
-    private String photo;
+    private String userName;
+    private String userPhoto;
     private String donationId;
     private String donationPhoto;
     private String userId;
@@ -25,20 +25,20 @@ public class DonationRank {
         this.nickname = nickname;
     }
 
-    public String getName() {
-        return this.name;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public String getPhoto() {
-        return this.photo;
+    public String getUserPhoto() {
+        return userPhoto;
     }
 
-    public void setPhoto(String photo) {
-        this.photo = photo;
+    public void setUserPhoto(String userPhoto) {
+        this.userPhoto = userPhoto;
     }
 
     public String getDonationId() {

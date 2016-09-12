@@ -15,7 +15,7 @@ import okhttp3.RequestBody;
 /**
  * Created by Tacademy on 2016-08-22.
  */
-public class FacebookLoginRequest extends AbstractRequest<NetWorkResultType> {
+public class FacebookLoginRequest extends AbstractRequest<NetWorkResultType<String>> {
     Request mRequest;
 
     public FacebookLoginRequest(Context context, String tokeon) {
@@ -38,7 +38,7 @@ public class FacebookLoginRequest extends AbstractRequest<NetWorkResultType> {
 
     @Override
     protected Type getType() {
-        return new TypeToken<NetWorkResultType>() {
+        return new TypeToken<NetWorkResultType<String>>() {
         }.getType();
     }
 

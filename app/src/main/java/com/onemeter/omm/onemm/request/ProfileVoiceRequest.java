@@ -11,15 +11,16 @@ import okhttp3.HttpUrl;
 import okhttp3.Request;
 
 /**
- * Created by Tacademy on 2016-08-30.
+ * Created by Tacademy on 2016-09-12.
  */
-public class LogOutRequest extends AbstractRequest<NetWorkResultType> {
+public class ProfileVoiceRequest extends AbstractRequest<NetWorkResultType<String>> {
     Request request;
-    public LogOutRequest(Context context){
-        HttpUrl url = getBaseUrlBuilder()
-                .addPathSegment("auth")
-                .addPathSegment("local")
-                .addPathSegment("logout")
+
+    public ProfileVoiceRequest(Context context, String aid){
+        HttpUrl url = getHttpsBaseUrlBuilder()
+                .addPathSegment("users")
+                .addPathSegment(aid)
+                .addPathSegment("voice")
                 .build();
 
         request = new Request.Builder()
@@ -29,7 +30,7 @@ public class LogOutRequest extends AbstractRequest<NetWorkResultType> {
     }
     @Override
     protected Type getType() {
-        return new TypeToken<NetWorkResultType>(){}.getType();
+        return new TypeToken<NetWorkResultType<String>>(){}.getType();
     }
 
     @Override

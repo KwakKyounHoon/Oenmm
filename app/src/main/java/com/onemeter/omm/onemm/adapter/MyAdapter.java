@@ -24,6 +24,8 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
 
     MyPageData myPageData = new MyPageData();
     boolean categoryFlag = true;
+    String time = "";
+    int timePosition = -1;
 
     int tabPosition;
     boolean comFlag;
@@ -34,6 +36,12 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
 
     public void addMyData(MyData myData){
         myPageData.setMyData(myData);
+        notifyDataSetChanged();
+    }
+
+    public void setTime(String time, int timePosition){
+        this.time = time;
+        this.timePosition = timePosition;
         notifyDataSetChanged();
     }
 
@@ -109,6 +117,7 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        int realPosition = position;
         if (myPageData.getMyData() != null) {
             if (position == 0) {
                 MyHeaderViewHolder mhvh = (MyHeaderViewHolder) holder;
@@ -141,6 +150,7 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
                 mpvh.setOnMyItemClickListener(this);
                 mpvh.setPost(myPageData.getPosts().get(position));
                 mpvh.setComFlag(comFlag, tabPosition);
+                if(realPosition == timePosition)  mpvh.setTime(time);
                 return;
             }
             position -= myPageData.getPosts().size();

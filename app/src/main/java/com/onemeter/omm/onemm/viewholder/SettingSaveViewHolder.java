@@ -79,8 +79,16 @@ public class SettingSaveViewHolder extends RecyclerView.ViewHolder{
 
     }
 
+    @OnClick(R.id.btn_withdraw)
+    public void withdrawClick(View view){
+        if(listener != null){
+            listener.onWithdrawClick(view, settingSave, getAdapterPosition());
+        }
+    }
+
     public interface OnSettingSaveItemClickListener {
         public void onExpandClick(View view, int position, boolean expandFlag);
+        public void onWithdrawClick(View view,SettingSave settingSave, int position);
     }
 
     OnSettingSaveItemClickListener listener;

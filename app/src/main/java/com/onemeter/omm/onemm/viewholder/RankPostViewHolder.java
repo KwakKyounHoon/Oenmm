@@ -1,5 +1,6 @@
 package com.onemeter.omm.onemm.viewholder;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,6 +32,8 @@ public class RankPostViewHolder extends RecyclerView.ViewHolder {
     TextView listenView;
     @BindView(R.id.text_cost)
     TextView costView;
+    @BindView(R.id.btn_listen)
+    TextView listenbtnView;
     public RankPostViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this,itemView);
@@ -61,6 +64,13 @@ public class RankPostViewHolder extends RecyclerView.ViewHolder {
                 .bitmapTransform(new CropCircleTransformation(MyApplication.getContext()))
                 .error(R.drawable.ic_profile_image_default)
                 .into(answernerImgView);
+        if(post.getPayInfo().equals("1")){
+            listenbtnView.setBackgroundResource(R.drawable.ic_answer_on);
+            listenbtnView.setTextColor(ContextCompat.getColor(MyApplication.getContext(),R.color.colorWhite));
+        }else{
+            listenbtnView.setBackgroundResource(R.drawable.ic_answer_off);
+            listenbtnView.setTextColor(ContextCompat.getColor(MyApplication.getContext(),R.color.colorBlack));
+        }
     }
 
     @OnClick(R.id.btn_listen)

@@ -13,23 +13,23 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 
 /**
- * Created by Tacademy on 2016-08-30.
+ * Created by Tacademy on 2016-09-12.
  */
-public class QuestionsRequest extends AbstractRequest<NetWorkResultType> {
+public class ChangePlaceRequest extends AbstractRequest<NetWorkResultType> {
     Request request;
-    public QuestionsRequest(Context context, String price, String content, String answernerId){
+    public ChangePlaceRequest(Context context, String donationId){
         HttpUrl.Builder builder = getBaseUrlBuilder();
-        builder.addPathSegment("questions");
+        builder.addPathSegment("users")
+                .addPathSegment("me")
+                .addQueryParameter("type","3");
 
         RequestBody body = new FormBody.Builder()
-                .add("price",price)
-                .add("content",content)
-                .add("answernerId",answernerId)
+                .add("donationId",donationId)
                 .build();
 
         request = new Request.Builder()
                 .url(builder.build())
-                .post(body)
+                .put(body)
                 .tag(context)
                 .build();
     }

@@ -1,4 +1,4 @@
-    package com.onemeter.omm.onemm.fragment;
+package com.onemeter.omm.onemm.fragment;
 
 
 import android.os.Bundle;
@@ -17,6 +17,7 @@ import com.onemeter.omm.onemm.data.DonatingPlace;
 import com.onemeter.omm.onemm.data.NetWorkResultType;
 import com.onemeter.omm.onemm.manager.NetworkManager;
 import com.onemeter.omm.onemm.manager.NetworkRequest;
+import com.onemeter.omm.onemm.request.ChangePlaceRequest;
 import com.onemeter.omm.onemm.request.DonatingPlaceRequest;
 import com.onemeter.omm.onemm.request.DonatingPlacesRequest;
 
@@ -73,13 +74,17 @@ public class DonatingPlaceFragment extends Fragment {
         });
         list.setLayoutManager(manager);
         init();
-        // Inflate the layout for this fragment
+        mAdapter.setOnAdapterItemClickListener(new DonatingPlaceAdapter.OnAdapterItemClickLIstener() {
+            @Override
+            public void onAdapterPlaceClick(View view, DonatingPlace donatingPlace, int position) {
+                mAdapter.addHeadPlace(donatingPlace);
+                id = donatingPlace.getDonationId();
+            }
+        });
         return view;
     }
 
     private void init() {
-//        DonatingPlace[] d = {new DonatingPlace(), new DonatingPlace(), new DonatingPlace(), new DonatingPlace(), new DonatingPlace()};
-//        mAdapter.addPlaces(d);
         DonatingPlacesRequest request = new DonatingPlacesRequest(getContext(), 1, 20);
         NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<DonatingPlace[]>>() {
             @Override
@@ -93,22 +98,37 @@ public class DonatingPlaceFragment extends Fragment {
             }
         });
 
-        DonatingPlaceRequest donatingPlaceRequest = new DonatingPlaceRequest(getContext(), id);
-        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, donatingPlaceRequest, new NetworkManager.OnResultListener<NetWorkResultType<DonatingPlace>>() {
+        if(id != null) {
+            DonatingPlaceRequest donatingPlaceRequest = new DonatingPlaceRequest(getContext(), id);
+            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, donatingPlaceRequest, new NetworkManager.OnResultListener<NetWorkResultType<DonatingPlace>>() {
+                @Override
+                public void onSuccess(NetworkRequest<NetWorkResultType<DonatingPlace>> request, NetWorkResultType<DonatingPlace> result) {
+                    mAdapter.addHeadPlace(result.getResult());
+
+                }
+
+                @Override
+                public void onFail(NetworkRequest<NetWorkResultType<DonatingPlace>> request, int errorCode, String errorMessage, Throwable e) {
+
+                }
+            });
+        }
+    }
+
+    @OnClick(R.id.btn_check)
+    public void checkClick(View view){
+        ChangePlaceRequest request = new ChangePlaceRequest(getContext(), id);
+        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType>() {
             @Override
-            public void onSuccess(NetworkRequest<NetWorkResultType<DonatingPlace>> request, NetWorkResultType<DonatingPlace> result) {
-                mAdapter.addHeadPlace(result.getResult());
+            public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
+                popFagment();
             }
 
             @Override
-            public void onFail(NetworkRequest<NetWorkResultType<DonatingPlace>> request, int errorCode, String errorMessage, Throwable e) {
+            public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
 
             }
         });
-//        DonatingPlace header = new DonatingPlace();
-//        header.setDescription("Good");
-//        header.setName("Hi");
-//        mAdapter.addHeadPlace(header);
     }
 
     @Override
@@ -131,6 +151,18 @@ public class DonatingPlaceFragment extends Fragment {
 
     @OnClick(R.id.btn_cancel)
     public void backClick(View view){
+        if(getParentFragment() instanceof TabMyFragment){
+            ((TabMyFragment) (getParentFragment())).popFragment();
+        }else if(getParentFragment() instanceof TabHomeFragment){
+            ((TabHomeFragment) (getParentFragment())).popFragment();
+        }else if(getParentFragment() instanceof TabRankFragment){
+            ((TabRankFragment) (getParentFragment())).popFragment();
+        }else{
+            ((TabSearchFragment) (getParentFragment())).popFragment();
+        }
+    }
+
+    public void popFagment(){
         if(getParentFragment() instanceof TabMyFragment){
             ((TabMyFragment) (getParentFragment())).popFragment();
         }else if(getParentFragment() instanceof TabHomeFragment){

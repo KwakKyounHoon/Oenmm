@@ -1,5 +1,6 @@
 package com.onemeter.omm.onemm.viewholder;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -40,7 +41,7 @@ public class MyPostViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.text_no_cost)
     TextView noCostView;
     @BindView(R.id.btn_listen)
-    ImageView listenbtnView;
+    TextView listenbtnView;
 
     public MyPostViewHolder(View itemView) {
         super(itemView);
@@ -90,6 +91,16 @@ public class MyPostViewHolder extends RecyclerView.ViewHolder {
                 .bitmapTransform(new CropCircleTransformation(MyApplication.getContext()))
                 .error(R.drawable.ic_profile_image_default)
                 .into(answernerImgView);
+        if(post.getPayInfo() != null) {
+            if(post.getPayInfo().equals("1")){
+                listenbtnView.setBackgroundResource(R.drawable.ic_answer_on);
+                listenbtnView.setTextColor(ContextCompat.getColor(MyApplication.getContext(),R.color.colorWhite));
+            }else{
+                listenbtnView.setBackgroundResource(R.drawable.ic_answer_off);
+                listenbtnView.setTextColor(ContextCompat.getColor(MyApplication.getContext(),R.color.colorBlack));
+            }
+        }
+        setTime("답변 듣기");
     }
 
     @OnClick(R.id.btn_listen)
@@ -126,5 +137,9 @@ public class MyPostViewHolder extends RecyclerView.ViewHolder {
 
     public void setOnMyItemClickListener(OnMyItemClickListener listener) {
         this.listener = listener;
+    }
+
+    public void setTime(String time){
+        listenbtnView.setText(time);
     }
 }
