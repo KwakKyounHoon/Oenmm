@@ -38,4 +38,5 @@ public class SettingSaveExpandViewHolder extends RecyclerView.ViewHolder {
         questionCostView.setText(settingSave.getQuestionCost());
         withdrawTotalView.setText(settingSave.getWithdrawTotal());
     }
+
 }

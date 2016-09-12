@@ -226,7 +226,6 @@ public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         public void onAdatperAgreeClick(View view);
         public void onAdapterChargeClick(View view);
         public void onAdapterLogoutClick(View view);
-        public void onAdapterWithdrawClick(View view, SettingSave settingSave, int position);
     }
 
     OnSettingAdapterItemClickListener listener;

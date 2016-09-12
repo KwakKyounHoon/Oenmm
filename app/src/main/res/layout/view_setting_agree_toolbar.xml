@@ -4,31 +4,21 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/btn_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_back"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:id="@+id/btn_back"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="프로필 수정"
+        android:text="이용약관"
         android:textColor="@color/toolbar_text_color"
         android:textSize="@dimen/toolbar_text_size"
-        android:id="@+id/textView4"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/toolbar_back"/>
-
-    <ImageView
-        android:id="@+id/btn_check"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_next"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_marginLeft="@dimen/toolbar_back" />
 
 </RelativeLayout>
