@@ -214,11 +214,13 @@ public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
+
     public interface OnSettingAdapterItemClickListener {
         public void onExpandClick(View view, int position, boolean expandFlag);
         public void onAdatperAgreeClick(View view);
         public void onAdapterChargeClick(View view);
         public void onAdapterLogoutClick(View view);
+        public void onWithdrawClick(View view);
     }
 
     OnSettingAdapterItemClickListener listener;

@@ -1,8 +1,10 @@
 package com.onemeter.omm.onemm.fragment;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.onemeter.omm.onemm.R;
+import com.onemeter.omm.onemm.SettingDialog;
 import com.onemeter.omm.onemm.adapter.SettingAdapter;
 import com.onemeter.omm.onemm.data.NetWorkResultType;
 import com.onemeter.omm.onemm.data.SettingDonate;
@@ -81,25 +84,40 @@ public class SettingFragment extends Fragment {
 
             @Override
             public void onAdatperAgreeClick(View view) {
-                Toast.makeText(getContext(), "어그리 버튼 클릭", Toast.LENGTH_SHORT).show();
+                ((TabMyFragment) (getParentFragment())).settIngAgree();
             }
 
             @Override
             public void onAdapterChargeClick(View view) {
-                Toast.makeText(getContext(), "충전 버튼 클릭", Toast.LENGTH_SHORT).show();
+                SettingDialog settingDialog = new SettingDialog();
+                settingDialog.show(getFragmentManager(), "CHARGE");
             }
 
             @Override
             public void onAdapterLogoutClick(View view) {
-                Toast.makeText(getContext(), "로그아웃 버튼 클릭", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("정말 팔로우하시겠습니까?")
+                        .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Toast.makeText(getContext(), "취소", Toast.LENGTH_SHORT).show();
+                            }
+                        }).setPositiveButton("예, 확실합니다.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(getContext(), "로그아웃", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                builder.show();
             }
         });
         return view;
     }
 
     @OnClick(R.id.btn_back)
-    public void backClick(View view){
+    public void backClick(View view) {
         ((TabMyFragment) (getParentFragment())).popFragment();
     }
 
 }
+
