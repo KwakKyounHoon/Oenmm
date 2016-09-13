@@ -11,6 +11,10 @@ import android.widget.TextView;
 
 import com.onemeter.omm.onemm.R;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -39,7 +43,53 @@ public class SettingAgreeFragment extends Fragment {
 
         editInfo.setMovementMethod(new ScrollingMovementMethod());
         editUse.setMovementMethod(new ScrollingMovementMethod());
+
+        editInfo.setText(readText2());
+        editUse.setText(readText1());
+
         return view;
+    }
+
+    private String readText2() {
+        String data = null;
+        InputStream inputStream = getResources().openRawResource(R.raw.text_2);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        int i;
+        try {
+            i = inputStream.read();
+            while (i != -1) {
+                byteArrayOutputStream.write(i);
+                i = inputStream.read();
+            }
+
+            data = new String(byteArrayOutputStream.toByteArray(),"MS949");
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return data;
+    }
+
+    private String readText1() {
+        String data = null;
+        InputStream inputStream = getResources().openRawResource(R.raw.text_1);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        int i;
+        try {
+            i = inputStream.read();
+            while (i != -1) {
+                byteArrayOutputStream.write(i);
+                i = inputStream.read();
+            }
+
+            data = new String(byteArrayOutputStream.toByteArray(),"MS949");
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return data;
     }
 
 
