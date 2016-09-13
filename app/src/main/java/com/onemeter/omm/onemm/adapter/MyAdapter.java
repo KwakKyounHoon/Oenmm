@@ -23,7 +23,6 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
         ,MyTabViewHolder.OnTabItemClickListener,MyCategoryViewHolder.OnMyCategoryItemClickListener ,MyPostViewHolder.OnMyItemClickListener{
 
     MyPageData myPageData = new MyPageData();
-    boolean categoryFlag = true;
     String time = "";
     int timePosition = -1;
 
@@ -42,11 +41,6 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
     public void setTime(String time, int timePosition){
         this.time = time;
         this.timePosition = timePosition;
-        notifyDataSetChanged();
-    }
-
-    public void addMyData(MyData[] myData){
-        myPageData.setMyData(myData[0]);
         notifyDataSetChanged();
     }
 
@@ -78,10 +72,10 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
         }
         if(position == 0) return VIEW_TYPE_TAP;
         position--;
-        if(categoryFlag){
-            if(position == 0) return VIEW_TYPE_CTEGORY;
-            position--;
-        }
+
+        if(position == 0) return VIEW_TYPE_CTEGORY;
+        position--;
+
         if (myPageData.getPosts().size() > 0) {
             if (position < myPageData.getPosts().size()) {
                 return VIEW_TYPE_POST;
@@ -134,15 +128,25 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
             return;
         }
         position--;
-        if(categoryFlag) {
-            if (position == 0) {
-                MyCategoryViewHolder mcvh = (MyCategoryViewHolder) holder;
-                mcvh.setOnMyCategoryItemClickListener(this);
+
+        if (position == 0) {
+            MyCategoryViewHolder mcvh = (MyCategoryViewHolder) holder;
+            mcvh.setOnMyCategoryItemClickListener(this);
 //                mcvh.setCategory(comFlag);
-                return;
+            if(tabPosition == 1){
+                mcvh.setCategroyText("받은 질문");
+                mcvh.setCategoryView(true);
+            }else if(tabPosition == 2){
+                mcvh.setCategroyText("한 질문");
+                mcvh.setCategoryView(true);
+            }else{
+                mcvh.setCategroyText("나도 듣기");
+                mcvh.setCategoryView(false);
             }
-            position--;
+            return;
         }
+        position--;
+
 
         if (myPageData.getPosts().size() > 0) {
             if (position < myPageData.getPosts().size()) {
@@ -163,9 +167,6 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
         int ctn = 2;
         if(myPageData == null) return 0;
         if(myPageData.getMyData() == null) ctn--;
-        if(categoryFlag) {
-            ctn++;
-        }
         return myPageData.getPosts().size()+ctn;
     }
 
@@ -209,12 +210,6 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
         if(listener != null){
             listener.onAdapterPhotoClick(view, myData, position);
         }
-    }
-
-
-    @Override
-    public void onCategory(View view, boolean flag) {
-        categoryFlag = flag;
     }
 
     @Override

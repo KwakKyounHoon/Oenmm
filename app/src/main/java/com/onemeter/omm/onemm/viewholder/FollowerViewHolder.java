@@ -89,4 +89,8 @@ public class FollowerViewHolder extends RecyclerView.ViewHolder {
         this.listener = listener;
     }
 
+    public void setToggle(){
+        followView.setChecked(!followView.isChecked());
+    }
+
 }

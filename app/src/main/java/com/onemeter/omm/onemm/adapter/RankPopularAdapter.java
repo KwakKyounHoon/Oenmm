@@ -36,6 +36,15 @@ public class RankPopularAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         notifyDataSetChanged();
     }
 
+    String time = "";
+    int timePosition = -1;
+
+    public void setTime(String time, int timePosition){
+        this.time = time;
+        this.timePosition = timePosition;
+        notifyDataSetChanged();
+    }
+
     public void clearRankPopular(){
         posts.clear();
     }
@@ -70,6 +79,7 @@ public class RankPopularAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        int realPosition = position;
         if (position == 0) {
             RankCategoryViewHolder mhvh = (RankCategoryViewHolder)holder;
             mhvh.setOnRankCategoryItemClickListener(this);
@@ -81,6 +91,7 @@ public class RankPopularAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 RankPostViewHolder rpvh = (RankPostViewHolder)holder;
                 rpvh.setPost(posts.get(position));
                 rpvh.setOnRankPopularItemClickListener(this);
+                if(realPosition == timePosition)  rpvh.setTime(time);
                 return;
             }
             position -= posts.size();

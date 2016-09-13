@@ -91,7 +91,7 @@ public class FollowerFragment extends Fragment {
             }
 
             @Override
-            public void onAdapterLikeClick(View view, final Follower follower, int position, boolean followFlag) {
+            public void onAdapterLikeClick(View view, final Follower follower, final int position, boolean followFlag) {
                 if(followFlag){
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                     builder.setTitle("정말 팔로우하시겠습니까?")
@@ -109,12 +109,11 @@ public class FollowerFragment extends Fragment {
                                 @Override
                                 public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
                                     Toast.makeText(getContext(), "" + result.getMessage(), Toast.LENGTH_SHORT).show();
-                                    mAdapter.notifyDataSetChanged();
+                                    mAdapter.selectPosition(position);
                                 }
 
                                 @Override
                                 public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
-                                    mAdapter.notifyDataSetChanged();
                                 }
                             });
                         }
@@ -137,12 +136,11 @@ public class FollowerFragment extends Fragment {
                                 @Override
                                 public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
                                     Toast.makeText(getContext(), "" + result.getMessage(), Toast.LENGTH_SHORT).show();
-                                    mAdapter.notifyDataSetChanged();
+                                    mAdapter.selectPosition(position);
                                 }
 
                                 @Override
                                 public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
-                                    mAdapter.notifyDataSetChanged();
                                 }
                             });
                         }

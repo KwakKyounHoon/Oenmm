@@ -14,6 +14,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
+            android:id="@+id/text_category"
             android:text="한 질문" />
 
         <RadioGroup
@@ -24,13 +25,6 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:orientation="horizontal">
-
-
-            <!--<RadioButton-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:button="@drawable/radio_my_off"-->
-                <!--/>-->
 
             <RadioButton
                 android:id="@+id/btn_com"

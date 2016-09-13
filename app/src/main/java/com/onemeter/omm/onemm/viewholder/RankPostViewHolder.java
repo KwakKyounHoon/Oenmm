@@ -71,6 +71,7 @@ public class RankPostViewHolder extends RecyclerView.ViewHolder {
             listenbtnView.setBackgroundResource(R.drawable.ic_answer_off);
             listenbtnView.setTextColor(ContextCompat.getColor(MyApplication.getContext(),R.color.colorBlack));
         }
+        setTime("답변 듣기");
     }
 
     @OnClick(R.id.btn_listen)
@@ -90,5 +91,7 @@ public class RankPostViewHolder extends RecyclerView.ViewHolder {
     public void setOnRankPopularItemClickListener(OnRankPopularItemClickListener listener) {
         this.listener = listener;
     }
-
+    public void setTime(String time){
+        listenbtnView.setText(time);
+    }
 }

@@ -15,6 +15,7 @@ import okhttp3.ResponseBody;
 public abstract class AbstractRequest<T> extends NetworkRequest<T> {
     private String DUMY = "ec2-52-78-135-2.ap-northeast-2.compute.amazonaws.com";
     private String REALURL = "ec2-52-78-139-46.ap-northeast-2.compute.amazonaws.com";
+//        private String REALURL = "192.168.211.73";
 
     protected HttpUrl.Builder getHttpsBaseUrlBuilder() {
         HttpUrl.Builder builder = new HttpUrl.Builder();

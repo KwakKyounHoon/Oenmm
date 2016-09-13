@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.onemeter.omm.onemm.R;
 
@@ -20,6 +21,8 @@ public class MyCategoryViewHolder extends RecyclerView.ViewHolder {
     RadioButton comButton;
     @BindView(R.id.btn_incom)
     RadioButton inComButton;
+    @BindView(R.id.text_category)
+    TextView categroyView;
 
     public MyCategoryViewHolder(View itemView) {
         super(itemView);
@@ -59,6 +62,18 @@ public class MyCategoryViewHolder extends RecyclerView.ViewHolder {
             comButton.setChecked(true);
         }else{
             inComButton.setChecked(true);
+        }
+    }
+
+    public void setCategroyText(String str){
+        categroyView.setText(str);
+    }
+
+    public void setCategoryView(boolean flag){
+        if(flag){
+            radioGroup.setVisibility(View.VISIBLE);
+        }else{
+            radioGroup.setVisibility(View.GONE);
         }
     }
 }

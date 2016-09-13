@@ -29,10 +29,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> implements
         notifyDataSetChanged();
     }
 
-//    public void addAll(PostData2[] items) {
-//        this.posts.addAll(Arrays.asList(items));
-//        notifyDataSetChanged();
-//    }
+    String time = "";
+    int timePosition = -1;
+
+    public void setTime(String time, int timePosition){
+        this.time = time;
+        this.timePosition = timePosition;
+        notifyDataSetChanged();
+    }
 
     @Override
     public PostViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -45,6 +49,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> implements
         PostViewHolder pvh = (PostViewHolder)holder;
         pvh.setPost(posts.get(position));
         pvh.setOnOtherItemClickListener(this);
+        if(position == timePosition)  pvh.setTime(time);
     }
 
     @Override
