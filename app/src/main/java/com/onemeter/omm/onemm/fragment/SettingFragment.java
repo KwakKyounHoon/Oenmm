@@ -1,6 +1,7 @@
 package com.onemeter.omm.onemm.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,13 +11,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
+import com.onemeter.omm.onemm.LoginActivity;
 import com.onemeter.omm.onemm.R;
+import com.onemeter.omm.onemm.SettingDialog;
 import com.onemeter.omm.onemm.adapter.SettingAdapter;
 import com.onemeter.omm.onemm.data.NetWorkResultType;
 import com.onemeter.omm.onemm.data.SettingDonate;
 import com.onemeter.omm.onemm.data.SettingSave;
 import com.onemeter.omm.onemm.manager.NetworkManager;
 import com.onemeter.omm.onemm.manager.NetworkRequest;
+import com.onemeter.omm.onemm.manager.PropertyManager;
+import com.onemeter.omm.onemm.request.LogOutRequest;
 import com.onemeter.omm.onemm.request.SettingDonateRequest;
 import com.onemeter.omm.onemm.request.SettingSaveRequest;
 
@@ -114,7 +120,7 @@ public class SettingFragment extends Fragment {
 
             @Override
             public void onAdapterWithdrawClick(View view, SettingSave settingSave, int position) {
-                Toast.makeText(getContext(), "출금 버튼 클릭", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "출금 버튼 크릭", Toast.LENGTH_SHORT).show();
             }
         });
         return view;
