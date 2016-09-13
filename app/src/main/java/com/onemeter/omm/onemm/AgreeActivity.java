@@ -11,6 +11,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -41,9 +45,9 @@ public class AgreeActivity extends AppCompatActivity {
         
         editInfo.setMovementMethod(new ScrollingMovementMethod());
         editUse.setMovementMethod(new ScrollingMovementMethod());
-//        toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        editUse.setText(readText1());
+        editInfo.setText(readText2());
 
         checkInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +96,48 @@ public class AgreeActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private String readText1() {
+        String data = null;
+        InputStream inputStream = getResources().openRawResource(R.raw.text_1);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        int i;
+        try {
+            i = inputStream.read();
+            while (i != -1) {
+                byteArrayOutputStream.write(i);
+                i = inputStream.read();
+            }
+
+            data = new String(byteArrayOutputStream.toByteArray(),"MS949");
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return data;
+    }
+
+    private String readText2() {
+        String data = null;
+        InputStream inputStream = getResources().openRawResource(R.raw.text_2);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        int i;
+        try {
+            i = inputStream.read();
+            while (i != -1) {
+                byteArrayOutputStream.write(i);
+                i = inputStream.read();
+            }
+
+            data = new String(byteArrayOutputStream.toByteArray(),"MS949");
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return data;
     }
 
     public boolean agreeCheck() {

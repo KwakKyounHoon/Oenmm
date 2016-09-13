@@ -15,6 +15,7 @@ import com.facebook.login.LoginManager;
 import com.onemeter.omm.onemm.LoginActivity;
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.SettingDialog;
+import com.onemeter.omm.onemm.SettingWithdrawDial;
 import com.onemeter.omm.onemm.adapter.SettingAdapter;
 import com.onemeter.omm.onemm.data.NetWorkResultType;
 import com.onemeter.omm.onemm.data.SettingDonate;
@@ -120,14 +121,15 @@ public class SettingFragment extends Fragment {
 
             @Override
             public void onAdapterWithdrawClick(View view, SettingSave settingSave, int position) {
-                Toast.makeText(getContext(), "출금 버튼 크릭", Toast.LENGTH_SHORT).show();
+                SettingWithdrawDial settingWithdrawDial = new SettingWithdrawDial();
+                settingWithdrawDial.show(getFragmentManager(), "WIthDRWAL");
             }
         });
         return view;
     }
 
     @OnClick(R.id.btn_back)
-    public void backClick(View view){
+    public void backClick(View view) {
         ((TabMyFragment) (getParentFragment())).popFragment();
     }
 
