@@ -42,7 +42,7 @@
             android:layout_marginRight="10dp"
             android:background="@null"
             android:gravity="center"
-            android:text="          0" />
+            android:text="          " />
 
         <Button
             android:id="@+id/btn_reset"
