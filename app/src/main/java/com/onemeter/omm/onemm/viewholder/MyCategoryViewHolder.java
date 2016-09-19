@@ -34,12 +34,12 @@ public class MyCategoryViewHolder extends RecyclerView.ViewHolder {
                 switch (i){
                     case R.id.btn_com:
                         if (listener != null) {
-                            listener.onCategoryItemClick(true);
+                            listener.onCategoryItemClick(true, getAdapterPosition());
                         }
                         break;
                     case R.id.btn_incom:
                         if (listener != null) {
-                            listener.onCategoryItemClick(false);
+                            listener.onCategoryItemClick(false, getAdapterPosition());
                         }
                         break;
                 }
@@ -48,7 +48,7 @@ public class MyCategoryViewHolder extends RecyclerView.ViewHolder {
     }
 
     public interface OnMyCategoryItemClickListener {
-        public void onCategoryItemClick(Boolean flag);
+        public void onCategoryItemClick(Boolean flag, int position);
     }
 
     OnMyCategoryItemClickListener listener;

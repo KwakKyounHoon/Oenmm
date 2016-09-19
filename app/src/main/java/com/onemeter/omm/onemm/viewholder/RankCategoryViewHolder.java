@@ -31,12 +31,12 @@ public class RankCategoryViewHolder extends RecyclerView.ViewHolder {
                 switch (i){
                     case R.id.btn_listen:
                         if (listener != null) {
-                            listener.onCategoryItemClick(true);
+                            listener.onCategoryItemClick(true, getAdapterPosition());
                         }
                         break;
                     case R.id.btn_cost:
                         if (listener != null) {
-                            listener.onCategoryItemClick(false);
+                            listener.onCategoryItemClick(false, getAdapterPosition());
                         }
                         break;
                 }
@@ -45,7 +45,7 @@ public class RankCategoryViewHolder extends RecyclerView.ViewHolder {
     }
 
     public interface OnRankCategoryItemClickListener {
-        public void onCategoryItemClick(Boolean flag);
+        public void onCategoryItemClick(Boolean flag, int position);
     }
 
     OnRankCategoryItemClickListener listener;

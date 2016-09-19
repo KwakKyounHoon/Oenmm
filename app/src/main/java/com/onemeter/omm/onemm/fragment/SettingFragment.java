@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 import com.onemeter.omm.onemm.LoginActivity;
@@ -99,7 +98,6 @@ public class SettingFragment extends Fragment {
 
             @Override
             public void onAdapterLogoutClick(View view) {
-                Toast.makeText(getContext(), "로그아웃 버튼 클릭", Toast.LENGTH_SHORT).show();
                 LoginManager.getInstance().logOut();
                 LogOutRequest request = new LogOutRequest(getContext());
                 NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType>() {
@@ -130,7 +128,15 @@ public class SettingFragment extends Fragment {
 
     @OnClick(R.id.btn_back)
     public void backClick(View view) {
-        ((TabMyFragment) (getParentFragment())).popFragment();
+        if(getParentFragment() instanceof TabMyFragment){
+            ((TabMyFragment) (getParentFragment())).popFragment();
+        }else if(getParentFragment() instanceof TabHomeFragment){
+            ((TabHomeFragment) (getParentFragment())).popFragment();
+        }else if(getParentFragment() instanceof TabRankFragment){
+            ((TabRankFragment) (getParentFragment())).popFragment();
+        }else{
+            ((TabSearchFragment) (getParentFragment())).popFragment();
+        }
     }
 
 }

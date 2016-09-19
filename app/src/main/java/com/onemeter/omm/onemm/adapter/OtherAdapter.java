@@ -32,6 +32,15 @@ public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         notifyDataSetChanged();
     }
 
+    String time = "";
+    int timePosition = -1;
+
+    public void setTime(String time, int timePosition){
+        this.time = time;
+        this.timePosition = timePosition;
+        notifyDataSetChanged();
+    }
+
     public void addPost(Post post){
         otherPageData.getPostDatas().add(post);
         notifyDataSetChanged();
@@ -133,6 +142,7 @@ public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 OtherPostViewHolder otpvh = (OtherPostViewHolder) holder;
                 otpvh.setPost(otherPageData.getPostDatas().get(position));
                 otpvh.setOnOtherItemClickListener(this);
+                if(position == timePosition)  otpvh.setTime(time);
                 return;
             }
             position -= otherPageData.getPostDatas().size();

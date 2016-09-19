@@ -71,9 +71,25 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> implements
         }
     }
 
+    @Override
+    public void onAnswerClick(View view, Post post, int position) {
+        if(listener != null){
+            listener.onAdapterAnswerClick(view, post, position);
+        }
+    }
+
+    @Override
+    public void onQuestionerClick(View view, Post post, int position) {
+        if(listener != null){
+            listener.onAdapterQuestionerClick(view, post, position);
+        }
+    }
+
     public interface OnAdapterItemClickLIstener {
         public void onAdapterPostItemClick(View view, Post post, int position);
         public void onAdpaterPlayClick(View view, Post post, int position);
+        public void onAdapterAnswerClick(View view, Post post, int position);
+        public void onAdapterQuestionerClick(View view, Post post, int position);
     }
 
     OnAdapterItemClickLIstener listener;

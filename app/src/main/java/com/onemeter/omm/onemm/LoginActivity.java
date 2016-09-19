@@ -81,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
         final AccessToken accessToken = AccessToken.getCurrentAccessToken();
         if (accessToken != null) {
             String token = accessToken.getToken();
-            FacebookLoginRequest request = new FacebookLoginRequest(LoginActivity.this, token);
+            FacebookLoginRequest request = new FacebookLoginRequest(LoginActivity.this, token, PropertyManager.getInstance().getRegistrationId());
             NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<String>>() {
                 @Override
                 public void onSuccess(NetworkRequest<NetWorkResultType<String>> request, NetWorkResultType<String> result) {
@@ -103,10 +103,6 @@ public class LoginActivity extends AppCompatActivity {
 
                 }
             });
-
-//                    Toast.makeText(LoginActivity.this, token, Toast.LENGTH_SHORT).show();
-//            Log.i("test",token);
-//                    Toast.makeText(LoginActivity.this, accessToken.getUserId(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -114,6 +110,5 @@ public class LoginActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode,resultCode,data);
-//        Toast.makeText(this,data.getStringExtra("email"),Toast.LENGTH_SHORT).show();
     }
 }

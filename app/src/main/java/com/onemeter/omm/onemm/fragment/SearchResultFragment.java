@@ -91,19 +91,6 @@ public class SearchResultFragment extends Fragment {
     }
 
 
-//    @OnClick(R.id.btn_user)
-//    public void onUserClick(){
-//        if(getParentFragment() instanceof TabMyFragment){
-//            ((TabMyFragment) (getParentFragment())).showOther("test");
-//        }else if(getParentFragment() instanceof TabHomeFragment){
-//            ((TabHomeFragment) (getParentFragment())).showOther("test");
-//        }else if(getParentFragment() instanceof TabRankFragment){
-//            ((TabRankFragment) (getParentFragment())).showOther("test");
-//        }else{
-//            ((TabSearchFragment) (getParentFragment())).showOther("test");
-//        }
-//    }
-
     @OnClick(R.id.btn_back)
     public void backClick(View view){
         if(getParentFragment() instanceof TabMyFragment){

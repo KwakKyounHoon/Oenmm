@@ -2,6 +2,7 @@ package com.onemeter.omm.onemm.fragment;
 
 
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -12,7 +13,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.onemeter.omm.onemm.MainActivity;
 import com.onemeter.omm.onemm.R;
@@ -21,6 +21,7 @@ import com.onemeter.omm.onemm.data.NetWorkResultType;
 import com.onemeter.omm.onemm.data.Post;
 import com.onemeter.omm.onemm.manager.NetworkManager;
 import com.onemeter.omm.onemm.manager.NetworkRequest;
+import com.onemeter.omm.onemm.manager.PropertyManager;
 import com.onemeter.omm.onemm.request.FollowPostListRequest;
 import com.onemeter.omm.onemm.request.ReplyListenRequest;
 
@@ -53,7 +54,6 @@ public class PostFragment extends Fragment {
         mAdapter.setOnAdapterItemClickListener(new PostAdapter.OnAdapterItemClickLIstener() {
             @Override
             public void onAdapterPostItemClick(View view, Post post, int position) {
-                Toast.makeText(getContext(), post.getAnswernerId(), Toast.LENGTH_SHORT).show();
                 if (post.getPayInfo().equals("0")) {
                     ((TabHomeFragment) (getParentFragment())).showListenToOff(post);
                 }
@@ -61,27 +61,49 @@ public class PostFragment extends Fragment {
 
             @Override
             public void onAdpaterPlayClick(View view, final Post post, int position) {
-                timePosition = position;
-                startTime = -1;
-                ReplyListenRequest request = new ReplyListenRequest(getContext(), post.getAnswerId());
-                NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<String>>() {
-                    @Override
-                    public void onSuccess(NetworkRequest<NetWorkResultType<String>> request, NetWorkResultType<String> result) {
-                        endTime = post.getLength();
-                        try {
-                            playAudio(result.getResult());
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                if (post.getPayInfo().equals("1")) {
+                    killMediaPlayer();
+                    timePosition = position;
+                    startTime = -1;
+                    ReplyListenRequest request = new ReplyListenRequest(getContext(), post.getAnswerId());
+                    NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<String>>() {
+                        @Override
+                        public void onSuccess(NetworkRequest<NetWorkResultType<String>> request, NetWorkResultType<String> result) {
+                            endTime = post.getLength();
+                            try {
+                                playAudio(result.getResult());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            startflag = true;
+                            mHandler.removeCallbacks(countRunnable);
+                            mHandler.post(countRunnable);
                         }
-                        mHandler.removeCallbacks(countRunnable);
-                        mHandler.post(countRunnable);
-                    }
 
-                    @Override
-                    public void onFail(NetworkRequest<NetWorkResultType<String>> request, int errorCode, String errorMessage, Throwable e) {
+                        @Override
+                        public void onFail(NetworkRequest<NetWorkResultType<String>> request, int errorCode, String errorMessage, Throwable e) {
 
-                    }
-                });
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onAdapterAnswerClick(View view, Post post, int position) {
+                if(!post.getAnswernerId().equals(PropertyManager.getInstance().getMyId())){
+                    showOtherPage(post.getAnswernerId());
+                }else{
+                    showMyPage();
+                }
+            }
+
+            @Override
+            public void onAdapterQuestionerClick(View view, Post post, int position){
+                if(!post.getQuestionerId().equals(PropertyManager.getInstance().getMyId())){
+                    showOtherPage(post.getQuestionerId());
+                }else{
+                    showMyPage();
+                }
             }
         });
 
@@ -138,7 +160,8 @@ public class PostFragment extends Fragment {
     private void playAudio(String url) throws Exception{
         killMediaPlayer();
         player = new MediaPlayer();
-        player.setDataSource(url);
+        Uri uri = Uri.parse(url);
+        player.setDataSource(getContext(), uri, NetworkManager.getInstance().getCookieHeader(url));
         player.prepare();
         player.start();
     }
@@ -146,27 +169,44 @@ public class PostFragment extends Fragment {
     long startTime = -1;
     String endTime = "";
     int timePosition;
+    boolean startflag = true;
     Handler mHandler = new Handler(Looper.getMainLooper());
 
     Runnable countRunnable = new Runnable() {
         @Override
         public void run() {
-            long time = SystemClock.elapsedRealtime();
-            if (startTime == -1) {
-                startTime = time;
-            }
-            int gap = (int) (time - startTime);
-            int endTimeV = Integer.parseInt(endTime);
-            int count = endTimeV - gap / 1000;
-            int rest = 1000 - gap % 1000;
-            if (count > 0) {
-//                listenView.("0 : " + count);
-                mAdapter.setTime("0 : " + count, timePosition);
-                mHandler.postDelayed(this, rest);
-            }else{
-                killMediaPlayer();
-                mAdapter.setTime("닫변 듣기", timePosition);
+            if (startflag) {
+                long time = SystemClock.elapsedRealtime();
+                if (startTime == -1) {
+                    startTime = time;
+                }
+                int gap = (int) (time - startTime);
+                int endTimeV = Integer.parseInt(endTime);
+                int count = endTimeV - gap / 1000;
+                int rest = 1000 - gap % 1000;
+                if (count > 0) {
+                    mAdapter.setTime("0 : " + count, timePosition);
+                    mHandler.postDelayed(this, rest);
+                } else {
+                    killMediaPlayer();
+                    mAdapter.setTime("닫변 듣기", timePosition);
+                }
             }
         }
     };
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        killMediaPlayer();
+        startflag = false;
+    }
+
+    private void showOtherPage(String id) {
+        ((TabHomeFragment) (getParentFragment())).showOther(id);
+    }
+
+    private void showMyPage() {
+        ((TabHomeFragment) (getParentFragment())).showMy();
+    }
 }

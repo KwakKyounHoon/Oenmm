@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "807378669486",
+    "firebase_url": "https://onemm-8e89a.firebaseio.com",
+    "project_id": "onemm-8e89a",
+    "storage_bucket": "onemm-8e89a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:807378669486:android:eb2161cf80e1c965",
+        "android_client_info": {
+          "package_name": "com.onemeter.omm.onemm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "807378669486-8q5vb0i9kccor6jgqugdf09988gp7cd3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXPfRnIcbcnN3znW20Q7IWyi0hIgz1o7g"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

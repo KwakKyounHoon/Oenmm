@@ -164,7 +164,7 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
 
     @Override
     public int getItemCount() {
-        int ctn = 2;
+        int ctn = 3;
         if(myPageData == null) return 0;
         if(myPageData.getMyData() == null) ctn--;
         return myPageData.getPosts().size()+ctn;
@@ -213,17 +213,17 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
     }
 
     @Override
-    public void onTabType(View view, int num) {
+    public void onTabType(View view, int num, int position) {
         if(listener != null){
-            listener.onAdapterTabType(view, num);
+            listener.onAdapterTabType(view, num, position);
             tabPosition = num;
         }
     }
 
     @Override
-    public void onCategoryItemClick(Boolean flag) {
+    public void onCategoryItemClick(Boolean flag, int position) {
         if(listener != null){
-            listener.onAdapterCategory(flag);
+            listener.onAdapterCategory(flag, position);
             comFlag = flag;
         }
     }
@@ -265,8 +265,8 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
         public void onAdapterSoundClick(View view, MyData myData, int position);
         public void onAdapterPhotoClick(View view, MyData myData, int position);
         public void onAdatperModyfiyClick(View view, MyData myData, int position);
-        public void onAdapterCategory(boolean flag);
-        public void onAdapterTabType(View view, int num);
+        public void onAdapterCategory(boolean flag, int position);
+        public void onAdapterTabType(View view, int num, int position);
         public void onAdapterItemClick(View view, Post post, int position);
         public void onAdapterPlayItemClick(View view, Post post, int position);
         public void onAdapterQuestionerClick(View view, Post post, int position);

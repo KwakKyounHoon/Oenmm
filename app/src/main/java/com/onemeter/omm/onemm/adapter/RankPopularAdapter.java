@@ -119,16 +119,31 @@ public class RankPopularAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     @Override
-    public void onCategoryItemClick(Boolean flag) {
+    public void onAnswerClick(View view, Post post, int position) {
         if(listener != null){
-            listener.onAdapterCategoryItemClick(flag);
+            listener.onAdapterAnswerClick(view, post, position);
+        }
+    }
+
+    @Override
+    public void onQuestionerClick(View view, Post post, int position) {
+        if(listener != null){
+            listener.onAdapterQuestionerClick(view, post, position);
+        }
+    }
+    @Override
+    public void onCategoryItemClick(Boolean flag, int position) {
+        if(listener != null){
+            listener.onAdapterCategoryItemClick(flag, position);
         }
     }
 
     public interface OnAdapterItemClickLIstener {
         public void onAdapterItemClick(View view, Post post, int position);
         public void onAdapterPlayClick(View view, Post post, int position);
-        public void onAdapterCategoryItemClick(Boolean flag);
+        public void onAdapterCategoryItemClick(Boolean flag, int position);
+        public void onAdapterAnswerClick(View view, Post post, int position);
+        public void onAdapterQuestionerClick(View view, Post post, int position);
     }
 
     OnAdapterItemClickLIstener listener;

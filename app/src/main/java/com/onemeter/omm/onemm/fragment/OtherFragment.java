@@ -4,6 +4,9 @@ package com.onemeter.omm.onemm.fragment;
 import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
@@ -36,6 +39,7 @@ import com.onemeter.omm.onemm.request.OtherDataRequest;
 import com.onemeter.omm.onemm.request.OtherPostRequest;
 import com.onemeter.omm.onemm.request.ProfileVoiceRequest;
 import com.onemeter.omm.onemm.request.RemoveFollowRequest;
+import com.onemeter.omm.onemm.request.ReplyListenRequest;
 import com.onemeter.omm.onemm.request.ReportRequest;
 
 import butterknife.BindView;
@@ -219,6 +223,8 @@ public class OtherFragment extends Fragment {
 
             @Override
             public void onAdapterTabType(View view, int type) {
+                killMediaPlayer();
+                startflag = false;
                 mAdapter.clearPost();
                 tabType = type;
                 if(tabType == 1){
@@ -282,6 +288,8 @@ public class OtherFragment extends Fragment {
 
             @Override
             public void onAdapterCategoryItemClick(boolean flag) {
+                killMediaPlayer();
+                startflag = false;
                 mAdapter.clearPost();
                 categoryType = flag;
                 if(flag){
@@ -345,17 +353,7 @@ public class OtherFragment extends Fragment {
 
             @Override
             public void onAdapterItemClick(View view, Post post, int position) {
-                if(post.getPayInfo().equals("1")){
-                    if(getParentFragment() instanceof TabMyFragment){
-                        ((TabMyFragment) (getParentFragment())).showListenToOn(post);
-                    }else if(getParentFragment() instanceof TabHomeFragment){
-                        ((TabHomeFragment) (getParentFragment())).showListenToOn(post);
-                    }else if(getParentFragment() instanceof TabRankFragment){
-                        ((TabRankFragment) (getParentFragment())).showListenToOn(post);
-                    }else{
-                        ((TabSearchFragment) (getParentFragment())).showListenToOn(post);
-                    }
-                }else{
+                if(post.getPayInfo().equals("0")){
                     if(getParentFragment() instanceof TabMyFragment){
                         ((TabMyFragment) (getParentFragment())).showListenToOff(post);
                     }else if(getParentFragment() instanceof TabHomeFragment){
@@ -369,28 +367,52 @@ public class OtherFragment extends Fragment {
             }
 
             @Override
-            public void onAdapterPlayClick(View view, Post post, int position) {
-                Toast.makeText(getContext(),post.getVoiceContent(),Toast.LENGTH_SHORT).show();
+            public void onAdapterPlayClick(View view, final Post post, int position) {
+                if (post.getPayInfo().equals("1")) {
+                    killMediaPlayer();
+                    timePosition = position;
+                    startTime = -1;
+                    ReplyListenRequest request = new ReplyListenRequest(getContext(), post.getAnswerId());
+                    NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<String>>() {
+                        @Override
+                        public void onSuccess(NetworkRequest<NetWorkResultType<String>> request, NetWorkResultType<String> result) {
+                            endTime = post.getLength();
+                            try {
+                                playAudio(result.getResult());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            startflag = true;
+                            mHandler.removeCallbacks(countRunnable);
+                            mHandler.post(countRunnable);
+                        }
+
+                        @Override
+                        public void onFail(NetworkRequest<NetWorkResultType<String>> request, int errorCode, String errorMessage, Throwable e) {
+
+                        }
+                    });
+                }
             }
         });
 
         OtherDataRequest request = new OtherDataRequest(getContext(), id);
         NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<OtherData>>() {
-                    @Override
-                    public void onSuccess(NetworkRequest<NetWorkResultType<OtherData>> request, NetWorkResultType<OtherData> result) {
-                        mAdapter.addOtherData(result.getResult());
-                        if(result.getResult().getNickname() != null){
-                            nickNameView.setText(result.getResult().getName());
-                        }
-                    }
+            @Override
+            public void onSuccess(NetworkRequest<NetWorkResultType<OtherData>> request, NetWorkResultType<OtherData> result) {
+                mAdapter.addOtherData(result.getResult());
+                if(result.getResult().getNickname() != null){
+                    nickNameView.setText(result.getResult().getName());
+                }
+            }
 
-                    @Override
-                    public void onFail(NetworkRequest<NetWorkResultType<OtherData>> request, int errorCode, String errorMessage, Throwable e) {
+            @Override
+            public void onFail(NetworkRequest<NetWorkResultType<OtherData>> request, int errorCode, String errorMessage, Throwable e) {
 
-                    }
-                });
+            }
+        });
 
-                mAdapter.clearPost();
+        mAdapter.clearPost();
 
         OtherPostRequest otherPostRequest = new OtherPostRequest(getContext(),id,"from","0", 1, 20);
         NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,otherPostRequest, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
@@ -589,6 +611,43 @@ public class OtherFragment extends Fragment {
         player.setDataSource(url);
         player.prepare();
         player.start();
+    }
+
+    long startTime = -1;
+    String endTime = "";
+    int timePosition;
+    Handler mHandler = new Handler(Looper.getMainLooper());
+
+    Runnable countRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (startflag) {
+                long time = SystemClock.elapsedRealtime();
+                if (startTime == -1) {
+                    startTime = time;
+                }
+                int gap = (int) (time - startTime);
+                int endTimeV = Integer.parseInt(endTime);
+                int count = endTimeV - gap / 1000;
+                int rest = 1000 - gap % 1000;
+                if (count > 0) {
+                    mAdapter.setTime("0 : " + count, timePosition);
+                    mHandler.postDelayed(this, rest);
+                } else {
+                    killMediaPlayer();
+                    mAdapter.setTime("닫변 듣기", timePosition);
+                }
+            }
+        }
+    };
+
+    boolean startflag = true;
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        killMediaPlayer();
+        startflag = false;
     }
 
 }

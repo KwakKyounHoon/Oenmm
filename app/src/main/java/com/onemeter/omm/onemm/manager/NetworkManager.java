@@ -15,6 +15,8 @@ import com.onemeter.omm.onemm.R;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -23,7 +25,9 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
@@ -33,7 +37,10 @@ import javax.net.ssl.TrustManagerFactory;
 
 import okhttp3.Cache;
 import okhttp3.Call;
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
 import okhttp3.Dispatcher;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 
 /**
@@ -58,6 +65,24 @@ public class NetworkManager {
     private NetworkManager() {
         setMYOKHTTP();
         setSTANDARDOKHTTP();
+    }
+
+    public Map<String,String> getCookieHeader(String url) throws MalformedURLException {
+        Map<String,String> headers = new HashMap<>();
+        CookieJar cookieJar = client.cookieJar();
+        HttpUrl httpUrl = HttpUrl.get(new URL(url));
+        List<Cookie>  cookies = cookieJar.loadForRequest(httpUrl);
+        StringBuilder sb = new StringBuilder();
+        int size = cookies.size();
+        for (int i = 0 ; i < cookies.size(); i++) {
+            Cookie cookie = cookies.get(i);
+            if (i > 0) {
+                sb.append(";");
+            }
+            sb.append(cookie.name()).append("=").append(cookie.value());
+        }
+        headers.put("Cookie",sb.toString());
+        return headers;
     }
 
     public void setMYOKHTTP(){

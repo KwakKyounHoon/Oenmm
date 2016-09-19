@@ -37,15 +37,15 @@ public class MyTabViewHolder extends RecyclerView.ViewHolder {
 
                 if (tag.equals(TAB_TAG_MY_RECEIVE)){
                     if(listener != null){
-                        listener.onTabType(itemView, 1);
+                        listener.onTabType(itemView, 1, getAdapterPosition());
                     }
                 }else if(tag.equals(TAB_TAG_MY_SEND)){
                     if(listener != null){
-                        listener.onTabType(itemView, 2);
+                        listener.onTabType(itemView, 2, getAdapterPosition());
                     }
                 }else if(tag.equals(TAB_TAG_LISTEN_RANK)){
                     if(listener != null){
-                        listener.onTabType(itemView, 3);
+                        listener.onTabType(itemView, 3, getAdapterPosition());
                     }
                 }
             }
@@ -71,7 +71,7 @@ public class MyTabViewHolder extends RecyclerView.ViewHolder {
 
 
     public interface OnTabItemClickListener {
-        public void onTabType(View view, int num);
+        public void onTabType(View view, int num, int position);
     }
 
     MyPageData myPageData;

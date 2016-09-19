@@ -19,6 +19,7 @@ import com.onemeter.omm.onemm.data.NetWorkResultType;
 import com.onemeter.omm.onemm.data.Post;
 import com.onemeter.omm.onemm.manager.NetworkManager;
 import com.onemeter.omm.onemm.manager.NetworkRequest;
+import com.onemeter.omm.onemm.manager.PropertyManager;
 import com.onemeter.omm.onemm.request.PopularPostListRequest;
 import com.onemeter.omm.onemm.request.ReplyListenRequest;
 
@@ -74,6 +75,7 @@ public class RankPopularFragment extends Fragment {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+                        startflag = true;
                         mHandler.removeCallbacks(countRunnable);
                         mHandler.post(countRunnable);
                     }
@@ -86,7 +88,10 @@ public class RankPopularFragment extends Fragment {
             }
 
             @Override
-            public void onAdapterCategoryItemClick(Boolean flag) {
+            public void onAdapterCategoryItemClick(Boolean flag, int position) {
+                mAdapter.setTime("답변 듣기", position);
+                killMediaPlayer();
+                startflag = false;
                 tabType = flag;
                 if(tabType){
                     mAdapter.clearRankPopular();
@@ -118,8 +123,25 @@ public class RankPopularFragment extends Fragment {
                     });
                 }
             }
-        });
 
+            @Override
+            public void onAdapterAnswerClick(View view, Post post, int position) {
+                if(!post.getAnswernerId().equals(PropertyManager.getInstance().getMyId())){
+                    showOtherPage(post.getAnswernerId());
+                }else{
+                    showMyPage();
+                }
+            }
+
+            @Override
+            public void onAdapterQuestionerClick(View view, Post post, int position){
+                if(!post.getQuestionerId().equals(PropertyManager.getInstance().getMyId())){
+                    showOtherPage(post.getQuestionerId());
+                }else{
+                    showMyPage();
+                }
+            }
+        });
         PopularPostListRequest request = new PopularPostListRequest(getContext(), 0);
         NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
             @Override
@@ -165,23 +187,42 @@ public class RankPopularFragment extends Fragment {
     Runnable countRunnable = new Runnable() {
         @Override
         public void run() {
-            long time = SystemClock.elapsedRealtime();
-            if (startTime == -1) {
-                startTime = time;
-            }
-            int gap = (int) (time - startTime);
-            int endTimeV = Integer.parseInt(endTime);
-            int count = endTimeV - gap / 1000;
-            int rest = 1000 - gap % 1000;
-            if (count > 0) {
+            if (startflag) {
+                long time = SystemClock.elapsedRealtime();
+                if (startTime == -1) {
+                    startTime = time;
+                }
+                int gap = (int) (time - startTime);
+                int endTimeV = Integer.parseInt(endTime);
+                int count = endTimeV - gap / 1000;
+                int rest = 1000 - gap % 1000;
+                if (count > 0) {
 //                listenView.("0 : " + count);
-                mAdapter.setTime("0 : " + count, timePosition);
-                mHandler.postDelayed(this, rest);
-            }else{
-                killMediaPlayer();
-                mAdapter.setTime("닫변 듣기", timePosition);
+                    mAdapter.setTime("0 : " + count, timePosition);
+                    mHandler.postDelayed(this, rest);
+                } else {
+                    killMediaPlayer();
+                    mAdapter.setTime("닫변 듣기", timePosition);
+                }
             }
         }
     };
+
+    boolean startflag = true;
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        killMediaPlayer();
+        startflag = false;
+    }
+
+    private void showOtherPage(String id) {
+        ((RankFragment) (getParentFragment())).showOther(id);
+    }
+
+    private void showMyPage() {
+        ((RankFragment) (getParentFragment())).showMy();
+    }
 
 }

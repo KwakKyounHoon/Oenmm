@@ -137,6 +137,10 @@ public class RankFragment extends Fragment {
         ((TabRankFragment)getParentFragment()).showOther(userId);
     }
 
+    public void showMy(){
+        ((TabRankFragment)getParentFragment()).showMy();
+    }
+
     public void setTab(boolean flag){
         tabFlag =  flag;
     }

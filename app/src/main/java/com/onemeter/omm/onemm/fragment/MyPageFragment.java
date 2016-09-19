@@ -79,10 +79,7 @@ public class MyPageFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (firstFlag) {
 
-        }
-        firstFlag = false;
 
     }
 
@@ -99,17 +96,17 @@ public class MyPageFragment extends Fragment {
         mAdapter.setOnAdapterItemClickListener(new MyAdapter.OnAdapterItemClickLIstener() {
             @Override
             public void onAdapterDonateClick(View view, MyData myData, int position) {
-                ((TabMyFragment) getParentFragment()).showDonate(myData.getDonationId());
+                showDonatingPlace(myData.getDonationId());
             }
 
             @Override
             public void onAdapterFollowingClick(View view, MyData myData, int position) {
-                ((TabMyFragment) getParentFragment()).showFollwing("-1");
+                showFollowing("-1");
             }
 
             @Override
             public void onAdapterFollowerClick(View view, MyData myData, int position) {
-                ((TabMyFragment) getParentFragment()).showFollwer("-1");
+                showFollower("-1");
             }
 
             @Override
@@ -140,11 +137,14 @@ public class MyPageFragment extends Fragment {
 
             @Override
             public void onAdatperModyfiyClick(View view, MyData myData, int position) {
-                ((TabMyFragment) getParentFragment()).showProfile(myData);
+               showModifyProfile(myData);
             }
 
             @Override
-            public void onAdapterCategory(boolean flag) {
+            public void onAdapterCategory(boolean flag, int position) {
+                mAdapter.setTime("답변 듣기", position);
+                killMediaPlayer();
+                startflag = false;
                 comFlag = flag;
                 if (comFlag) {
                     mAdapter.clearPost();
@@ -220,7 +220,10 @@ public class MyPageFragment extends Fragment {
             }
 
             @Override
-            public void onAdapterTabType(View view, int num) {
+            public void onAdapterTabType(View view, int num, int position) {
+                mAdapter.setTime("답변 듣기", position);
+                killMediaPlayer();
+                startflag = false;
                 tabType = num;
                 if (num == 1) {
                     mAdapter.clearPost();
@@ -302,8 +305,7 @@ public class MyPageFragment extends Fragment {
             public void onAdapterItemClick(View view, Post post, int position) {
                 if (!comFlag) {
                     if (tabType == 1) {
-                        Toast.makeText(getContext(), "답변 미완료 글쓰기", Toast.LENGTH_SHORT).show();
-                        ((TabMyFragment) getParentFragment()).showReply(post);
+                        showReplay(post);
                     }
                 }
             }
@@ -313,7 +315,6 @@ public class MyPageFragment extends Fragment {
                 timePosition = position;
                 startTime = -1;
                 if (comFlag || tabType == 3) {
-                    Toast.makeText(getContext(), "음성 듣기", Toast.LENGTH_SHORT).show();
                     ReplyListenRequest request = new ReplyListenRequest(getContext(), post.getAnswerId());
                     NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<String>>() {
                         @Override
@@ -324,6 +325,7 @@ public class MyPageFragment extends Fragment {
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
+                            startflag = true;
                             mHandler.removeCallbacks(countRunnable);
                             mHandler.post(countRunnable);
                         }
@@ -339,14 +341,14 @@ public class MyPageFragment extends Fragment {
             @Override
             public void onAdapterQuestionerClick(View view, Post post, int position) {
                 if (tabType == 1 || tabType == 3) {
-                    Toast.makeText(getContext(), "질문자 페이지로", Toast.LENGTH_SHORT).show();
+                    showOtherPage(post.getQuestionerId());
                 }
             }
 
             @Override
             public void onAdapterAnswerClick(View view, Post post, int position) {
                 if (tabType == 2 || tabType == 3)
-                    Toast.makeText(getContext(), "답변자 페이지로 듣기", Toast.LENGTH_SHORT).show();
+                showOtherPage(post.getAnswernerId());
             }
 
 
@@ -384,6 +386,7 @@ public class MyPageFragment extends Fragment {
         });
         return view;
     }
+
 
     String[] items = {"촬영", "앨범에서 선택", "프로필사진 삭제"};
     public void onListDialog() {
@@ -508,46 +511,7 @@ public class MyPageFragment extends Fragment {
 
     @OnClick(R.id.btn_setting)
     public void settingClick(View view) {
-        ((TabMyFragment) getParentFragment()).showSetting();
-    }
-
-    void init() {
-        for (int i = 0; i < 5; i++) {
-            Post post = new Post();
-            post.setAnswernerId(i + "1");
-            post.setLength(i + "5");
-            post.setPrice(i + "10");
-            post.setQuestionerContent("GOOD" + i);
-            post.setQuestionerId(i + "2");
-            post.setVoiceContent("yes" + i);
-            mAdapter.addPost(post);
-        }
-    }
-
-    void init2() {
-        for (int i = 5; i < 11; i++) {
-            Post post = new Post();
-            post.setAnswernerId(i + "1");
-            post.setLength(i + "5");
-            post.setPrice(i + "10");
-            post.setQuestionerContent("GOOD" + i);
-            post.setQuestionerId(i + "2");
-            post.setVoiceContent("yes" + i);
-            mAdapter.addPost(post);
-        }
-    }
-
-    void init3() {
-        for (int i = 12; i < 20; i++) {
-            Post post = new Post();
-            post.setAnswernerId(i + "1");
-            post.setLength(i + "5");
-            post.setPrice(i + "10");
-            post.setQuestionerContent("GOOD" + i);
-            post.setQuestionerId(i + "2");
-            post.setVoiceContent("yes" + i);
-            mAdapter.addPost(post);
-        }
+        showSetting();
     }
 
 
@@ -591,22 +555,116 @@ public class MyPageFragment extends Fragment {
     Runnable countRunnable = new Runnable() {
         @Override
         public void run() {
-            long time = SystemClock.elapsedRealtime();
-            if (startTime == -1) {
-                startTime = time;
-            }
-            int gap = (int) (time - startTime);
-            int endTimeV = Integer.parseInt(endTime);
-            int count = endTimeV - gap / 1000;
-            int rest = 1000 - gap % 1000;
-            if (count > 0) {
-//                listenView.("0 : " + count);
-                mAdapter.setTime("0 : " + count, timePosition);
-                mHandler.postDelayed(this, rest);
-            }else{
-                killMediaPlayer();
-                mAdapter.setTime("닫변 듣기", timePosition);
+            if (startflag) {
+                long time = SystemClock.elapsedRealtime();
+                if (startTime == -1) {
+                    startTime = time;
+                }
+                int gap = (int) (time - startTime);
+                int endTimeV = Integer.parseInt(endTime);
+                int count = endTimeV - gap / 1000;
+                int rest = 1000 - gap % 1000;
+                if (count > 0) {
+                    mAdapter.setTime("0 : " + count, timePosition);
+                    mHandler.postDelayed(this, rest);
+                } else {
+                    killMediaPlayer();
+                    mAdapter.setTime("닫변 듣기", timePosition);
+                }
             }
         }
     };
+
+    boolean startflag = true;
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        killMediaPlayer();
+        startflag = false;
+    }
+
+    private void showOtherPage(String id){
+        if(getParentFragment() instanceof TabMyFragment){
+            ((TabMyFragment) (getParentFragment())).showOther(id);
+        }else if(getParentFragment() instanceof TabHomeFragment){
+            ((TabHomeFragment) (getParentFragment())).showOther(id);
+        }else if(getParentFragment() instanceof TabRankFragment){
+            ((TabRankFragment) (getParentFragment())).showOther(id);
+        }else{
+            ((TabSearchFragment) (getParentFragment())).showOther(id);
+        }
+    }
+
+    private void showFollowing(String id){
+        if(getParentFragment() instanceof TabMyFragment){
+            ((TabMyFragment) (getParentFragment())).showFollwing(id);
+        }else if(getParentFragment() instanceof TabHomeFragment){
+            ((TabHomeFragment) (getParentFragment())).showFollwing(id);
+        }else if(getParentFragment() instanceof TabRankFragment){
+            ((TabRankFragment) (getParentFragment())).showFollwing(id);
+        }else{
+            ((TabSearchFragment) (getParentFragment())).showFollwing(id);
+        }
+    }
+
+    private void showFollower(String id){
+        if(getParentFragment() instanceof TabMyFragment){
+            ((TabMyFragment) (getParentFragment())).showFollwer(id);
+        }else if(getParentFragment() instanceof TabHomeFragment){
+            ((TabHomeFragment) (getParentFragment())).showFollwer(id);
+        }else if(getParentFragment() instanceof TabRankFragment){
+            ((TabRankFragment) (getParentFragment())).showFollwer(id);
+        }else{
+            ((TabSearchFragment) (getParentFragment())).showFollwer(id);
+        }
+    }
+
+    private void showSetting(){
+        if(getParentFragment() instanceof TabMyFragment){
+            ((TabMyFragment) (getParentFragment())).showSetting();
+        }else if(getParentFragment() instanceof TabHomeFragment){
+            ((TabHomeFragment) (getParentFragment())).showSetting();
+        }else if(getParentFragment() instanceof TabRankFragment){
+            ((TabRankFragment) (getParentFragment())).showSetting();
+        }else{
+            ((TabSearchFragment) (getParentFragment())).showSetting();
+        }
+    }
+
+    private void showReplay(Post post) {
+        if(getParentFragment() instanceof TabMyFragment){
+            ((TabMyFragment) (getParentFragment())).showReply(post);
+        }else if(getParentFragment() instanceof TabHomeFragment){
+            ((TabHomeFragment) (getParentFragment())).showReply(post);
+        }else if(getParentFragment() instanceof TabRankFragment){
+            ((TabRankFragment) (getParentFragment())).showReply(post);
+        }else{
+            ((TabSearchFragment) (getParentFragment())).showReply(post);
+        }
+    }
+
+    private void showDonatingPlace(String donatingiD){
+        if(getParentFragment() instanceof TabMyFragment){
+            ((TabMyFragment) (getParentFragment())).showDonate(donatingiD);
+        }else if(getParentFragment() instanceof TabHomeFragment){
+            ((TabHomeFragment) (getParentFragment())).showDonate(donatingiD);
+        }else if(getParentFragment() instanceof TabRankFragment){
+            ((TabRankFragment) (getParentFragment())).showDonate(donatingiD);
+        }else{
+            ((TabSearchFragment) (getParentFragment())).showDonate(donatingiD);
+        }
+    }
+
+    private void showModifyProfile(MyData myData){
+        if(getParentFragment() instanceof TabMyFragment){
+            ((TabMyFragment) (getParentFragment())).showProfile(myData);
+        }else if(getParentFragment() instanceof TabHomeFragment){
+            ((TabHomeFragment) (getParentFragment())).showProfile(myData);
+        }else if(getParentFragment() instanceof TabRankFragment){
+            ((TabRankFragment) (getParentFragment())).showProfile(myData);
+        }else{
+            ((TabSearchFragment) (getParentFragment())).showProfile(myData);
+        }
+    }
 }

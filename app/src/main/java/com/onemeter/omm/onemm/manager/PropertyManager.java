@@ -26,6 +26,7 @@ public class PropertyManager {
     private static final String KEY_PASSWORD = "password";
     private static final String KEY_REGISTRATION_ID ="regid";
     private static final String KEY_FACEBOOK_ID = "facebookid";
+    private static final String KEY_MY_ID = "myid";
 
     private PropertyManager() {
         Context context = MyApplication.getContext();
@@ -34,22 +35,13 @@ public class PropertyManager {
     }
 
 
-    public void setEmail(String email) {
-        mEditor.putString(KEY_EMAIL, email);
+    public void setMyId(String facebookid) {
+        mEditor.putString(KEY_MY_ID, facebookid);
         mEditor.commit();
     }
 
-    public String getEmail() {
-        return mPrefs.getString(KEY_EMAIL, "");
-    }
-
-    public void setPassword(String password) {
-        mEditor.putString(KEY_PASSWORD, password);
-        mEditor.commit();
-    }
-
-    public String getPassword() {
-        return mPrefs.getString(KEY_PASSWORD, "");
+    public String getMyId() {
+        return mPrefs.getString(KEY_MY_ID, "");
     }
 
     public void setRegistrationId(String regid) {

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.onemeter.omm.onemm.MainActivity;
 import com.onemeter.omm.onemm.R;
+import com.onemeter.omm.onemm.data.MyData;
 import com.onemeter.omm.onemm.data.OtherData;
 import com.onemeter.omm.onemm.data.Post;
 
@@ -23,6 +24,11 @@ public class TabRankFragment extends BackKeyFragment {
     public static String TAG_LISTEN_ON ="listenon";
     public static String TAG_LISTEN_OFF ="listenoff";
     public static String TAG_QUESTION ="question";
+    public static String TAG_SETTING = "setting";
+    public static String TAG_MY = "my";
+    public static String TAG_REPLY = "reply";
+    public static String TAG_PROFILE = "profile";
+    public static String TAG_DONATION = "donation";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -102,4 +108,46 @@ public class TabRankFragment extends BackKeyFragment {
         ft.replace(R.id.container,f , TAG_QUESTION).addToBackStack(null);
         ft.commit();
     }
+
+    public void showMy() {
+        FragmentTransaction ft = getChildFragmentManager()
+                .beginTransaction();
+        MyPageFragment f = new MyPageFragment();
+        ft.replace(R.id.container, f, TAG_MY).addToBackStack(TAG_MY);
+        ft.commit();
+    }
+
+    public void showSetting() {
+        FragmentTransaction ft = getChildFragmentManager()
+                .beginTransaction();
+        SettingFragment f = new SettingFragment();
+        ft.replace(R.id.container, f, TAG_SETTING).addToBackStack(TAG_SETTING);
+        ft.commit();
+    }
+
+    public void showReply(Post post) {
+        FragmentTransaction ft = getChildFragmentManager()
+                .beginTransaction();
+        ReplyFragment f = ReplyFragment.newInstance(post);
+        ft.replace(R.id.container, f, TAG_REPLY).addToBackStack(TAG_REPLY);
+        ft.commit();
+    }
+
+    public void showProfile(MyData myData) {
+        FragmentTransaction ft = getChildFragmentManager()
+                .beginTransaction();
+        ProfileModifyFragment f = ProfileModifyFragment.newInstance(myData);
+        ft.replace(R.id.container, f, TAG_PROFILE).addToBackStack(TAG_PROFILE);
+        ft.commit();
+    }
+
+    public void showDonate(String id) {
+        FragmentTransaction ft = getChildFragmentManager()
+                .beginTransaction();
+        DonatingPlaceFragment f = DonatingPlaceFragment.newInstance(id);
+        ft.replace(R.id.container, f, TAG_DONATION);
+        ft.addToBackStack(TAG_DONATION);
+        ft.commit();
+    }
+
 }
