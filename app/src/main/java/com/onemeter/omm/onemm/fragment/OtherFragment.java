@@ -484,7 +484,7 @@ public class OtherFragment extends Fragment {
                 .setNegativeButton("취소", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(getContext(), "취소버튼 동작 구현",Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getContext(), "취소버튼 동작 구현",Toast.LENGTH_SHORT).show();
                     }
                 }).setPositiveButton("예, 확실합니다", new DialogInterface.OnClickListener() {
             @Override

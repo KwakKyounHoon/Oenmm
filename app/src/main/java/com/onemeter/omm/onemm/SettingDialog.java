@@ -8,13 +8,17 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.onemeter.omm.onemm.data.SettingSave;
 
 /**
  * Created by Tacademy on 2016-09-12.
  */
 public class SettingDialog extends DialogFragment {
 
-    private Button btn;
+    SettingSave settingSave;
+    Button btn;
     TextView price;
 
 
@@ -34,11 +38,12 @@ public class SettingDialog extends DialogFragment {
         }).setPositiveButton("확인", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
+                Toast.makeText(getContext() , "충전되었습니다", Toast.LENGTH_SHORT).show();
+                // 충전시 현재보유금 +
             }
         });
 
-        builder.setMessage("금액을 설정하세요");
+        builder.setMessage("충전할 금액을 설정하세요");
 
         price = (TextView)view.findViewById(R.id.text_price);
         btn = (Button) view.findViewById(R.id.btn_1000);

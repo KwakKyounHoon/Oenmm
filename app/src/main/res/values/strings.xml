@@ -18,13 +18,13 @@
     <string name="radio_btn_my_incomplete">답변미완료</string>
     <string name="btn_modify_profile">프로필 수정</string>
     <string name="setting_notify_text">알림</string>
-    <string name="setting_save_text">적립금</string>
+    <string name="setting_save_text">보유금</string>
     <string name="setting_donate_text">기부금</string>
     <string name="setting_agree_text">이용약관</string>
     <string name="setting_logout_text">로그아웃</string>
     <string name="notify_answer_string">나의 질문에 대한 답변 알림</string>
     <string name="notify_receive_string">내가 질문 받았을 때 알림</string>
-    <string name="save_now_string">현재 적립금 : </string>
+    <string name="save_now_string">현재 보유금 : </string>
     <string name="save_paytotal">결제한 적립금 누적 금액 : </string>
     <string name="save_listening_profit">나도듣기수익 총액 : </string>
     <string name="save_question_cost">질문하기비용 총액 : </string>
