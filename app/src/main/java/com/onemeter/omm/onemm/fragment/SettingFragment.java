@@ -1,15 +1,16 @@
 package com.onemeter.omm.onemm.fragment;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 import com.onemeter.omm.onemm.LoginActivity;
@@ -99,24 +100,37 @@ public class SettingFragment extends Fragment {
 
             @Override
             public void onAdapterLogoutClick(View view) {
-                Toast.makeText(getContext(), "로그아웃 버튼 클릭", Toast.LENGTH_SHORT).show();
-                LoginManager.getInstance().logOut();
-                LogOutRequest request = new LogOutRequest(getContext());
-                NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType>() {
-                    @Override
-                    public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
-                        PropertyManager.getInstance().setFacebookId("");
-                        Intent intent = new Intent(getContext(), LoginActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        getActivity().finish();
-                    }
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("정말 로그아웃 하시겠습니까?")
+                        .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
 
+                            }
+                        }).setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        LoginManager.getInstance().logOut();
+                        LogOutRequest request = new LogOutRequest(getContext());
+                        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
+                                PropertyManager.getInstance().setFacebookId("");
+                                Intent intent = new Intent(getContext(), LoginActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                                getActivity().finish();
+                            }
 
+                            @Override
+                            public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
+
+                            }
+                        });
                     }
                 });
+                builder.show();
+
             }
 
             @Override
