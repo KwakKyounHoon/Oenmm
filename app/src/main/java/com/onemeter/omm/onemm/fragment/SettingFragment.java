@@ -135,7 +135,7 @@ public class SettingFragment extends Fragment {
 
             @Override
             public void onAdapterWithdrawClick(View view, SettingSave settingSave, int position) {
-                SettingWithdrawDial settingWithdrawDial = new SettingWithdrawDial();
+                SettingWithdrawDial settingWithdrawDial = SettingWithdrawDial.newInstance(settingSave.getCurrentPoint());
                 settingWithdrawDial.show(getFragmentManager(), "WIthDRWAL");
             }
         });
