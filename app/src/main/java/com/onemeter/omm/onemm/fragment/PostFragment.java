@@ -1,7 +1,11 @@
 package com.onemeter.omm.onemm.fragment;
 
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +22,7 @@ import com.onemeter.omm.onemm.data.Post;
 import com.onemeter.omm.onemm.manager.NetworkManager;
 import com.onemeter.omm.onemm.manager.NetworkRequest;
 import com.onemeter.omm.onemm.request.FollowPostListRequest;
+import com.onemeter.omm.onemm.request.ReplyListenRequest;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,8 +60,28 @@ public class PostFragment extends Fragment {
             }
 
             @Override
-            public void onAdpaterPlayClick(View view, Post post, int position) {
-                Toast.makeText(getContext(), post.getVoiceContent(), Toast.LENGTH_SHORT).show();
+            public void onAdpaterPlayClick(View view, final Post post, int position) {
+                timePosition = position;
+                startTime = -1;
+                ReplyListenRequest request = new ReplyListenRequest(getContext(), post.getAnswerId());
+                NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<String>>() {
+                    @Override
+                    public void onSuccess(NetworkRequest<NetWorkResultType<String>> request, NetWorkResultType<String> result) {
+                        endTime = post.getLength();
+                        try {
+                            playAudio(result.getResult());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        mHandler.removeCallbacks(countRunnable);
+                        mHandler.post(countRunnable);
+                    }
+
+                    @Override
+                    public void onFail(NetworkRequest<NetWorkResultType<String>> request, int errorCode, String errorMessage, Throwable e) {
+
+                    }
+                });
             }
         });
 
@@ -91,22 +116,57 @@ public class PostFragment extends Fragment {
         }
     }
 
-//    @OnClick(R.id.btn_user)
-//    public void onUserClick(){
-//        if(getParentFragment() instanceof TabMyFragment){
-//            ((TabMyFragment) (getParentFragment())).showOther("test");
-//        }else if(getParentFragment() instanceof TabHomeFragment){
-//            ((TabHomeFragment) (getParentFragment())).showOther("test");
-//        }else if(getParentFragment() instanceof TabRankFragment){
-//            ((TabRankFragment) (getParentFragment())).showOther("test");
-//        }else{
-//            ((TabSearchFragment) (getParentFragment())).showOther("test");
-//        }
-//    }
-
     @Override
     public void onResume() {
         super.onResume();
         ((MainActivity) (getActivity())).changeHomeAsUp(false);
     }
+
+    MediaPlayer player;
+
+    private void killMediaPlayer() {
+        if(player != null){
+            try {
+                player.release();
+            } catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    private void playAudio(String url) throws Exception{
+        killMediaPlayer();
+        player = new MediaPlayer();
+        player.setDataSource(url);
+        player.prepare();
+        player.start();
+    }
+
+    long startTime = -1;
+    String endTime = "";
+    int timePosition;
+    Handler mHandler = new Handler(Looper.getMainLooper());
+
+    Runnable countRunnable = new Runnable() {
+        @Override
+        public void run() {
+            long time = SystemClock.elapsedRealtime();
+            if (startTime == -1) {
+                startTime = time;
+            }
+            int gap = (int) (time - startTime);
+            int endTimeV = Integer.parseInt(endTime);
+            int count = endTimeV - gap / 1000;
+            int rest = 1000 - gap % 1000;
+            if (count > 0) {
+//                listenView.("0 : " + count);
+                mAdapter.setTime("0 : " + count, timePosition);
+                mHandler.postDelayed(this, rest);
+            }else{
+                killMediaPlayer();
+                mAdapter.setTime("닫변 듣기", timePosition);
+            }
+        }
+    };
 }

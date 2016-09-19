@@ -117,6 +117,7 @@ public class ReplyFragment extends Fragment {
         Glide.with(qustionerView.getContext())
                 .load(post.getQuestionerPhoto())
                 .bitmapTransform(new CropCircleTransformation(MyApplication.getContext()))
+                .error(R.drawable.ic_profile_image_default)
                 .into(qustionerView);
     }
 

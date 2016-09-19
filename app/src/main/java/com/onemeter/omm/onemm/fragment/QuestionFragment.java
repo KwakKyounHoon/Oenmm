@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.onemeter.omm.onemm.MyApplication;
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.data.NetWorkResultType;
 import com.onemeter.omm.onemm.data.OtherData;
@@ -24,6 +25,7 @@ import com.onemeter.omm.onemm.request.QuestionsRequest;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -104,6 +106,7 @@ public class QuestionFragment extends Fragment {
         Glide.with(imageVIew.getContext())
                 .load(otherData.getPhoto())
                 .error(R.drawable.ic_profile_image_default)
+                .bitmapTransform(new CropCircleTransformation(MyApplication.getContext()))
                 .into(imageVIew);
     }
 

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.onemeter.omm.onemm.MainActivity;
 import com.onemeter.omm.onemm.R;
+import com.onemeter.omm.onemm.data.MyData;
 import com.onemeter.omm.onemm.data.OtherData;
 import com.onemeter.omm.onemm.data.Post;
 
@@ -83,10 +84,10 @@ public class TabMyFragment extends BackKeyFragment {
         ft.commit();
     }
 
-    public void showProfile() {
+    public void showProfile(MyData myData) {
         FragmentTransaction ft = getChildFragmentManager()
                 .beginTransaction();
-        ProfileModifyFragment f = new ProfileModifyFragment();
+        ProfileModifyFragment f = ProfileModifyFragment.newInstance(myData);
         ft.replace(R.id.container, f, TAG_PROFILE).addToBackStack(TAG_PROFILE);
         ft.commit();
     }

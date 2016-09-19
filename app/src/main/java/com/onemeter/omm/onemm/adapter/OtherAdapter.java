@@ -25,15 +25,10 @@ public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         OtherPostViewHolder.OnOtherItemClickListener, OtherTabViewHolder.OnTabItemClickListener{
     OtherPageData otherPageData = new OtherPageData();
 
-
+    int tabType = 1;
 
     public void addOtherData(OtherData otherData) {
         this.otherPageData.setOtherData(otherData);
-        notifyDataSetChanged();
-    }
-
-    public void addOtherData(OtherData[] otherDatas) {
-        otherPageData.setOtherData(otherDatas[0]);
         notifyDataSetChanged();
     }
 
@@ -44,11 +39,6 @@ public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     public void addAllPost(Post[] post){
         otherPageData.getPostDatas().addAll(Arrays.asList(post));
-        notifyDataSetChanged();
-    }
-
-    public void addOtherInfo(OtherData otherData){
-        otherPageData.setOtherData(otherData);
         notifyDataSetChanged();
     }
 
@@ -129,6 +119,11 @@ public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (position == 0) {
             OtherCategoryViewHolder ocvh = (OtherCategoryViewHolder) holder;
             ocvh.setOnOtherCategoryItemClickListener(this);
+            if(tabType == 1){
+                ocvh.setCategory("받은 질문");
+            }else{
+                ocvh.setCategory("한 질문");
+            }
             return;
         }
 
@@ -214,6 +209,7 @@ public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public void onTabType(View view, int num) {
         if(listener != null){
             listener.onAdapterTabType(view, num);
+            tabType = num;
         }
     }
 

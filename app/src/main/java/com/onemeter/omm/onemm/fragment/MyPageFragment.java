@@ -140,7 +140,7 @@ public class MyPageFragment extends Fragment {
 
             @Override
             public void onAdatperModyfiyClick(View view, MyData myData, int position) {
-                ((TabMyFragment) getParentFragment()).showProfile();
+                ((TabMyFragment) getParentFragment()).showProfile(myData);
             }
 
             @Override

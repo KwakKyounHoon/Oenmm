@@ -3,9 +3,13 @@ package com.onemeter.omm.onemm;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.onemeter.omm.onemm.fragment.BackKeyFragment;
 import com.onemeter.omm.onemm.fragment.TabHomeFragment;
@@ -161,11 +165,39 @@ public class MainActivity extends AppCompatActivity {
             boolean isProcessed = currentFragment.onBackPressed();
             if (isProcessed) return;
         }
-        super.onBackPressed();
+//        super.onBackPressed();
+        if (!isBackPressed) {
+            Toast.makeText(this, "one more back press", Toast.LENGTH_SHORT).show();
+            isBackPressed = true;
+            mHandler.sendEmptyMessageDelayed(MESSAGE_BACK_KEY_TIMEOUT, TIMEOUT_TIME);
+        } else {
+            mHandler.removeMessages(MESSAGE_BACK_KEY_TIMEOUT);
+            finish();
+        }
     }
 
     public void actionBarHide() {
 //        getSupportActionBar().setShowHideAnimationEnabled(false);
 //        getSupportActionBar().hide();
     }
+
+    public static final int MESSAGE_BACK_KEY_TIMEOUT = 1;
+    public static final int TIMEOUT_TIME = 2000;
+
+    Handler mHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case MESSAGE_BACK_KEY_TIMEOUT :
+                    isBackPressed = false;
+                    break;
+            }
+        }
+    };
+
+    boolean isBackPressed = false;
+
+
+
 }

@@ -1,8 +1,10 @@
 package com.onemeter.omm.onemm.viewholder;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,14 +40,17 @@ public class OtherHeaderViewHolder extends RecyclerView.ViewHolder {
     public OtherHeaderViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
-//        likeView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-//                if(listener != null){
-//                    listener.onFollowClick(compoundButton, b);
-//                }
-//            }
-//        });
+        likeView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (!isForced) {
+                    if (listener != null) {
+                        listener.onFollowClick(compoundButton, b);
+                        Log.i("test","3");
+                    }
+                }
+            }
+        });
 
         followerView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,9 +106,17 @@ public class OtherHeaderViewHolder extends RecyclerView.ViewHolder {
                 .error(R.drawable.ic_profile_image_default)
                 .into(profileView);
         if(otherData.getFollowInfo().equals("1")){
+            isForced = true;
             likeView.setChecked(true);
+            isForced = false;
+        }else{
+            isForced = true;
+            likeView.setChecked(false);
+            isForced = false;
         }
     }
+
+    public boolean isForced = false;
 
     public interface OnOtherDataItemClickListener {
         public void onFollowingItemClick(View view, OtherData otherData, int position);

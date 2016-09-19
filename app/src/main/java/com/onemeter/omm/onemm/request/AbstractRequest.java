@@ -15,22 +15,23 @@ import okhttp3.ResponseBody;
 public abstract class AbstractRequest<T> extends NetworkRequest<T> {
     private String DUMY = "ec2-52-78-135-2.ap-northeast-2.compute.amazonaws.com";
     private String REALURL = "ec2-52-78-139-46.ap-northeast-2.compute.amazonaws.com";
+//        private String REALURL = "192.168.211.73";
 
     protected HttpUrl.Builder getHttpsBaseUrlBuilder() {
         HttpUrl.Builder builder = new HttpUrl.Builder();
         builder.scheme("https");
-        builder.host(DUMY);
-//        builder.host(REALURL);
-        builder.port(4433);
+//        builder.host(DUMY);
+        builder.host(REALURL);
+        builder.port(443);
         return builder;
     }
 
     protected HttpUrl.Builder getBaseUrlBuilder() {
         HttpUrl.Builder builder = new HttpUrl.Builder();
         builder.scheme("http");
-        builder.host(DUMY);
-//        builder.host(REALURL);
-        builder.port(8080);
+//        builder.host(DUMY);
+        builder.host(REALURL);
+        builder.port(80);
         return builder;
     }
 

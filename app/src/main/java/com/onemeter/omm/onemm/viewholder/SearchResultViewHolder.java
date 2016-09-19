@@ -24,6 +24,8 @@ public class SearchResultViewHolder extends RecyclerView.ViewHolder {
     TextView nicknameView;
     @BindView(R.id.image_photo)
     ImageView photoView;
+    @BindView(R.id.image_star)
+    ImageView startView;
 
     public SearchResultViewHolder(View itemView) {
         super(itemView);
@@ -48,6 +50,11 @@ public class SearchResultViewHolder extends RecyclerView.ViewHolder {
                     .bitmapTransform(new CropCircleTransformation(MyApplication.getContext()))
                     .error(R.drawable.ic_profile_image_default)
                     .into(photoView);
+        if(searchResult.getCelebrity().equals("1")){
+            startView.setVisibility(View.VISIBLE);
+        }else{
+            startView.setVisibility(View.GONE);
+        }
     }
 
     public interface OnSearchResultItemClickListener {

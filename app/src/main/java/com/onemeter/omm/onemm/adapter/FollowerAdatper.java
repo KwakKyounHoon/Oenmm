@@ -19,6 +19,7 @@ import java.util.List;
 public class FollowerAdatper extends RecyclerView.Adapter<FollowerViewHolder> implements FollowerViewHolder.OnFollowerItemClickListener{
 
     List<Follower> followers = new ArrayList<>();
+    int checkPosition = -1;
 
     public void addAll(Follower[] followers){
         this.followers.addAll(Arrays.asList(followers));
@@ -35,7 +36,9 @@ public class FollowerAdatper extends RecyclerView.Adapter<FollowerViewHolder> im
         notifyDataSetChanged();
     }
 
-
+    public void selectPosition(int checkPosition){
+        this.checkPosition = checkPosition;
+    }
 
     @Override
     public FollowerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -49,6 +52,9 @@ public class FollowerAdatper extends RecyclerView.Adapter<FollowerViewHolder> im
         FollowerViewHolder fvh = (FollowerViewHolder)holder;
         fvh.setOnFollowerClickListener(this);
         fvh.setFollower(followers.get(position));
+        if(checkPosition == position) {
+            fvh.setToggle();
+        }
     }
 
     @Override

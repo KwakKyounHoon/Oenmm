@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.onemeter.omm.onemm.R;
 
@@ -22,6 +23,8 @@ public class OtherCategoryViewHolder extends RecyclerView.ViewHolder {
     RadioButton listenButton;
     @BindView(R.id.btn_new)
     RadioButton costButton;
+    @BindView(R.id.text_title)
+    TextView categoryView;
 
     public OtherCategoryViewHolder(View itemView) {
         super(itemView);
@@ -53,6 +56,10 @@ public class OtherCategoryViewHolder extends RecyclerView.ViewHolder {
 
     public void setOnOtherCategoryItemClickListener(OnOtherCategoryItemClickListener listener) {
         this.listener = listener;
+    }
+
+    public void setCategory(String str){
+        categoryView.setText(str);
     }
 
 }
