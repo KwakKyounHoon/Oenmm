@@ -10,7 +10,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.onemeter.omm.onemm.data.NetWorkResultType;
 import com.onemeter.omm.onemm.data.SettingSave;
+import com.onemeter.omm.onemm.manager.NetworkManager;
+import com.onemeter.omm.onemm.manager.NetworkRequest;
+import com.onemeter.omm.onemm.request.ChargeMoneyRequest;
 
 /**
  * Created by Tacademy on 2016-09-12.
@@ -38,8 +42,19 @@ public class SettingDialog extends DialogFragment {
         }).setPositiveButton("확인", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(getContext() , "충전되었습니다", Toast.LENGTH_SHORT).show();
-                // 충전시 현재보유금 +
+                String sumMoney = price.getText().toString();
+                ChargeMoneyRequest request = new ChargeMoneyRequest(getContext(), sumMoney);
+                NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+                    @Override
+                    public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
+                        Toast.makeText(MyApplication.getContext(), result.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
+
+                    }
+                });
             }
         });
 

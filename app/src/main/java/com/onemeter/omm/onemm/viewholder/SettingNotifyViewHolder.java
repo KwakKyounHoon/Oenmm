@@ -19,6 +19,8 @@ public class SettingNotifyViewHolder extends RecyclerView.ViewHolder{
     SwitchCompat answerSwitch;
     @BindView(R.id.question_switch)
     SwitchCompat questionSwitch;
+    @BindView(R.id.like_switch)
+    SwitchCompat likeSwitch;
 
     public boolean isForced = false;
 
@@ -41,6 +43,16 @@ public class SettingNotifyViewHolder extends RecyclerView.ViewHolder{
                 if (!isForced) {
                     if (listener != null) {
                         listener.onQuestionSwitchClick(b, getAdapterPosition());
+                    }
+                }
+            }
+        });
+        likeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (!isForced) {
+                    if (listener != null) {
+                        listener.onLikeSwitchClick(b, getAdapterPosition());
                     }
                 }
             }
@@ -70,6 +82,11 @@ public class SettingNotifyViewHolder extends RecyclerView.ViewHolder{
             questionSwitch.setChecked(false);
         }else{
             questionSwitch.setChecked(true);
+        }
+        if(PropertyManager.getInstance().getLikeSwitch().equals("0")){
+            likeSwitch.setChecked(false);
+        }else{
+            likeSwitch.setChecked(true);
         }
         isForced = false;
     }
