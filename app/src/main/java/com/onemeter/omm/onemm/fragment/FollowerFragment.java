@@ -39,6 +39,9 @@ public class FollowerFragment extends Fragment {
     RecyclerView list;
     FollowerAdatper mAdapter;
     String id;
+    boolean isLastItem;
+    int pageNo = 1;
+    private final int COUNT = 10;
 
     public FollowerFragment() {
         // Required empty public constructor
@@ -60,6 +63,36 @@ public class FollowerFragment extends Fragment {
         if (getArguments() != null) {
             id = getArguments().getString(USRE_ID);
         }
+        mAdapter = new FollowerAdatper();
+        if(id.equals("-1")){
+            MyFollowerRequest request = new MyFollowerRequest(getContext(), pageNo, COUNT);
+            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<Follower[]>>() {
+                @Override
+                public void onSuccess(NetworkRequest<NetWorkResultType<Follower[]>> request, NetWorkResultType<Follower[]> result) {
+                    mAdapter.addAll(result.getResult());
+                    pageNo++;
+                }
+
+                @Override
+                public void onFail(NetworkRequest<NetWorkResultType<Follower[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                }
+            });
+        }else{
+            OtherFollowerRequest request = new OtherFollowerRequest(getContext(), id, pageNo, COUNT);
+            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<Follower[]>>() {
+                @Override
+                public void onSuccess(NetworkRequest<NetWorkResultType<Follower[]>> request, NetWorkResultType<Follower[]> result) {
+                    mAdapter.addAll(result.getResult());
+                    pageNo++;
+                }
+
+                @Override
+                public void onFail(NetworkRequest<NetWorkResultType<Follower[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                }
+            });
+        }
     }
 
 
@@ -69,12 +102,60 @@ public class FollowerFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_follower, container, false);
         ButterKnife.bind(this, view);
-        mAdapter = new FollowerAdatper();
+
         list.setAdapter(mAdapter);
-        LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        final LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         list.setLayoutManager(manager);
         setHasOptionsMenu(true);
         ((MainActivity) (getActivity())).changeHomeAsUp(true);
+
+        list.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if(id.equals("-1")){
+                    MyFollowerRequest request = new MyFollowerRequest(getContext(), pageNo, COUNT);
+                    NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<Follower[]>>() {
+                        @Override
+                        public void onSuccess(NetworkRequest<NetWorkResultType<Follower[]>> request, NetWorkResultType<Follower[]> result) {
+                            mAdapter.addAll(result.getResult());
+                            pageNo++;
+                        }
+
+                        @Override
+                        public void onFail(NetworkRequest<NetWorkResultType<Follower[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                        }
+                    });
+                }else{
+                    OtherFollowerRequest request = new OtherFollowerRequest(getContext(), id, pageNo, COUNT);
+                    NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<Follower[]>>() {
+                        @Override
+                        public void onSuccess(NetworkRequest<NetWorkResultType<Follower[]>> request, NetWorkResultType<Follower[]> result) {
+                            mAdapter.addAll(result.getResult());
+                            pageNo++;
+                        }
+
+                        @Override
+                        public void onFail(NetworkRequest<NetWorkResultType<Follower[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int totalItemCount = manager.getItemCount();
+                int lastVisibleItemPosition = manager.findLastCompletelyVisibleItemPosition();
+                if(totalItemCount >0 && lastVisibleItemPosition != RecyclerView.NO_POSITION && (totalItemCount -1 <= lastVisibleItemPosition)){
+                    isLastItem = true;
+                }else{
+                    isLastItem = false;
+                }
+            }
+        });
 
         mAdapter.setOnAdapterItemClickListener(new FollowerAdatper.OnAdapterItemClickLIstener() {
             @Override
@@ -149,34 +230,6 @@ public class FollowerFragment extends Fragment {
                 }
             }
         });
-//        init();
-        if(id.equals("-1")){
-            MyFollowerRequest request = new MyFollowerRequest(getContext(), 1, 20);
-            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<Follower[]>>() {
-                @Override
-                public void onSuccess(NetworkRequest<NetWorkResultType<Follower[]>> request, NetWorkResultType<Follower[]> result) {
-                    mAdapter.addAll(result.getResult());
-                }
-
-                @Override
-                public void onFail(NetworkRequest<NetWorkResultType<Follower[]>> request, int errorCode, String errorMessage, Throwable e) {
-
-                }
-            });
-        }else{
-            OtherFollowerRequest request = new OtherFollowerRequest(getContext(), id, 1, 20);
-            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<Follower[]>>() {
-                @Override
-                public void onSuccess(NetworkRequest<NetWorkResultType<Follower[]>> request, NetWorkResultType<Follower[]> result) {
-                    mAdapter.addAll(result.getResult());
-                }
-
-                @Override
-                public void onFail(NetworkRequest<NetWorkResultType<Follower[]>> request, int errorCode, String errorMessage, Throwable e) {
-
-                }
-            });
-        }
         return view;
     }
 
