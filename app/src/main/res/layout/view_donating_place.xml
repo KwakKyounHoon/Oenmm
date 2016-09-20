@@ -1,32 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:layout_marginTop="8dp">
 
 
     <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
         android:id="@+id/image_item"
-        android:src="@mipmap/ic_launcher"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-    <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:id="@+id/image_blur"
-        android:src="@drawable/blur"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:visibility="gone"
-        />
+        android:src="@mipmap/ic_launcher" />
+
+    <ImageView
+        android:id="@+id/image_blur"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/blur"
+        android:visibility="gone" />
 
     <TextView
+        android:id="@+id/text_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="New Text"
-        android:id="@+id/text_name"
         android:layout_below="@+id/image_item"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="3dp"/>
+        android:layout_marginBottom="3dp"
+        android:layout_marginTop="5dp"
+        android:text="New Text" />
 </RelativeLayout>
