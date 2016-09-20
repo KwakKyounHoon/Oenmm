@@ -11,8 +11,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.onemeter.omm.onemm.adapter.OtherAdapter;
-
 /**
  * Created by Tacademy on 2016-09-13.
  */
@@ -27,8 +25,6 @@ public class SettingWithdrawDial extends DialogFragment {
     public SettingWithdrawDial() {
         // Required empty public constructor
     }
-
-    OtherAdapter mAdapter;
 
     public static SettingWithdrawDial newInstance(String message) {
         SettingWithdrawDial fragment = new SettingWithdrawDial();
@@ -53,12 +49,7 @@ public class SettingWithdrawDial extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(view);
 
-        builder.setTitle(null).setNegativeButton("취소", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        }).setPositiveButton("확인", new DialogInterface.OnClickListener() {
+        builder.setTitle(null).setPositiveButton("확인", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 String finalPoint = (String) price.getText();

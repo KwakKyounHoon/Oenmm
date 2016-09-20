@@ -27,5 +27,6 @@
         android:text="New Text"
         android:id="@+id/text_header_discription"
         android:layout_below="@+id/text_header_title"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:gravity="center"/>
 </RelativeLayout>

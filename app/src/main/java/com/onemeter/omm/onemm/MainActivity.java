@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     BackKeyFragment currentFragment = null;
 
+
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
@@ -43,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
 
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -109,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
-
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
@@ -195,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+
 
     boolean isBackPressed = false;
 

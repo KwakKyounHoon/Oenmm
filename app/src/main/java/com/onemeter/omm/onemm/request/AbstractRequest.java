@@ -30,7 +30,7 @@ public abstract class AbstractRequest<T> extends NetworkRequest<T> {
         HttpUrl.Builder builder = new HttpUrl.Builder();
         builder.scheme("http");
         builder.host(DUMY);
-   //     builder.host(REALURL);
+//        builder.host(REALURL);
         builder.port(8080);
         return builder;
     }
