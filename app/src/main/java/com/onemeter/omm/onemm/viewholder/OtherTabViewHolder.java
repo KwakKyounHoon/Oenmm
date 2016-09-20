@@ -1,7 +1,6 @@
 package com.onemeter.omm.onemm.viewholder;
 
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -19,7 +18,8 @@ public class OtherTabViewHolder extends RecyclerView.ViewHolder{
     TabLayout tabs;
     TabLayout.Tab receiveTab;
     TabLayout.Tab sendTab;
-    FragmentManager fragmentManager;
+
+    Boolean isForced = false;
 
     public static String TAB_TAG_MY_RECEIVE = "receive";
     public static String TAB_TAG_MY_SEND = "send";
@@ -32,17 +32,18 @@ public class OtherTabViewHolder extends RecyclerView.ViewHolder{
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                if (!isForced) {
+                    String tag = (String) tab.getTag();
 
-                String tag = (String)tab.getTag();
+                    if (tag.equals(TAB_TAG_MY_RECEIVE)) {
+                        if (listener != null) {
+                            listener.onTabType(itemView, 1);
 
-                if (tag.equals(TAB_TAG_MY_RECEIVE)){
-                    if(listener != null){
-                        listener.onTabType(itemView, 1);
-
-                    }
-                }else if(tag.equals(TAB_TAG_MY_SEND)){
-                    if(listener != null){
-                        listener.onTabType(itemView, 2);
+                        }
+                    } else if (tag.equals(TAB_TAG_MY_SEND)) {
+                        if (listener != null) {
+                            listener.onTabType(itemView, 2);
+                        }
                     }
                 }
             }
@@ -61,6 +62,16 @@ public class OtherTabViewHolder extends RecyclerView.ViewHolder{
         sendTab = tabs.newTab().setIcon(R.drawable.mypage_send_tab).setTag(TAB_TAG_MY_SEND);
         tabs.addTab(receiveTab.setTag(TAB_TAG_MY_RECEIVE));
         tabs.addTab(sendTab.setTag(TAB_TAG_MY_SEND));
+    }
+
+    public void setTabPosition(int position) {
+        isForced = true;
+        if(position == 1){
+            receiveTab.select();
+        }else{
+            sendTab.select();
+        }
+        isForced = false;
     }
 
     public interface OnTabItemClickListener {

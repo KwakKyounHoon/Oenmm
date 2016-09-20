@@ -22,7 +22,7 @@ import com.onemeter.omm.onemm.viewholder.SettingSaveViewHolder;
  * Created by Tacademy on 2016-08-30.
  */
 public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements SettingSaveViewHolder.OnSettingSaveItemClickListener
-        ,SettingAgreeViewHolder.OnSettingAgreeClickListener, SettingChargeViewHolder.OnSettingChargeClickListener
+        ,SettingAgreeViewHolder.OnSettingAgreeClickListener, SettingChargeViewHolder.OnSettingChargeClickListener, SettingNotifyViewHolder.OnSettingNotifyClickListener
 ,SettingLogoutViewHolder.OnSettingLogoutClickListener{
 
     SettingData settingData = new SettingData();
@@ -121,6 +121,8 @@ public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         position--;
         if(position == 0) {
             SettingNotifyViewHolder snvh = (SettingNotifyViewHolder) holder;
+            snvh.setCategory();
+            snvh.setSettingNotifyListener(this);
             return;
         }
         position--;
@@ -221,12 +223,36 @@ public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
+    @Override
+    public void onAnswerSwitchClick(Boolean flag, int position) {
+        if(listener != null){
+            listener.onAdapterAnswerSwitchClick(flag, position);
+        }
+    }
+
+    @Override
+    public void onQuestionSwitchClick(Boolean flag, int position) {
+        if(listener != null){
+            listener.onAdapterQuestionSwitchClick(flag, position);
+        }
+    }
+
+    @Override
+    public void onLikeSwitchClick(Boolean flag, int position) {
+        if(listener != null){
+            listener.onAdapterLikeSwitchClick(flag, position);
+        }
+    }
+
     public interface OnSettingAdapterItemClickListener {
         public void onExpandClick(View view, int position, boolean expandFlag);
         public void onAdatperAgreeClick(View view);
         public void onAdapterChargeClick(View view);
         public void onAdapterLogoutClick(View view);
         public void onAdapterWithdrawClick(View view,SettingSave settingSave,int position);
+        public void onAdapterAnswerSwitchClick(Boolean flag, int position);
+        public void onAdapterQuestionSwitchClick(Boolean flag, int position);
+        public void onAdapterLikeSwitchClick(Boolean flag, int position);
     }
 
     OnSettingAdapterItemClickListener listener;

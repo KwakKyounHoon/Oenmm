@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,10 @@ public class RankFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fragment f = new RankDonationFragment();
+        getChildFragmentManager().beginTransaction()
+                .replace(R.id.container, f, TAG_RANK_DOATE)
+                .commit();
     }
 
     @Override
@@ -50,46 +55,23 @@ public class RankFragment extends Fragment {
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                String tag = (String)tab.getTag();
+                if (!isForced) {
+                    String tag = (String) tab.getTag();
                     if (tag.equals(TAG_RANK_DOATE)) {
+                        tabFlag = true;
                         Fragment f = new RankDonationFragment();
                         getChildFragmentManager().beginTransaction()
                                 .replace(R.id.container, f, (String) tab.getTag())
                                 .commit();
                     } else if (tag.equals(TAG_RANK_POPUL)) {
+                        tabFlag = false;
                         Fragment f = new RankPopularFragment();
                         getChildFragmentManager().beginTransaction()
                                 .replace(R.id.container, f, (String) tab.getTag())
                                 .commit();
                     }
-
-//                if (tag.equals(TAG_RANK_DOATE)){
-//                    Fragment f = getChildFragmentManager().findFragmentByTag(tag);
-//                    if (f != null) {
-//                        getChildFragmentManager().beginTransaction()
-//                                .attach(f)
-//                                .commit();
-//                    }else{
-//                        f = new RankDonationFragment();
-//                        getChildFragmentManager().beginTransaction()
-//                                .replace(R.id.container, f , (String)tab.getTag())
-//                                .commit();
-//                    }
-//                    tabFlag = true;
-//                }else if(tag.equals(TAG_RANK_POPUL)){
-//                    Fragment f = getChildFragmentManager().findFragmentByTag(tag);
-//                    if (f != null) {
-//                        getChildFragmentManager().beginTransaction()
-//                                .attach(f)
-//                                .commit();
-//                    }else {
-//                        f = new RankPopularFragment();
-//                        getChildFragmentManager().beginTransaction()
-//                                .replace(R.id.container, f, (String) tab.getTag())
-//                                .commit();
-//                    }
-//                    tabFlag = false;
-//                }
+                }
+                Log.i("test2",tabFlag+"");
             }
 
 
@@ -119,18 +101,25 @@ public class RankFragment extends Fragment {
 
         donateTab = tabs.newTab().setText("기부랭킹").setTag(TAG_RANK_DOATE);
         populTab = tabs.newTab().setText("인기질문").setTag(TAG_RANK_POPUL);
+        isForced = true;
         tabs.addTab(donateTab);
         tabs.addTab(populTab);
-
+        isForced = false;
         return view;
     }
+
+    Boolean isForced = false;
 
     @Override
     public void onResume() {
         super.onResume();
+        isForced = true;
         if(tabFlag){
             donateTab.select();
-        }else populTab.select();
+        }else {
+            populTab.select();
+        }
+        isForced = false;
     }
 
     public void showOther(String userId){
@@ -139,10 +128,6 @@ public class RankFragment extends Fragment {
 
     public void showMy(){
         ((TabRankFragment)getParentFragment()).showMy();
-    }
-
-    public void setTab(boolean flag){
-        tabFlag =  flag;
     }
 
     public void showListenToOn(Post post) {

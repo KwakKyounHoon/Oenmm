@@ -27,6 +27,9 @@ public class PropertyManager {
     private static final String KEY_REGISTRATION_ID ="regid";
     private static final String KEY_FACEBOOK_ID = "facebookid";
     private static final String KEY_MY_ID = "myid";
+    private static final String KEY_SWITCH_ANSWER = "answer";
+    private static final String KEY_SWITCH_QUESTION = "question";
+    private static final String KEY_SWITCH_like = "like";
 
     private PropertyManager() {
         Context context = MyApplication.getContext();
@@ -60,6 +63,33 @@ public class PropertyManager {
 
     public String getFacebookId() {
         return mPrefs.getString(KEY_FACEBOOK_ID, "");
+    }
+
+    public void setAnswerSwitch(String onOff) {
+        mEditor.putString(KEY_SWITCH_ANSWER, onOff);
+        mEditor.commit();
+    }
+
+    public String getAnswerSwitch() {
+        return mPrefs.getString(KEY_SWITCH_ANSWER, "1");
+    }
+
+    public void setQuestionSwitch(String onOff) {
+        mEditor.putString(KEY_SWITCH_QUESTION, onOff);
+        mEditor.commit();
+    }
+
+    public String getQuestionSwitch() {
+        return mPrefs.getString(KEY_SWITCH_QUESTION, "1");
+    }
+
+    public void setLikeSwitch(String onOff) {
+        mEditor.putString(KEY_SWITCH_like, onOff);
+        mEditor.commit();
+    }
+
+    public String getLikeSwitch() {
+        return mPrefs.getString(KEY_SWITCH_like, "1");
     }
 
 }

@@ -22,26 +22,40 @@ public class RankCategoryViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.btn_cost)
     RadioButton costButton;
 
+    public boolean isForced = false;
+
     public RankCategoryViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                switch (i){
-                    case R.id.btn_listen:
-                        if (listener != null) {
-                            listener.onCategoryItemClick(true, getAdapterPosition());
-                        }
-                        break;
-                    case R.id.btn_cost:
-                        if (listener != null) {
-                            listener.onCategoryItemClick(false, getAdapterPosition());
-                        }
-                        break;
+                if (!isForced) {
+                    switch (i) {
+                        case R.id.btn_listen:
+                            if (listener != null) {
+                                listener.onCategoryItemClick(true, getAdapterPosition());
+                            }
+                            break;
+                        case R.id.btn_cost:
+                            if (listener != null) {
+                                listener.onCategoryItemClick(false, getAdapterPosition());
+                            }
+                            break;
+                    }
                 }
             }
         });
+    }
+
+    public void setCategory(boolean isCom){
+        isForced = true;
+        if(isCom){
+            listenButton.setChecked(true);
+        }else{
+            costButton.setChecked(true);
+        }
+        isForced = false;
     }
 
     public interface OnRankCategoryItemClickListener {

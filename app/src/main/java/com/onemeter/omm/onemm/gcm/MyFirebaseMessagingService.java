@@ -29,6 +29,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.SplashActivity;
+import com.onemeter.omm.onemm.manager.PropertyManager;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -64,14 +65,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             if(remoteMessage.getData().get(CODE).equals("0")){
                 String nickname = remoteMessage.getData().get(NICKNAME);
                 String msg = nickname + "에게 질문이 도착 했습니다.";
+                if(PropertyManager.getInstance().getQuestionSwitch().equals("1"))
                 sendNotification(msg);
             }else if(remoteMessage.getData().get(CODE).equals("1")){
                 String nickname = remoteMessage.getData().get(NICKNAME);
                 String msg = nickname + "에게 답변이 도착 했습니다.";
+                if(PropertyManager.getInstance().getAnswerSwitch().equals("1"))
                 sendNotification(msg);
             }else if(remoteMessage.getData().get(CODE).equals("2")){
                 String nickname = remoteMessage.getData().get(NICKNAME);
                 String msg = nickname + "에게 팔로우 신청이 왔습니다.";
+                if(PropertyManager.getInstance().getLikeSwitch().equals("1"))
                 sendNotification(msg);
             }
 
@@ -113,4 +117,5 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
     }
+
 }

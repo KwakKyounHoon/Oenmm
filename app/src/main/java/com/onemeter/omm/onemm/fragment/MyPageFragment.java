@@ -68,8 +68,6 @@ public class MyPageFragment extends Fragment {
     int tabType = 1;
     boolean comFlag = true;
 
-    boolean firstFlag = true;
-
     public MyPageFragment() {
         // Required empty public constructor
     }
@@ -79,7 +77,20 @@ public class MyPageFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAdapter = new MyAdapter();
 
+        MyPostRequest request = new MyPostRequest(getContext(), "from", "1", 1, 20);
+        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+            @Override
+            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                mAdapter.addAllPost(result.getResult());
+            }
+
+            @Override
+            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+            }
+        });
 
     }
 
@@ -88,8 +99,7 @@ public class MyPageFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_my_page, container, false);
         ButterKnife.bind(this, view);
-        mAdapter = new MyAdapter();
-        mAdapter.setAdatperPosition(tabType, comFlag);
+
         list.setAdapter(mAdapter);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         list.setLayoutManager(manager);
@@ -371,19 +381,6 @@ public class MyPageFragment extends Fragment {
 
             }
         });
-        mAdapter.clearPost();
-        MyPostRequest request = new MyPostRequest(getContext(), "from", "1", 1, 20);
-        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
-            @Override
-            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
-                mAdapter.addAllPost(result.getResult());
-            }
-
-            @Override
-            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
-
-            }
-        });
         return view;
     }
 
@@ -518,10 +515,8 @@ public class MyPageFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        tabType = 1;
-        comFlag = true;
-        mAdapter.setFlag(true);
-
+        mAdapter.setFlag(comFlag);
+        mAdapter.setTabPosition(tabType);
     }
 
     @Override

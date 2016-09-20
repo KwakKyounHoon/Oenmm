@@ -26,26 +26,40 @@ public class OtherCategoryViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.text_title)
     TextView categoryView;
 
+    public boolean isForced = false;
+
     public OtherCategoryViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                switch (i){
-                    case R.id.btn_listen:
-                        if (listener != null) {
-                            listener.onCategoryItemClick(true);
-                        }
-                        break;
-                    case R.id.btn_new:
-                        if (listener != null) {
-                            listener.onCategoryItemClick(false);
-                        }
-                        break;
+                if (!isForced) {
+                    switch (i) {
+                        case R.id.btn_listen:
+                            if (listener != null) {
+                                listener.onCategoryItemClick(true);
+                            }
+                            break;
+                        case R.id.btn_new:
+                            if (listener != null) {
+                                listener.onCategoryItemClick(false);
+                            }
+                            break;
+                    }
                 }
             }
         });
+    }
+
+    public void setCategory(boolean comFlag) {
+        isForced = true;
+        if(comFlag){
+            listenButton.setChecked(true);
+        }else{
+            costButton.setChecked(true);
+        }
+        isForced = false;
     }
 
     public interface OnOtherCategoryItemClickListener {
@@ -58,7 +72,7 @@ public class OtherCategoryViewHolder extends RecyclerView.ViewHolder {
         this.listener = listener;
     }
 
-    public void setCategory(String str){
+    public void setCategoryText(String str){
         categoryView.setText(str);
     }
 

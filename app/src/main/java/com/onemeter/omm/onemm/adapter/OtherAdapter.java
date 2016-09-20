@@ -25,11 +25,20 @@ public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         OtherPostViewHolder.OnOtherItemClickListener, OtherTabViewHolder.OnTabItemClickListener{
     OtherPageData otherPageData = new OtherPageData();
 
-    int tabType = 1;
+    int tabType;
+    boolean comFlag;
 
     public void addOtherData(OtherData otherData) {
         this.otherPageData.setOtherData(otherData);
         notifyDataSetChanged();
+    }
+
+    public void setFlag(boolean comFlag){
+        this.comFlag = comFlag;
+    }
+
+    public void setTabPosition(int tabType) {
+        this.tabType = tabType;
     }
 
     String time = "";
@@ -121,6 +130,7 @@ public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (position == 0) {
             OtherTabViewHolder othvh = (OtherTabViewHolder) holder;
             othvh.setOnTabClickListener(this);
+            othvh.setTabPosition(tabType);
             return;
         }
         position--;
@@ -128,10 +138,11 @@ public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (position == 0) {
             OtherCategoryViewHolder ocvh = (OtherCategoryViewHolder) holder;
             ocvh.setOnOtherCategoryItemClickListener(this);
+            ocvh.setCategory(comFlag);
             if(tabType == 1){
-                ocvh.setCategory("받은 질문");
+                ocvh.setCategoryText("받은 질문");
             }else{
-                ocvh.setCategory("한 질문");
+                ocvh.setCategoryText("한 질문");
             }
             return;
         }
@@ -198,6 +209,7 @@ public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public void onCategoryItemClick(Boolean flag) {
         if(listener != null) {
             listener.onAdapterCategoryItemClick(flag);
+            comFlag = flag;
         }
     }
 

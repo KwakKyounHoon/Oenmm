@@ -79,7 +79,7 @@ public class SearchFragment extends Fragment {
 
 
 
-    @OnClick(R.id.btn_search_result)
+    @OnClick(R.id.layout_search)
     public void resultClick(View view) {
         ((TabSearchFragment) getParentFragment()).showSearchResult();
     }

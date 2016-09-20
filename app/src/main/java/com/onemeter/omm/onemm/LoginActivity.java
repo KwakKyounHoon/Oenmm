@@ -3,6 +3,7 @@ package com.onemeter.omm.onemm;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -70,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onError(FacebookException error) {
-
+                mLoginManager.logOut();
             }
         });
 
@@ -82,6 +83,8 @@ public class LoginActivity extends AppCompatActivity {
         if (accessToken != null) {
             String token = accessToken.getToken();
             FacebookLoginRequest request = new FacebookLoginRequest(LoginActivity.this, token, PropertyManager.getInstance().getRegistrationId());
+            Log.i("test fcm", PropertyManager.getInstance().getRegistrationId());
+            Log.i("test face", token);
             NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<String>>() {
                 @Override
                 public void onSuccess(NetworkRequest<NetWorkResultType<String>> request, NetWorkResultType<String> result) {

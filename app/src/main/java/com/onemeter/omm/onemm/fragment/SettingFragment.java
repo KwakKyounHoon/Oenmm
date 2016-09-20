@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 import com.onemeter.omm.onemm.LoginActivity;
@@ -138,6 +137,33 @@ public class SettingFragment extends Fragment {
             public void onAdapterWithdrawClick(View view, SettingSave settingSave, int position) {
                 SettingWithdrawDial settingWithdrawDial = SettingWithdrawDial.newInstance(settingSave.getCurrentPoint());
                 settingWithdrawDial.show(getFragmentManager(), "WIthDRWAL");
+            }
+
+            @Override
+            public void onAdapterAnswerSwitchClick(Boolean flag, int position) {
+                if(flag) {
+                    PropertyManager.getInstance().setAnswerSwitch("1");
+                }else {
+                    PropertyManager.getInstance().setAnswerSwitch("0");
+                }
+            }
+
+            @Override
+            public void onAdapterQuestionSwitchClick(Boolean flag, int position) {
+                if(flag) {
+                    PropertyManager.getInstance().setQuestionSwitch("1");
+                }else {
+                    PropertyManager.getInstance().setQuestionSwitch("0");
+                }
+            }
+
+            @Override
+            public void onAdapterLikeSwitchClick(Boolean flag, int position) {
+                if(flag) {
+                    PropertyManager.getInstance().setLikeSwitch("1");
+                }else {
+                    PropertyManager.getInstance().setLikeSwitch("0");
+                }
             }
         });
         return view;

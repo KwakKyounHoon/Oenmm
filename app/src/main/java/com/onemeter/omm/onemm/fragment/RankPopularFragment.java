@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,10 +37,28 @@ public class RankPopularFragment extends Fragment {
 
     RankPopularAdapter mAdapter;
 
-    Boolean tabType = true;
+    Boolean categoryFlag = true;
 
     public RankPopularFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mAdapter = new RankPopularAdapter();
+        PopularPostListRequest request = new PopularPostListRequest(getContext(), 0);
+        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+            @Override
+            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                mAdapter.addAll(result.getResult());
+            }
+
+            @Override
+            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+            }
+        });
     }
 
     @Override
@@ -48,7 +67,6 @@ public class RankPopularFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_rank_popular, container, false);
         ButterKnife.bind(this,view);
-        mAdapter = new RankPopularAdapter();
         list.setAdapter(mAdapter);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         list.setLayoutManager(manager);
@@ -92,8 +110,8 @@ public class RankPopularFragment extends Fragment {
                 mAdapter.setTime("답변 듣기", position);
                 killMediaPlayer();
                 startflag = false;
-                tabType = flag;
-                if(tabType){
+                categoryFlag = flag;
+                if(categoryFlag){
                     mAdapter.clearRankPopular();
                     PopularPostListRequest request = new PopularPostListRequest(getContext(), 0);
                     NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
@@ -142,18 +160,18 @@ public class RankPopularFragment extends Fragment {
                 }
             }
         });
-        PopularPostListRequest request = new PopularPostListRequest(getContext(), 0);
-        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
-            @Override
-            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
-                mAdapter.addAll(result.getResult());
-            }
-
-            @Override
-            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
-
-            }
-        });
+//        PopularPostListRequest request = new PopularPostListRequest(getContext(), 0);
+//        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+//            @Override
+//            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+//                mAdapter.addAll(result.getResult());
+//            }
+//
+//            @Override
+//            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+//
+//            }
+//        });
 
         return view;
     }
@@ -225,4 +243,9 @@ public class RankPopularFragment extends Fragment {
         ((RankFragment) (getParentFragment())).showMy();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mAdapter.setFlag(categoryFlag);
+    }
 }

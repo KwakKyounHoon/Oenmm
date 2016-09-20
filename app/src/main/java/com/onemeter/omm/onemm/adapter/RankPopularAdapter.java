@@ -25,6 +25,11 @@ public class RankPopularAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public static final int VIEW_TYPE_CATEGORY = 1;
     public static final int VIEW_TYPE_POST = 2;
 
+    boolean categoryFlag;
+
+    public void setFlag(boolean categoryFlag){
+        this.categoryFlag = categoryFlag;
+    }
 
     public void addRankPopular(Post rankPopular){
         this.posts.add(rankPopular);
@@ -83,6 +88,7 @@ public class RankPopularAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         if (position == 0) {
             RankCategoryViewHolder mhvh = (RankCategoryViewHolder)holder;
             mhvh.setOnRankCategoryItemClickListener(this);
+            mhvh.setCategory(categoryFlag);
             return;
         }
         position--;
@@ -136,6 +142,7 @@ public class RankPopularAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         if(listener != null){
             listener.onAdapterCategoryItemClick(flag, position);
         }
+        categoryFlag = flag;
     }
 
     public interface OnAdapterItemClickLIstener {

@@ -21,6 +21,8 @@ public class MyTabViewHolder extends RecyclerView.ViewHolder {
     TabLayout.Tab sendTab;
     TabLayout.Tab listenTab;
 
+    Boolean isForced = false;
+
     public static String TAB_TAG_MY_RECEIVE = "receive";
     public static String TAB_TAG_MY_SEND = "send";
     public static String TAB_TAG_LISTEN_RANK = "listen";
@@ -32,20 +34,21 @@ public class MyTabViewHolder extends RecyclerView.ViewHolder {
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                if (!isForced) {
+                    String tag = (String) tab.getTag();
 
-                String tag = (String)tab.getTag();
-
-                if (tag.equals(TAB_TAG_MY_RECEIVE)){
-                    if(listener != null){
-                        listener.onTabType(itemView, 1, getAdapterPosition());
-                    }
-                }else if(tag.equals(TAB_TAG_MY_SEND)){
-                    if(listener != null){
-                        listener.onTabType(itemView, 2, getAdapterPosition());
-                    }
-                }else if(tag.equals(TAB_TAG_LISTEN_RANK)){
-                    if(listener != null){
-                        listener.onTabType(itemView, 3, getAdapterPosition());
+                    if (tag.equals(TAB_TAG_MY_RECEIVE)) {
+                        if (listener != null) {
+                            listener.onTabType(itemView, 1, getAdapterPosition());
+                        }
+                    } else if (tag.equals(TAB_TAG_MY_SEND)) {
+                        if (listener != null) {
+                            listener.onTabType(itemView, 2, getAdapterPosition());
+                        }
+                    } else if (tag.equals(TAB_TAG_LISTEN_RANK)) {
+                        if (listener != null) {
+                            listener.onTabType(itemView, 3, getAdapterPosition());
+                        }
                     }
                 }
             }
@@ -82,6 +85,7 @@ public class MyTabViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setTabPosition(int position){
+        isForced = true;
         if(position == 1){
             receiveTab.select();
         }else if(position == 2){
@@ -89,5 +93,6 @@ public class MyTabViewHolder extends RecyclerView.ViewHolder {
         }else {
             listenTab.select();
         }
+        isForced = false;
     }
 }

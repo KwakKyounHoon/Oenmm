@@ -90,6 +90,19 @@ public class OtherFragment extends Fragment {
         if (getArguments() != null) {
             id = getArguments().getString(OTHER_ID);
         }
+        mAdapter = new OtherAdapter();
+        OtherPostRequest otherPostRequest = new OtherPostRequest(getContext(),id,"from","0", 1, 20);
+        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,otherPostRequest, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+            @Override
+            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                mAdapter.addAllPost(result.getResult());
+            }
+
+            @Override
+            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+            }
+        });
     }
 
     @Override
@@ -118,7 +131,7 @@ public class OtherFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_other, container, false);
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
-        mAdapter = new OtherAdapter();
+
         list.setAdapter(mAdapter);
         final LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         list.setLayoutManager(manager);
@@ -412,20 +425,6 @@ public class OtherFragment extends Fragment {
             }
         });
 
-        mAdapter.clearPost();
-
-        OtherPostRequest otherPostRequest = new OtherPostRequest(getContext(),id,"from","0", 1, 20);
-        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,otherPostRequest, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
-            @Override
-            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
-                mAdapter.addAllPost(result.getResult());
-            }
-
-            @Override
-            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
-
-            }
-        });
         return view;
     }
 
@@ -650,4 +649,10 @@ public class OtherFragment extends Fragment {
         startflag = false;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mAdapter.setFlag(categoryType);
+        mAdapter.setTabPosition(tabType);
+    }
 }

@@ -15,17 +15,17 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/switch1"
+            android:layout_alignBottom="@+id/answer_switch"
             android:gravity="center"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_alignTop="@+id/switch1"
+            android:layout_alignTop="@+id/answer_switch"
             android:text="@string/notify_answer_string"
             android:textSize="13sp" />
 
         <android.support.v7.widget.SwitchCompat
-            android:id="@+id/switch1"
+            android:id="@+id/answer_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -42,17 +42,17 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/switch2"
+            android:layout_alignBottom="@+id/question_switch"
             android:layout_alignParentLeft="true"
             android:gravity="center"
             android:layout_alignParentStart="true"
-            android:layout_alignTop="@+id/switch2"
+            android:layout_alignTop="@+id/question_switch"
             android:text="@string/notify_receive_string"
             android:textSize="13sp" />
 
 
         <android.support.v7.widget.SwitchCompat
-            android:id="@+id/switch2"
+            android:id="@+id/question_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"

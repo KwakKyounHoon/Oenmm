@@ -31,7 +31,15 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
 
     public void setFlag(boolean comFlag){
         this.comFlag = comFlag;
+        if(tabPosition == 3){
+            this.comFlag = false;
+        }
     }
+
+    public void setTabPosition(int tabType) {
+        tabPosition = tabType;
+    }
+
 
     public void addMyData(MyData myData){
         myPageData.setMyData(myData);
@@ -124,7 +132,7 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
         if(position == 0) {
             MyTabViewHolder mtvh = (MyTabViewHolder)holder;
             mtvh.setOnTabClickListener(this);
-//            mtvh.setTabPosition(tabPosition);
+            mtvh.setTabPosition(tabPosition);
             return;
         }
         position--;
@@ -132,7 +140,7 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
         if (position == 0) {
             MyCategoryViewHolder mcvh = (MyCategoryViewHolder) holder;
             mcvh.setOnMyCategoryItemClickListener(this);
-//                mcvh.setCategory(comFlag);
+            mcvh.setCategory(comFlag);
             if(tabPosition == 1){
                 mcvh.setCategroyText("받은 질문");
                 mcvh.setCategoryView(true);
@@ -257,7 +265,6 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
         }
     }
 
-
     public interface OnAdapterItemClickLIstener {
         public void onAdapterDonateClick(View view, MyData myData, int position);
         public void onAdapterFollowingClick(View view, MyData myData, int position);
@@ -278,8 +285,4 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
         this.listener = listener;
     }
 
-    public void setAdatperPosition(int tabPosition, boolean isCom){
-        this.tabPosition = tabPosition;
-        this.comFlag = isCom;
-    }
 }

@@ -24,6 +24,8 @@ public class MyCategoryViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.text_category)
     TextView categroyView;
 
+    public boolean isForced = false;
+
     public MyCategoryViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
@@ -31,17 +33,19 @@ public class MyCategoryViewHolder extends RecyclerView.ViewHolder {
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                switch (i){
-                    case R.id.btn_com:
-                        if (listener != null) {
-                            listener.onCategoryItemClick(true, getAdapterPosition());
-                        }
-                        break;
-                    case R.id.btn_incom:
-                        if (listener != null) {
-                            listener.onCategoryItemClick(false, getAdapterPosition());
-                        }
-                        break;
+                if (!isForced) {
+                    switch (i) {
+                        case R.id.btn_com:
+                            if (listener != null) {
+                                listener.onCategoryItemClick(true, getAdapterPosition());
+                            }
+                            break;
+                        case R.id.btn_incom:
+                            if (listener != null) {
+                                listener.onCategoryItemClick(false, getAdapterPosition());
+                            }
+                            break;
+                    }
                 }
             }
         });
@@ -58,11 +62,13 @@ public class MyCategoryViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setCategory(boolean isCom){
+        isForced = true;
         if(isCom){
             comButton.setChecked(true);
         }else{
             inComButton.setChecked(true);
         }
+        isForced = false;
     }
 
     public void setCategroyText(String str){

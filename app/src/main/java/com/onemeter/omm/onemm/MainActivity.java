@@ -1,12 +1,18 @@
 package com.onemeter.omm.onemm;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
@@ -145,6 +151,8 @@ public class MainActivity extends AppCompatActivity {
         tabs.addTab(rank);
         tabs.addTab(my);
         tabs.setSelectedTabIndicatorColor(Color.WHITE);
+
+        checkPermission();
     }
 
     public void changeHomeAsUp(boolean isBack) {
@@ -167,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
         }
 //        super.onBackPressed();
         if (!isBackPressed) {
-            Toast.makeText(this, "one more back press", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "'뒤로'버튼 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
             isBackPressed = true;
             mHandler.sendEmptyMessageDelayed(MESSAGE_BACK_KEY_TIMEOUT, TIMEOUT_TIME);
         } else {
@@ -198,6 +206,63 @@ public class MainActivity extends AppCompatActivity {
 
     boolean isBackPressed = false;
 
+    private void checkPermission() {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(this, android.Manifest.permission.RECORD_AUDIO)
+                != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECORD_AUDIO)
+                    || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)
+                    || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("퍼미션 승인 필요합니다.");
+                builder.setMessage("카메라, 데이터 읽기, 데이터 쓰기, 오디오 녹음 하는데 승인이 필요합니다.");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        requestPermission();
+                    }
+                });
+                builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+                        finishNoPermission();
+                    }
+                });
 
+                builder.create().show();
+                return;
+            }
+            requestPermission();
+        }
+    }
 
+    private void finishNoPermission() {
+        Toast.makeText(this, "no permission", Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    private static final int RC_PERMISSION = 100;
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(this, new String[] {android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA
+        , Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, RC_PERMISSION);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == RC_PERMISSION) {
+            if (grantResults != null && grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "grant permission", Toast.LENGTH_SHORT).show();
+            } else {
+                finishNoPermission();
+            }
+        }
+    }
 }

@@ -48,7 +48,7 @@ public class RankDonationFragment extends Fragment {
             @Override
             public void onAdapterItemClick(View view, DonationRank donationRank, int position) {
                 ((RankFragment) (getParentFragment())).showOther(donationRank.getUserId());
-                ((RankFragment)(getParentFragment())).setTab(true);
+//                ((RankFragment)(getParentFragment())).setTab(true);
 
             }
         });
