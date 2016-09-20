@@ -1,45 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btn_1000"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:onClick=""
-        android:text="+1000원" />
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/btn_5000"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/btn_1000"
-        android:text="+5000원" />
+        <Button
+            android:id="@+id/btn_1000"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="+1000원" />
 
-    <Button
-        android:id="@+id/btn_10000"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/btn_5000"
-        android:text="+10000원" />
+        <Button
+            android:id="@+id/btn_5000"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="+5000원" />
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/btn_10000"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="+10000원" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btn_10000"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp">
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="현재 출금 가능 금액 : " />
+        <TextView
+            android:id="@+id/text_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="16dp">
 
         <TextView
             android:id="@+id/text_price"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/btn_reset"
-            android:layout_alignTop="@+id/btn_reset"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="10dp"
             android:background="@null"
             android:gravity="center"
             android:text="0" />
@@ -48,9 +66,14 @@
             android:id="@+id/btn_reset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/text_price"
             android:text="정정" />
+    </LinearLayout>
 
+    <Button
+        android:layout_marginTop="24dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="확인"
+        android:background="#FA8072"/>
 
-    </RelativeLayout>
-</RelativeLayout>
+</LinearLayout>

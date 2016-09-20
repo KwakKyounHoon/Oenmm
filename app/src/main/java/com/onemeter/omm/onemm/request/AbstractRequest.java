@@ -20,18 +20,18 @@ public abstract class AbstractRequest<T> extends NetworkRequest<T> {
     protected HttpUrl.Builder getHttpsBaseUrlBuilder() {
         HttpUrl.Builder builder = new HttpUrl.Builder();
         builder.scheme("https");
-        builder.host(DUMY);
-//        builder.host(REALURL);
-        builder.port(4433);
+//        builder.host(DUMY);
+        builder.host(REALURL);
+        builder.port(443);
         return builder;
     }
 
     protected HttpUrl.Builder getBaseUrlBuilder() {
         HttpUrl.Builder builder = new HttpUrl.Builder();
         builder.scheme("http");
-        builder.host(DUMY);
-//        builder.host(REALURL);
-        builder.port(8080);
+//        builder.host(DUMY);
+        builder.host(REALURL);
+        builder.port(80);
         return builder;
     }
 
