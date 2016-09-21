@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.onemeter.omm.onemm.MyApplication;
@@ -141,6 +142,7 @@ public class ListenToOffFragment extends Fragment {
             @Override
             public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
                 popFragment();
+                Toast.makeText(getContext(), result.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
             @Override

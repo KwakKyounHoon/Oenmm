@@ -81,28 +81,30 @@ public class RankPopularFragment extends Fragment {
 
             @Override
             public void onAdapterPlayClick(View view, final Post rankPopular, int position) {
-                timePosition = position;
-                startTime = -1;
-                ReplyListenRequest request = new ReplyListenRequest(getContext(), rankPopular.getAnswerId());
-                NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<String>>() {
-                    @Override
-                    public void onSuccess(NetworkRequest<NetWorkResultType<String>> request, NetWorkResultType<String> result) {
-                        endTime = rankPopular.getLength();
-                        try {
-                            playAudio(result.getResult());
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                if (rankPopular.getPayInfo().equals("1")) {
+                    timePosition = position;
+                    startTime = -1;
+                    ReplyListenRequest request = new ReplyListenRequest(getContext(), rankPopular.getAnswerId());
+                    NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<String>>() {
+                        @Override
+                        public void onSuccess(NetworkRequest<NetWorkResultType<String>> request, NetWorkResultType<String> result) {
+                            endTime = rankPopular.getLength();
+                            try {
+                                playAudio(result.getResult());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            startflag = true;
+                            mHandler.removeCallbacks(countRunnable);
+                            mHandler.post(countRunnable);
                         }
-                        startflag = true;
-                        mHandler.removeCallbacks(countRunnable);
-                        mHandler.post(countRunnable);
-                    }
 
-                    @Override
-                    public void onFail(NetworkRequest<NetWorkResultType<String>> request, int errorCode, String errorMessage, Throwable e) {
+                        @Override
+                        public void onFail(NetworkRequest<NetWorkResultType<String>> request, int errorCode, String errorMessage, Throwable e) {
 
-                    }
-                });
+                        }
+                    });
+                }
             }
 
             @Override
