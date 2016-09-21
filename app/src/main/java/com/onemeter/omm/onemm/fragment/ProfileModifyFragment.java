@@ -472,6 +472,7 @@ public class ProfileModifyFragment extends Fragment {
                             }
                         }
 
+
                         public void onFftDataCapture(Visualizer visualizer,
                                                      byte[] bytes, int samplingRate) {
                         }
