@@ -20,15 +20,7 @@
         android:id="@+id/edit_search"
         android:layout_alignParentTop="true"
         android:layout_alignBottom="@+id/btn_back"
-        android:layout_toLeftOf="@+id/imageView2"
         android:layout_toRightOf="@+id/btn_back" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_id_check_no"
-        android:id="@+id/imageView2"
-        android:layout_centerInParent="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+
 </RelativeLayout>
