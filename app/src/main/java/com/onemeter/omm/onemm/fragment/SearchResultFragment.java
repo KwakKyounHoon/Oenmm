@@ -2,6 +2,7 @@ package com.onemeter.omm.onemm.fragment;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -38,6 +39,16 @@ public class SearchResultFragment extends Fragment {
     @BindView(R.id.list)
     RecyclerView list;
     SearchResultAdapter mAdapter;
+    boolean isLastItem;
+    int pageNo = 1;
+    String keyword;
+    private final int COUNT = 10;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mAdapter = new SearchResultAdapter();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,11 +56,44 @@ public class SearchResultFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search_result, container, false);
         ButterKnife.bind(this, view);
-//        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        mAdapter = new SearchResultAdapter();
+
         list.setAdapter(mAdapter);
-        LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        final LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         list.setLayoutManager(manager);
+        list.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if(isLastItem && newState == RecyclerView.SCROLL_STATE_IDLE){
+                    SearchRequest request = new SearchRequest(getContext(), keyword, pageNo, COUNT);
+                    NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<SearchResult[]>>() {
+                        @Override
+                        public void onSuccess(NetworkRequest<NetWorkResultType<SearchResult[]>> request, NetWorkResultType<SearchResult[]> result) {
+                            mAdapter.addAll(result.getResult());
+                            pageNo++;
+                        }
+
+                        @Override
+                        public void onFail(NetworkRequest<NetWorkResultType<SearchResult[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                        }
+                    });
+
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int totalItemCount = manager.getItemCount();
+                int lastVisibleItemPosition = manager.findLastCompletelyVisibleItemPosition();
+                if(totalItemCount >0 && lastVisibleItemPosition != RecyclerView.NO_POSITION && (totalItemCount -1 <= lastVisibleItemPosition)){
+                    isLastItem = true;
+                }else{
+                    isLastItem = false;
+                }
+            }
+        });
         searchView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -58,21 +102,22 @@ public class SearchResultFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String keyword = charSequence.toString();
+                keyword = charSequence.toString();
                 if(charSequence.length()>1) {
-                SearchRequest request = new SearchRequest(getContext(), keyword, 1, 20);
-                mAdapter.clear();
-                NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<SearchResult[]>>() {
-                    @Override
-                    public void onSuccess(NetworkRequest<NetWorkResultType<SearchResult[]>> request, NetWorkResultType<SearchResult[]> result) {
-                        mAdapter.addAll(result.getResult());
-                    }
+                    mAdapter.clear();
+                    SearchRequest request = new SearchRequest(getContext(), keyword, pageNo, COUNT);
+                    NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<SearchResult[]>>() {
+                        @Override
+                        public void onSuccess(NetworkRequest<NetWorkResultType<SearchResult[]>> request, NetWorkResultType<SearchResult[]> result) {
+                            mAdapter.addAll(result.getResult());
+                            pageNo++;
+                        }
 
-                    @Override
-                    public void onFail(NetworkRequest<NetWorkResultType<SearchResult[]>> request, int errorCode, String errorMessage, Throwable e) {
+                        @Override
+                        public void onFail(NetworkRequest<NetWorkResultType<SearchResult[]>> request, int errorCode, String errorMessage, Throwable e) {
 
-                    }
-                });
+                        }
+                    });
                 }
             }
 
