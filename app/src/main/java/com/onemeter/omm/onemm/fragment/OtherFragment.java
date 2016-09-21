@@ -33,6 +33,7 @@ import com.onemeter.omm.onemm.data.OtherData;
 import com.onemeter.omm.onemm.data.Post;
 import com.onemeter.omm.onemm.manager.NetworkManager;
 import com.onemeter.omm.onemm.manager.NetworkRequest;
+import com.onemeter.omm.onemm.manager.PropertyManager;
 import com.onemeter.omm.onemm.request.AddFollowReqeust;
 import com.onemeter.omm.onemm.request.BlockRequest;
 import com.onemeter.omm.onemm.request.OtherDataRequest;
@@ -323,8 +324,8 @@ public class OtherFragment extends Fragment {
             public void onAdapterTabType(View view, int type) {
                 pageNo = 1;
                 killMediaPlayer();
-                startflag = false;
                 mAdapter.clearPost();
+                startflag = false;
                 tabType = type;
                 if(tabType == 1){
                     if(categoryType){
@@ -393,8 +394,8 @@ public class OtherFragment extends Fragment {
             public void onAdapterCategoryItemClick(boolean flag) {
                 pageNo = 1;
                 killMediaPlayer();
-                startflag = false;
                 mAdapter.clearPost();
+                startflag = false;
                 categoryType = flag;
                 if(flag){
                     if(tabType == 1){
@@ -462,15 +463,7 @@ public class OtherFragment extends Fragment {
             @Override
             public void onAdapterItemClick(View view, Post post, int position) {
                 if(post.getPayInfo().equals("0")){
-                    if(getParentFragment() instanceof TabMyFragment){
-                        ((TabMyFragment) (getParentFragment())).showListenToOff(post);
-                    }else if(getParentFragment() instanceof TabHomeFragment){
-                        ((TabHomeFragment) (getParentFragment())).showListenToOff(post);
-                    }else if(getParentFragment() instanceof TabRankFragment){
-                        ((TabRankFragment) (getParentFragment())).showListenToOff(post);
-                    }else{
-                        ((TabSearchFragment) (getParentFragment())).showListenToOff(post);
-                    }
+                    showListenToOff(post, position);
                 }
             }
 
@@ -500,6 +493,26 @@ public class OtherFragment extends Fragment {
 
                         }
                     });
+                }else{
+                    showListenToOff(post, position);
+                }
+            }
+
+            @Override
+            public void onAdapterAnswerClick(View view, Post post, int position) {
+                if(!post.getAnswernerId().equals(PropertyManager.getInstance().getMyId())){
+                    showOtherPage(post.getAnswernerId());
+                }else{
+                    showMyPage();
+                }
+            }
+
+            @Override
+            public void onAdapterQuestionerClick(View view, Post post, int position){
+                if(!post.getQuestionerId().equals(PropertyManager.getInstance().getMyId())){
+                    showOtherPage(post.getQuestionerId());
+                }else{
+                    showMyPage();
                 }
             }
         });
@@ -716,7 +729,57 @@ public class OtherFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        checkPayInfo();
         mAdapter.setFlag(categoryType);
         mAdapter.setTabPosition(tabType);
+        mAdapter.setTime("답변 듣기", timePosition);
+    }
+
+    private void showOtherPage(String id) {
+        ((TabHomeFragment) (getParentFragment())).showOther(id);
+    }
+
+    private void showMyPage() {
+        ((TabHomeFragment) (getParentFragment())).showMy();
+    }
+
+    private void showListenToOff(Post post, int payPosition){
+        if(getParentFragment() instanceof TabMyFragment){
+            ((TabMyFragment) (getParentFragment())).showListenToOff(post, payPosition);
+        }else if(getParentFragment() instanceof TabHomeFragment){
+            ((TabHomeFragment) (getParentFragment())).showListenToOff(post, payPosition);
+        }else if(getParentFragment() instanceof TabRankFragment){
+            ((TabRankFragment) (getParentFragment())).showListenToOff(post, payPosition);
+        }else{
+            ((TabSearchFragment) (getParentFragment())).showListenToOff(post, payPosition);
+        }
+    }
+
+    private void checkPayInfo(){
+        if(getParentFragment() instanceof TabMyFragment){
+            TabMyFragment f = (TabMyFragment) getParentFragment();
+            if(f.getPayPosition() != 0) {
+                mAdapter.setPayPosition(f.getPayPosition());
+                f.setPayPosition(0);
+            }
+        }else if(getParentFragment() instanceof TabHomeFragment){
+            TabHomeFragment f = (TabHomeFragment) getParentFragment();
+            if(f.getPayPosition() != 0) {
+                mAdapter.setPayPosition(f.getPayPosition());
+                f.setPayPosition(0);
+            }
+        }else if(getParentFragment() instanceof TabRankFragment){
+            TabRankFragment f = (TabRankFragment) getParentFragment();
+            if(f.getPayPosition() != 0) {
+                mAdapter.setPayPosition(f.getPayPosition());
+                f.setPayPosition(0);
+            }
+        }else{
+            TabSearchFragment f = (TabSearchFragment) getParentFragment();
+            if(f.getPayPosition() != 0) {
+                mAdapter.setPayPosition(f.getPayPosition());
+                f.setPayPosition(0);
+            }
+        }
     }
 }

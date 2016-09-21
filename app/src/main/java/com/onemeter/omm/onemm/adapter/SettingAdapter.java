@@ -33,11 +33,6 @@ public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
 
-    public void addDonate(SettingDonate[] settingDonates){
-        settingData.setSettingDonate(settingDonates[0]);
-        notifyDataSetChanged();
-    }
-
     public void addDonate(SettingDonate settingDonates){
         settingData.setSettingDonate(settingDonates);
         notifyDataSetChanged();

@@ -62,10 +62,10 @@ public class ProfileActivity extends AppCompatActivity {
     int playbackPosition = 0;
     static final String RECORDED_FILE = "/sdcard/recorded.3GP";
     int endTime = 20;
-    private final int PLATING = 2;
+    private final int ENDRECORD = 2;
     private final int STOPPING = 0;
     private final int RECORDDING = 1;
-    private final int LSTOPPING = 3;
+    private final int LISTENING = 3;
     int state = 0;
     int volLevel = 0;
     Visualizer mVisualizer;
@@ -135,11 +135,11 @@ public class ProfileActivity extends AppCompatActivity {
                 endRecord();
                 break;
             }
-            case PLATING :{
+            case ENDRECORD:{
                 playVoice();
                 break;
             }
-            case LSTOPPING :{
+            case LISTENING:{
                 stopVoice();
                 break;
             }
@@ -158,30 +158,32 @@ public class ProfileActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_check)
     public void checkClick(View view){
-        String name = nameVIew.getText().toString();
-        String nickname = nicknameView.getText().toString();
-        String message = messageView.getText().toString();
-        if(TextUtils.isEmpty(nameVIew.getText().toString())){
-            Toast.makeText(this,"닉네임을 입력하세요.",Toast.LENGTH_SHORT).show();
-        }else if(TextUtils.isEmpty(nicknameView.getText().toString())){
-            Toast.makeText(this,"이름을 입력하세요.",Toast.LENGTH_SHORT).show();
-        }else if(!checkIdFlag){
+        if(state == STOPPING || state == ENDRECORD) {
+            String name = nameVIew.getText().toString();
+            String nickname = nicknameView.getText().toString();
+            String message = messageView.getText().toString();
+            if (TextUtils.isEmpty(nameVIew.getText().toString())) {
+                Toast.makeText(this, "닉네임을 입력하세요.", Toast.LENGTH_SHORT).show();
+            } else if (TextUtils.isEmpty(nicknameView.getText().toString())) {
+                Toast.makeText(this, "이름을 입력하세요.", Toast.LENGTH_SHORT).show();
+            } else if (!checkIdFlag) {
 
-        }else {
-            ModifyProfileRequest request = new ModifyProfileRequest(ProfileActivity.this, nickname, name, message, mSavedFile);
-            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType>() {
-                @Override
-                public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
-                    Intent intent = new Intent(ProfileActivity.this, FollowActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
+            } else {
+                ModifyProfileRequest request = new ModifyProfileRequest(ProfileActivity.this, nickname, name, message, mSavedFile);
+                NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+                    @Override
+                    public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
+                        Intent intent = new Intent(ProfileActivity.this, FollowActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
 
-                @Override
-                public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
-                    Toast.makeText(ProfileActivity.this, errorCode + ","+ errorMessage,Toast.LENGTH_SHORT).show();
-                }
-            });
+                    @Override
+                    public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
+                        Toast.makeText(ProfileActivity.this, errorCode + "," + errorMessage, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         }
     }
 
@@ -192,7 +194,7 @@ public class ProfileActivity extends AppCompatActivity {
     Runnable countRunnable = new Runnable() {
         @Override
         public void run() {
-            if (state == RECORDDING || state == LSTOPPING) {
+            if (state == RECORDDING || state == LISTENING) {
                 long time = SystemClock.elapsedRealtime();
                 if (startTime == -1) {
                     startTime = time;
@@ -208,9 +210,9 @@ public class ProfileActivity extends AppCompatActivity {
                     endRecord();
                     playImage.setImageDrawable(ContextCompat.getDrawable(ProfileActivity.this, R.drawable.ic_record_play));
                     returnImage.setImageDrawable(ContextCompat.getDrawable(ProfileActivity.this, R.drawable.ic_record_return_on));
-                } else if(state == LSTOPPING){
+                } else if(state == LISTENING){
                     timeView.setText("0 : " + count);
-                    state = PLATING;
+                    state = ENDRECORD;
                     playImage.setImageDrawable(ContextCompat.getDrawable(ProfileActivity.this, R.drawable.ic_record_play));
                     returnImage.setImageDrawable(ContextCompat.getDrawable(ProfileActivity.this, R.drawable.ic_record_return_on));
                 }
@@ -292,7 +294,7 @@ public class ProfileActivity extends AppCompatActivity {
         recorder.stop();
         recorder.release();
         recorder = null;
-        state = PLATING;
+        state = ENDRECORD;
         playImage.setImageDrawable(ContextCompat.getDrawable(ProfileActivity.this,R.drawable.ic_record_play));
         returnImage.setImageDrawable(ContextCompat.getDrawable(ProfileActivity.this,R.drawable.ic_record_return_on));
         soundImage.setImageDrawable(ContextCompat.getDrawable(ProfileActivity.this,R.drawable.ic_record_sound_off));
@@ -307,7 +309,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
         timeView.setText("0:00");
         startTime = -1;
-        state = LSTOPPING;
+        state = LISTENING;
         playImage.setImageDrawable(ContextCompat.getDrawable(ProfileActivity.this,R.drawable.ic_record_stop));
     }
 
@@ -338,7 +340,7 @@ public class ProfileActivity extends AppCompatActivity {
             player.pause();
             Toast.makeText(ProfileActivity.this, "음악 파일 재생 중지됨.",Toast.LENGTH_SHORT).show();
             playImage.setImageDrawable(ContextCompat.getDrawable(ProfileActivity.this,R.drawable.ic_record_play));
-            state = PLATING;
+            state = ENDRECORD;
         }
     }
 
@@ -364,32 +366,35 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void setupVisualizerFxAndUI(){
+
         mVisualizer = new Visualizer(player.getAudioSessionId());
         mVisualizer.setCaptureSize(Visualizer.getCaptureSizeRange()[1]);
         mVisualizer.setDataCaptureListener(
                 new Visualizer.OnDataCaptureListener() {
                     public void onWaveFormDataCapture(Visualizer visualizer,
                                                       byte[] bytes, int samplingRate) {
-                        int max = 0;
-                        for(int i = 0; i < bytes.length; i++){
-                            if(max < bytes[i] + 128)
-                                max = bytes[i];
-                        }
-                        if (max < 10) {
-                            soundImage.setImageDrawable(ContextCompat.getDrawable(ProfileActivity.this, R.drawable.ic_record_sound_off));
-                        } else if (max < 100) {
-                            soundImage.setImageDrawable(ContextCompat.getDrawable(ProfileActivity.this, R.drawable.ic_record_sound_1));
-                        } else if (max < 120) {
-                            soundImage.setImageDrawable(ContextCompat.getDrawable(ProfileActivity.this, R.drawable.ic_record_sound_2));
-                        } else {
-                            soundImage.setImageDrawable(ContextCompat.getDrawable(ProfileActivity.this, R.drawable.ic_record_sound_on));
+                        if(state == LISTENING) {
+                            int max = 0;
+                            for (int i = 0; i < bytes.length; i++) {
+                                if (max < bytes[i] + 128)
+                                    max = bytes[i];
+                            }
+                            if (max < 10) {
+                                soundImage.setImageDrawable(ContextCompat.getDrawable(ProfileActivity.this, R.drawable.ic_record_sound_off));
+                            } else if (max < 100) {
+                                soundImage.setImageDrawable(ContextCompat.getDrawable(ProfileActivity.this, R.drawable.ic_record_sound_1));
+                            } else if (max < 120) {
+                                soundImage.setImageDrawable(ContextCompat.getDrawable(ProfileActivity.this, R.drawable.ic_record_sound_2));
+                            } else {
+                                soundImage.setImageDrawable(ContextCompat.getDrawable(ProfileActivity.this, R.drawable.ic_record_sound_on));
+                            }
                         }
                     }
-
                     public void onFftDataCapture(Visualizer visualizer,
                                                  byte[] bytes, int samplingRate) {
                     }
                 }, Visualizer.getMaxCaptureRate() / 5, true, false);
+
     }
 
     protected InputFilter filterAlphaNum = new InputFilter() {

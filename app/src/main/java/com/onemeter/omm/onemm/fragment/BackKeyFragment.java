@@ -16,4 +16,12 @@ public class BackKeyFragment extends Fragment {
         }
         return false;
     }
+
+    public void popAll(){
+        FragmentManager fm = getChildFragmentManager();
+        if (fm.getBackStackEntryCount() > 0) {
+            fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//            fm.popBackStack();
+        }
+    }
 }

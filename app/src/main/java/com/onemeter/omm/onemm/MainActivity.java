@@ -131,6 +131,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
                 String tag = (String) tab.getTag();
+                if(tag.equals(TAB_TAG_HOME)){
+                    Fragment f = getSupportFragmentManager().findFragmentByTag(tag);
+                    currentFragment = (TabHomeFragment) f;
+                    currentFragment.popAll();
+                }else if(tag.equals(TAB_TAG_SEARCH)){
+                    Fragment f = getSupportFragmentManager().findFragmentByTag(tag);
+                    currentFragment = (TabSearchFragment) f;
+                    currentFragment.popAll();
+                }else if(tag.equals(TAB_TAG_RANK)){
+                    Fragment f = getSupportFragmentManager().findFragmentByTag(tag);
+                    currentFragment = (TabRankFragment) f;
+                    currentFragment.popAll();
+                }else if(tag.equals(TAB_TAG_MY)){
+                    Fragment f = getSupportFragmentManager().findFragmentByTag(tag);
+                    currentFragment = (TabMyFragment) f;
+                    currentFragment.popAll();
+                }
                 Fragment f = getSupportFragmentManager().findFragmentByTag(tag);
                 if (f != null) {
                     getSupportFragmentManager().beginTransaction()

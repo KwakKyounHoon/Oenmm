@@ -112,7 +112,7 @@ public class PostFragment extends Fragment {
             @Override
             public void onAdapterPostItemClick(View view, Post post, int position) {
                 if (post.getPayInfo().equals("0")) {
-                    ((TabHomeFragment) (getParentFragment())).showListenToOff(post);
+                    ((TabHomeFragment) (getParentFragment())).showListenToOff(post, position);
                 }
             }
 
@@ -142,6 +142,8 @@ public class PostFragment extends Fragment {
 
                         }
                     });
+                }else{
+                    ((TabHomeFragment) (getParentFragment())).showListenToOff(post, position);
                 }
             }
 
@@ -185,7 +187,13 @@ public class PostFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+            TabHomeFragment f = (TabHomeFragment) getParentFragment();
+            if(f.getPayPosition() != 0) {
+                mAdapter.setPayPosition(f.getPayPosition());
+                f.setPayPosition(0);
+            }
         ((MainActivity) (getActivity())).changeHomeAsUp(false);
+        mAdapter.setTime("답변 듣기", timePosition);
     }
 
     MediaPlayer player;

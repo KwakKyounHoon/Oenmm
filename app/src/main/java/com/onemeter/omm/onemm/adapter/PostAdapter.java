@@ -24,6 +24,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> implements
         notifyDataSetChanged();
     }
 
+    public void clearPost(){
+        posts.clear();
+    }
+
     public void addAll(Post[] items) {
         this.posts.addAll(Arrays.asList(items));
         notifyDataSetChanged();
@@ -83,6 +87,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> implements
         if(listener != null){
             listener.onAdapterQuestionerClick(view, post, position);
         }
+    }
+
+    public void setPayPosition(int payPosition) {
+        Post post = posts.get(payPosition);
+        post.setPayInfo("1");
+        posts.set(payPosition, post);
+        notifyDataSetChanged();
     }
 
     public interface OnAdapterItemClickLIstener {

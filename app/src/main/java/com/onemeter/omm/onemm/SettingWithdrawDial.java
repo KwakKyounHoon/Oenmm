@@ -11,6 +11,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.onemeter.omm.onemm.data.NetWorkResultType;
+import com.onemeter.omm.onemm.manager.NetworkManager;
+import com.onemeter.omm.onemm.manager.NetworkRequest;
+import com.onemeter.omm.onemm.request.WithdrawRequest;
+
 /**
  * Created by Tacademy on 2016-09-13.
  */
@@ -102,7 +107,21 @@ public class SettingWithdrawDial extends DialogFragment {
             public void onClick(View view) {
                 String finalPoint = (String) price.getText();
                 if (Integer.parseInt(finalPoint) >= 10000 && Integer.parseInt(money) >= Integer.parseInt(finalPoint)) {
-                    Toast.makeText(getContext(), " 출금이 완료 되었습니다. ", Toast.LENGTH_SHORT).show();
+                    WithdrawRequest request = new WithdrawRequest(getContext(), finalPoint);
+                    NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+                        @Override
+                        public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
+                            Toast.makeText(MyApplication.getContext(), result.getMessage(), Toast.LENGTH_SHORT).show();
+                            if(listener != null){
+                                listener.onOkClick(true);
+                            }
+                        }
+
+                        @Override
+                        public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
+
+                        }
+                    });
                     dismiss();
                 } else {
                     Toast.makeText(getContext(), " 금액이 부족합니다. ", Toast.LENGTH_SHORT).show();
@@ -117,5 +136,15 @@ public class SettingWithdrawDial extends DialogFragment {
     @Override
     public void onStop() {
         super.onStop();
+    }
+
+    public interface OnWithDrawListener {
+        public void onOkClick(boolean flag);
+    }
+
+    OnWithDrawListener listener;
+
+    public void setWithDrawListener(OnWithDrawListener listener) {
+        this.listener = listener;
     }
 }

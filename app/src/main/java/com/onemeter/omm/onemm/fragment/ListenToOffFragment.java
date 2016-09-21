@@ -33,6 +33,10 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
 public class ListenToOffFragment extends Fragment {
     public static String POST ="post";
     Post post;
+
+    public static String PAYPOSITION = "payposition";
+    int payPosition;
+
     @BindView(R.id.text_questioner_name)
     TextView qNameView;
     @BindView(R.id.text_answer_name)
@@ -63,22 +67,23 @@ public class ListenToOffFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static ListenToOffFragment newInstance(Post post) {
+    public static ListenToOffFragment newInstance(Post post, int payPosition) {
         ListenToOffFragment fragment = new ListenToOffFragment();
         Bundle args = new Bundle();
         args.putSerializable(POST, post);
+        args.putInt(PAYPOSITION, payPosition);
         fragment.setArguments(args);
         return fragment;
     }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             post = (Post) getArguments().getSerializable(POST);
+            payPosition = getArguments().getInt(PAYPOSITION);
         }
-
-
     }
 
     public boolean payCheck() {
@@ -141,6 +146,8 @@ public class ListenToOffFragment extends Fragment {
         NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType>() {
             @Override
             public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
+//                ((TabHomeFragment) (getParentFragment())).setPayPosition(payPosition);
+                setPayPosition(payPosition);
                 popFragment();
                 Toast.makeText(getContext(), result.getMessage(), Toast.LENGTH_SHORT).show();
             }
@@ -194,6 +201,18 @@ public class ListenToOffFragment extends Fragment {
             ((TabRankFragment) (getParentFragment())).popFragment();
         }else{
             ((TabSearchFragment) (getParentFragment())).popFragment();
+        }
+    }
+
+    private void setPayPosition(int payPosition) {
+        if (getParentFragment() instanceof TabMyFragment) {
+            ((TabMyFragment) (getParentFragment())).setPayPosition(payPosition);
+        } else if (getParentFragment() instanceof TabHomeFragment) {
+            ((TabHomeFragment) (getParentFragment())).setPayPosition(payPosition);
+        } else if (getParentFragment() instanceof TabRankFragment) {
+            ((TabRankFragment) (getParentFragment())).setPayPosition(payPosition);
+        } else {
+            ((TabSearchFragment) (getParentFragment())).setPayPosition(payPosition);
         }
     }
 

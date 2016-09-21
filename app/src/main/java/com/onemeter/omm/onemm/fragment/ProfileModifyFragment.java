@@ -95,10 +95,10 @@ public class ProfileModifyFragment extends Fragment {
     MediaRecorder recorder;
     int playbackPosition = 0;
     int endTime = 20;
-    private final int PLATING = 2;
+    private final int ENDRECORD = 2;
     private final int STOPPING = 0;
     private final int RECORDDING = 1;
-    private final int LSTOPPING = 3;
+    private final int LISTENING = 3;
     int state = 0;
     int volLevel = 0;
     Visualizer mVisualizer;
@@ -208,31 +208,31 @@ public class ProfileModifyFragment extends Fragment {
 
     @OnClick(R.id.btn_check)
     public void checkClick(View view){
-        String name = nameView.getText().toString();
-        String nickname = nicknameView.getText().toString();
-        String message = messageView.getText().toString();
-        if(TextUtils.isEmpty(nameView.getText().toString())){
-            Toast.makeText(getContext(),"닉네임을 입력하세요.",Toast.LENGTH_SHORT).show();
-        }else if(TextUtils.isEmpty(nicknameView.getText().toString())){
-            Toast.makeText(getContext(),"이름을 입력하세요.",Toast.LENGTH_SHORT).show();
-        }else if(!checkIdFlag){
+        if(state == STOPPING || state == ENDRECORD) {
+            String name = nameView.getText().toString();
+            String nickname = nicknameView.getText().toString();
+            String message = messageView.getText().toString();
+            if (TextUtils.isEmpty(nameView.getText().toString())) {
+                Toast.makeText(getContext(), "닉네임을 입력하세요.", Toast.LENGTH_SHORT).show();
+            } else if (TextUtils.isEmpty(nicknameView.getText().toString())) {
+                Toast.makeText(getContext(), "이름을 입력하세요.", Toast.LENGTH_SHORT).show();
+            } else if (!checkIdFlag) {
 
-        }else {
-            ModifyProfileRequest request = new ModifyProfileRequest(getContext(), nickname, name, message, mSavedFile);
-            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType>() {
-                @Override
-                public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
-//                    Intent intent = new Intent(ProfileActivity.this, FollowActivity.class);
-//                    startActivity(intent);
-//                    finish();
-                    popFragment();
-                }
+            } else {
+                ModifyProfileRequest request = new ModifyProfileRequest(getContext(), nickname, name, message, mSavedFile);
+                NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+                    @Override
+                    public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
+                        popFragment();
+                        Toast.makeText(getContext(), result.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
 
-                @Override
-                public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
-                    Toast.makeText(getContext(), errorCode + ","+ errorMessage,Toast.LENGTH_SHORT).show();
-                }
-            });
+                    @Override
+                    public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
+
+                    }
+                });
+            }
         }
     }
 
@@ -247,11 +247,11 @@ public class ProfileModifyFragment extends Fragment {
                 endRecord();
                 break;
             }
-            case PLATING :{
+            case ENDRECORD:{
                 playVoice();
                 break;
             }
-            case LSTOPPING :{
+            case LISTENING:{
                 stopVoice();
                 break;
             }
@@ -275,7 +275,7 @@ public class ProfileModifyFragment extends Fragment {
     Runnable countRunnable = new Runnable() {
         @Override
         public void run() {
-            if (state == RECORDDING || state == LSTOPPING) {
+            if (state == RECORDDING || state == LISTENING) {
                 long time = SystemClock.elapsedRealtime();
                 if (startTime == -1) {
                     startTime = time;
@@ -291,9 +291,9 @@ public class ProfileModifyFragment extends Fragment {
                     endRecord();
                     playImage.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_record_play));
                     returnImage.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_record_return_on));
-                } else if(state == LSTOPPING){
+                } else if(state == LISTENING){
                     timeView.setText("0 : " + count);
-                    state = PLATING;
+                    state = ENDRECORD;
                     playImage.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_record_play));
                     returnImage.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_record_return_on));
                 }
@@ -375,7 +375,7 @@ public class ProfileModifyFragment extends Fragment {
         recorder.stop();
         recorder.release();
         recorder = null;
-        state = PLATING;
+        state = ENDRECORD;
         playImage.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_record_play));
         returnImage.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_record_return_on));
         soundImage.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_record_sound_off));
@@ -390,7 +390,7 @@ public class ProfileModifyFragment extends Fragment {
         }
         timeView.setText("0:00");
         startTime = -1;
-        state = LSTOPPING;
+        state = LISTENING;
         playImage.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_record_stop));
     }
 
@@ -421,7 +421,7 @@ public class ProfileModifyFragment extends Fragment {
             player.pause();
             Toast.makeText(getContext(), "음악 파일 재생 중지됨.",Toast.LENGTH_SHORT).show();
             playImage.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_record_play));
-            state = PLATING;
+            state = ENDRECORD;
         }
     }
 
@@ -447,32 +447,35 @@ public class ProfileModifyFragment extends Fragment {
     }
 
     private void setupVisualizerFxAndUI(){
-        mVisualizer = new Visualizer(player.getAudioSessionId());
-        mVisualizer.setCaptureSize(Visualizer.getCaptureSizeRange()[1]);
-        mVisualizer.setDataCaptureListener(
-                new Visualizer.OnDataCaptureListener() {
-                    public void onWaveFormDataCapture(Visualizer visualizer,
-                                                      byte[] bytes, int samplingRate) {
-                        int max = 0;
-                        for(int i = 0; i < bytes.length; i++){
-                            if(max < bytes[i] + 128)
-                                max = bytes[i];
-                        }
-                        if (max < 10) {
-                            soundImage.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_record_sound_off));
-                        } else if (max < 100) {
-                            soundImage.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_record_sound_1));
-                        } else if (max < 120) {
-                            soundImage.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_record_sound_2));
-                        } else {
-                            soundImage.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_record_sound_on));
-                        }
-                    }
 
-                    public void onFftDataCapture(Visualizer visualizer,
-                                                 byte[] bytes, int samplingRate) {
-                    }
-                }, Visualizer.getMaxCaptureRate() / 5, true, false);
+            mVisualizer = new Visualizer(player.getAudioSessionId());
+            mVisualizer.setCaptureSize(Visualizer.getCaptureSizeRange()[1]);
+            mVisualizer.setDataCaptureListener(
+                    new Visualizer.OnDataCaptureListener() {
+                        public void onWaveFormDataCapture(Visualizer visualizer,
+                                                          byte[] bytes, int samplingRate) {
+                            if(state == LISTENING) {
+                                int max = 0;
+                                for (int i = 0; i < bytes.length; i++) {
+                                    if (max < bytes[i] + 128)
+                                        max = bytes[i];
+                                }
+                                if (max < 10) {
+                                    soundImage.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_record_sound_off));
+                                } else if (max < 100) {
+                                    soundImage.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_record_sound_1));
+                                } else if (max < 120) {
+                                    soundImage.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_record_sound_2));
+                                } else {
+                                    soundImage.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_record_sound_on));
+                                }
+                            }
+                        }
+
+                        public void onFftDataCapture(Visualizer visualizer,
+                                                     byte[] bytes, int samplingRate) {
+                        }
+                    }, Visualizer.getMaxCaptureRate() / 5, true, false);
     }
 
     protected InputFilter filterAlphaNum = new InputFilter() {

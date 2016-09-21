@@ -14,6 +14,7 @@ import com.onemeter.omm.onemm.viewholder.MyHeaderViewHolder;
 import com.onemeter.omm.onemm.viewholder.MyPostViewHolder;
 import com.onemeter.omm.onemm.viewholder.MyTabViewHolder;
 
+import java.io.File;
 import java.util.Arrays;
 
 /**
@@ -28,6 +29,8 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
 
     int tabPosition;
     boolean comFlag;
+
+    File file;
 
     public void setFlag(boolean comFlag){
         this.comFlag = comFlag;
