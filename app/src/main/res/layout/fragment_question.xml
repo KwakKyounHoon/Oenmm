@@ -75,6 +75,7 @@
                 <EditText
                     android:id="@+id/edit_question"
                     android:layout_width="300dp"
+                    android:maxLength="100"
                     android:layout_height="180dp"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="12dp"
@@ -84,6 +85,17 @@
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
                     android:paddingTop="16dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:id="@+id/text_number"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:layout_alignRight="@+id/edit_question"
+                    android:layout_alignEnd="@+id/edit_question" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -147,6 +159,8 @@
                         android:layout_width="88dp"
                         android:layout_height="24dp"
                         android:layout_centerHorizontal="true"
+                        android:digits="0123456789"
+                        android:inputType="number"
                         android:layout_marginLeft="3dp"
                         android:layout_toRightOf="@+id/text_question_money"
                         android:background="@drawable/icon_background" />
