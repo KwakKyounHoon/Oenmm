@@ -44,6 +44,7 @@ public class RankDonationFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAdatper = new RankDonationAdatper();
         RankDonationRequest request = new RankDonationRequest(getContext());
         NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<DonationRank[]>>() {
             @Override
@@ -85,7 +86,6 @@ public class RankDonationFragment extends Fragment {
                 });
             }
         });
-        mAdatper = new RankDonationAdatper();
         list.setAdapter(mAdatper);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         list.setLayoutManager(manager);

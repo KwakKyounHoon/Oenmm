@@ -430,6 +430,7 @@ public class OtherFragment extends Fragment {
 
             @Override
             public void onAdapterTabType(View view, int type) {
+                mAdapter.setHeaderPlayInfo(false);
                 pageNo = 1;
                 killMediaPlayer();
                 mAdapter.clearPost();
@@ -500,6 +501,7 @@ public class OtherFragment extends Fragment {
 
             @Override
             public void onAdapterCategoryItemClick(boolean flag) {
+                mAdapter.setHeaderPlayInfo(false);
                 pageNo = 1;
                 killMediaPlayer();
                 mAdapter.clearPost();

@@ -31,9 +31,6 @@ public class TabHomeFragment extends BackKeyFragment {
 
     boolean isFirst = true;
 
-    int payPosition = 0;
-
-
     public TabHomeFragment() {
         // Required empty public constructor
     }
@@ -157,6 +154,8 @@ public class TabHomeFragment extends BackKeyFragment {
         ft.addToBackStack(TAG_DONATION);
         ft.commit();
     }
+
+    int payPosition = 0;
 
     public void setPayPosition(int payPosition){
         this.payPosition = payPosition;

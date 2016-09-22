@@ -382,6 +382,7 @@ public class MyPageFragment extends Fragment {
 
             @Override
             public void onAdapterCategory(boolean flag, int position) {
+                mAdapter.setHeaderPlayInfo(false);
                 pageNo = 1;
                 mAdapter.setTime("답변 듣기", position);
                 killMediaPlayer();
@@ -464,6 +465,7 @@ public class MyPageFragment extends Fragment {
 
             @Override
             public void onAdapterTabType(View view, int num, int position) {
+                mAdapter.setHeaderPlayInfo(false);
                 pageNo = 1;
                 mAdapter.setTime("답변 듣기", position);
                 killMediaPlayer();
