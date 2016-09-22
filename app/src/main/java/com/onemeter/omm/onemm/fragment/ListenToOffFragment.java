@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.onemeter.omm.onemm.MyApplication;
@@ -138,18 +139,23 @@ public class ListenToOffFragment extends Fragment {
     @OnClick(R.id.btn_pay)
     public void payClick(View view){
         // 결제완료 버튼 누를 떄 구현 - > ListenToOnFragment로 View Chagne 및 답변듣기 버튼 활성화
-        ListenPayRequest request = new ListenPayRequest(getContext(), post.getAnswerId());
-        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType>() {
-            @Override
-            public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
-                popFragment();
-            }
+        if(use && info) {
+            ListenPayRequest request = new ListenPayRequest(getContext(), post.getAnswerId());
+            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+                @Override
+                public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
+                    Toast.makeText(getContext(), "성공", Toast.LENGTH_SHORT).show();
+                    popFragment();
+                }
 
-            @Override
-            public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
-
-            }
-        });
+                @Override
+                public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
+                    Toast.makeText(getContext(), "실패", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            Toast.makeText(getContext(), "체크박스 비활성화", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void init(){
