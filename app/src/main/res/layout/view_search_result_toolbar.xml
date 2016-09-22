@@ -17,6 +17,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/toolbar_text_size"
+        android:singleLine = "true"
+        android:lines = "1"
         android:id="@+id/edit_search"
         android:layout_alignParentTop="true"
         android:layout_alignBottom="@+id/btn_back"

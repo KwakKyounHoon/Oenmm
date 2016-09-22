@@ -26,6 +26,7 @@
             android:layout_marginLeft="24dp"
             android:layout_marginTop="24dp"
             android:layout_toEndOf="@+id/image_profile"
+            android:maxLines="1"
             android:layout_toRightOf="@+id/image_profile"
             android:gravity="center|top"
             android:text="기부처" />

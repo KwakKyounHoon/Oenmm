@@ -26,7 +26,7 @@
     <string name="notify_answer_string">나의 질문에 대한 답변 알림</string>
     <string name="notify_receive_string">내가 질문 받았을 때 알림</string>
     <string name="save_now_string">현재 보유금 : </string>
-    <string name="save_paytotal">결제한 적립금 누적 금액 : </string>
+    <string name="save_paytotal">결제한 포인트 총액 : </string>
     <string name="save_listening_profit">나도듣기수익 총액 : </string>
     <string name="save_question_cost">질문하기비용 총액 : </string>
     <string name="save_listening_cost">나도듣기사용 총액 : </string>
@@ -41,5 +41,5 @@
     <string name="profile_setting_text">최대 20초까지 녹음 가능 합니다.</string>
     <string name="listen_to_check_use">나도 듣기 음성은 나도듣기 보관함에 3일동안 활성화 됩니다.</string>
     <string name="listen_to_check_info">나도 듣기 음성 유출 시, 법적 책임을 물어야 합니다. <u>이용약관확인</u></string>
-    <string name="question_message">질문을 입력해 주세요. (결제 후 수정불가) </string>
+    <string name="question_message">질문을 입력해 주세요.             (결제 후 수정불가) </string>
 </resources>

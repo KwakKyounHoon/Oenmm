@@ -51,7 +51,6 @@ public class SettingWithdrawDial extends DialogFragment {
         builder.setView(view);
 
         pointView = (TextView) view.findViewById(R.id.text_money);
-
         if (Integer.parseInt(money) >= 10000)
             pointView.setText(money + "원");
         else

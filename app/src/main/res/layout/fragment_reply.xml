@@ -128,7 +128,7 @@
 
 
     <CheckBox
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="30dp"
         android:layout_marginLeft="28dp"
         android:layout_marginRight="28dp"
         android:id="@+id/text_use"

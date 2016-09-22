@@ -1,13 +1,18 @@
 package com.onemeter.omm.onemm.fragment;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -49,9 +54,17 @@ public class QuestionFragment extends Fragment {
     EditText costView;
     @BindView(R.id.edit_question)
     EditText questionView;
+    @BindView(R.id.image_check)
+    ImageView checkView;
+    @BindView(R.id.btn_pay)
+    Button pay;
+    @BindView(R.id.text_number)
+    TextView number;
+
 
     public static String OTHER_DATA = "otherdata";
     OtherData otherData;
+    Boolean check = false;
 
     public static QuestionFragment newInstance(OtherData otherData) {
         QuestionFragment fragment = new QuestionFragment();
@@ -69,23 +82,61 @@ public class QuestionFragment extends Fragment {
         }
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_question, container, false);
         ButterKnife.bind(this, view);
+
+
+
+        questionView.addTextChangedListener(new TextWatcher() {
+            String currentCount;
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                if(charSequence.length() > 99) {
+                    Toast.makeText(getContext() , "최대 허용 글자수는 100자 내외입니다." , Toast.LENGTH_SHORT).show();
+                }
+                number.setText("("+charSequence.length()+"자"+"/100자)");
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        checkView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!check) {
+                    checkView.setImageResource(R.drawable.ic_checkbox_on);
+                    check = true;
+                } else {
+                    checkView.setImageResource(R.drawable.ic_checkbox_off);
+                    check = false;
+                }
+                agreeCheck();
+            }
+        });
         init();
         return view;
     }
 
     @OnClick(R.id.btn_pay)
-    public void payClick(View view){
+    public void payClick(View view) {
         String cost = costView.getText().toString();
         String content = questionView.getText().toString();
-        if(!TextUtils.isEmpty(cost) && !TextUtils.isEmpty(content)) {
+        Log.i(cost , cost);
+        if (!TextUtils.isEmpty(cost) && !TextUtils.isEmpty(content) && Integer.parseInt(cost) >= 5000) {
             QuestionsRequest request = new QuestionsRequest(getContext(), cost, content, otherData.getUserId());
-            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType>() {
                 @Override
                 public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
                     Toast.makeText(getContext(), result.getMessage(), Toast.LENGTH_SHORT).show();
@@ -97,8 +148,12 @@ public class QuestionFragment extends Fragment {
 
                 }
             });
+        } else {
+            Toast.makeText(getContext(), " 질문비용이 부족합니다. ", Toast.LENGTH_SHORT).show();
+            // 질문비용설정(현재보유금보다 많은금액시X)이 안되있을경우 , 질문내용이 없을시
         }
     }
+
     private void init() {
         messageView.setText(otherData.getStateMessage());
         nicknameView.setText(otherData.getNickname());
@@ -110,29 +165,40 @@ public class QuestionFragment extends Fragment {
                 .into(imageVIew);
     }
 
-    private void popFragment(){
-        if(getParentFragment() instanceof TabMyFragment){
+    private void popFragment() {
+        if (getParentFragment() instanceof TabMyFragment) {
             ((TabMyFragment) (getParentFragment())).popFragment();
-        }else if(getParentFragment() instanceof TabHomeFragment){
+        } else if (getParentFragment() instanceof TabHomeFragment) {
             ((TabHomeFragment) (getParentFragment())).popFragment();
-        }else if(getParentFragment() instanceof TabRankFragment){
+        } else if (getParentFragment() instanceof TabRankFragment) {
             ((TabRankFragment) (getParentFragment())).popFragment();
-        }else{
+        } else {
             ((TabSearchFragment) (getParentFragment())).popFragment();
         }
     }
 
     @OnClick(R.id.btn_back)
-    public void backclick(View view){
-        if(getParentFragment() instanceof TabMyFragment){
+    public void backclick(View view) {
+        if (getParentFragment() instanceof TabMyFragment) {
             ((TabMyFragment) (getParentFragment())).popFragment();
-        }else if(getParentFragment() instanceof TabHomeFragment){
+        } else if (getParentFragment() instanceof TabHomeFragment) {
             ((TabHomeFragment) (getParentFragment())).popFragment();
-        }else if(getParentFragment() instanceof TabRankFragment){
+        } else if (getParentFragment() instanceof TabRankFragment) {
             ((TabRankFragment) (getParentFragment())).popFragment();
-        }else{
+        } else {
             ((TabSearchFragment) (getParentFragment())).popFragment();
         }
+    }
+
+    String finalMoney;
+
+    public boolean agreeCheck() {
+        if (check) {
+            pay.setBackgroundColor(Color.parseColor("#f82040"));
+        } else {
+            pay.setBackgroundColor(Color.BLACK);
+        }
+        return true;
     }
 
 
