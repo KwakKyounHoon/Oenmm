@@ -31,6 +31,7 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
  */
 public class ListenToOffFragment extends Fragment {
     public static String POST ="post";
+    public static String PAYPOSITION = "payposition";
     Post post;
     @BindView(R.id.text_questioner_name)
     TextView qNameView;
@@ -62,10 +63,11 @@ public class ListenToOffFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static ListenToOffFragment newInstance(Post post) {
+    public static ListenToOffFragment newInstance(Post post, int payPosition) {
         ListenToOffFragment fragment = new ListenToOffFragment();
         Bundle args = new Bundle();
         args.putSerializable(POST, post);
+        args.putInt(PAYPOSITION, payPosition);
         fragment.setArguments(args);
         return fragment;
     }
