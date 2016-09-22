@@ -136,15 +136,19 @@ public class QuestionFragment extends Fragment {
         Log.i(cost , cost);
         if (!TextUtils.isEmpty(cost) && !TextUtils.isEmpty(content) && Integer.parseInt(cost) >= 5000) {
             QuestionsRequest request = new QuestionsRequest(getContext(), cost, content, otherData.getUserId());
-            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<String>>() {
                 @Override
-                public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
-                    Toast.makeText(getContext(), result.getMessage(), Toast.LENGTH_SHORT).show();
-                    popFragment();
+                public void onSuccess(NetworkRequest<NetWorkResultType<String>> request, NetWorkResultType<String> result) {
+                    if(result.getResult().equals("0")){
+                        Toast.makeText(getContext(), "결제가 완료 되었습니다.", Toast.LENGTH_SHORT).show();
+                        popFragment();
+                    }else{
+                        Toast.makeText(getContext(), "잔액이 부족합니다.", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
                 @Override
-                public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
+                public void onFail(NetworkRequest<NetWorkResultType<String>> request, int errorCode, String errorMessage, Throwable e) {
 
                 }
             });

@@ -15,7 +15,7 @@ import okhttp3.RequestBody;
 /**
  * Created by Tacademy on 2016-09-07.
  */
-public class ListenPayRequest extends AbstractRequest<NetWorkResultType> {
+public class ListenPayRequest extends AbstractRequest<NetWorkResultType<String>> {
     Request request;
     public ListenPayRequest(Context context, String answerId){
         HttpUrl.Builder builder = getBaseUrlBuilder();
@@ -34,7 +34,7 @@ public class ListenPayRequest extends AbstractRequest<NetWorkResultType> {
 
     @Override
     protected Type getType() {
-        return new TypeToken<NetWorkResultType>(){}.getType();
+        return new TypeToken<NetWorkResultType<String>>(){}.getType();
     }
 
     @Override

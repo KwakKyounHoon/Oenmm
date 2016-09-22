@@ -52,6 +52,18 @@ import butterknife.OnClick;
  */
 public class OtherFragment extends Fragment {
 
+    enum PlayState {
+        IDLE,
+        INITIALIED,
+        PREPARED,
+        STARTED,
+        PAUSED,
+        STOPPED,
+        ERROR,
+        RELEASED
+    }
+    PlayState mState = PlayState.STOPPED;
+
     public static String OTHER_ID = "id";
     private String id;
     int tabType = 1;
@@ -72,7 +84,7 @@ public class OtherFragment extends Fragment {
     @BindView(R.id.btn_back)
     ImageView backView;
     ShareActionProvider mShareActionProvider;
-
+    int pauseTime;
     MediaPlayer player;
 
     public OtherFragment() {
@@ -296,7 +308,6 @@ public class OtherFragment extends Fragment {
 
             @Override
             public void onAdapterSoundClick(View view, OtherData otherData, int position) {
-                Toast.makeText(getContext(), "소리", Toast.LENGTH_SHORT).show();
                 ProfileVoiceRequest request = new ProfileVoiceRequest(getContext(), otherData.getUserId());
                 NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<String>>() {
                     @Override
@@ -470,29 +481,40 @@ public class OtherFragment extends Fragment {
             @Override
             public void onAdapterPlayClick(View view, final Post post, int position) {
                 if (post.getPayInfo().equals("1")) {
-                    killMediaPlayer();
-                    timePosition = position;
-                    startTime = -1;
-                    ReplyListenRequest request = new ReplyListenRequest(getContext(), post.getAnswerId());
-                    NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<String>>() {
-                        @Override
-                        public void onSuccess(NetworkRequest<NetWorkResultType<String>> request, NetWorkResultType<String> result) {
-                            endTime = post.getLength();
-                            try {
-                                playAudio(result.getResult());
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                    switch (mState){
+                        case STOPPED : {
+                            startPlay(post, position);
+                            break;
+                        }
+                        case STARTED: {
+                            if(timePosition == position) {
+                                startflag = false;
+                                mHandler.removeCallbacks(countRunnable);
+                                player.pause();
+                                pauseTime = count;
+                                mState = PlayState.PAUSED;
+                            }else{
+                                startPlay(post, position);
                             }
-                            startflag = true;
-                            mHandler.removeCallbacks(countRunnable);
-                            mHandler.post(countRunnable);
+                            break;
                         }
 
-                        @Override
-                        public void onFail(NetworkRequest<NetWorkResultType<String>> request, int errorCode, String errorMessage, Throwable e) {
-
+                        case PAUSED:{
+                            if(timePosition == position) {
+                                startflag = true;
+                                player.start();
+                                endTime = String.valueOf(pauseTime);
+                                mState = PlayState.STARTED;
+                                startTime = -1;
+                                mHandler.removeCallbacks(countRunnable);
+                                mHandler.post(countRunnable);
+                                break;
+                            }else{
+                                startPlay(post, position);
+                                break;
+                            }
                         }
-                    });
+                    }
                 }else{
                     showListenToOff(post, position);
                 }
@@ -692,6 +714,7 @@ public class OtherFragment extends Fragment {
     long startTime = -1;
     String endTime = "";
     int timePosition;
+    int count;
     Handler mHandler = new Handler(Looper.getMainLooper());
 
     Runnable countRunnable = new Runnable() {
@@ -704,12 +727,13 @@ public class OtherFragment extends Fragment {
                 }
                 int gap = (int) (time - startTime);
                 int endTimeV = Integer.parseInt(endTime);
-                int count = endTimeV - gap / 1000;
+                count = endTimeV - gap / 1000;
                 int rest = 1000 - gap % 1000;
                 if (count > 0) {
                     mAdapter.setTime("0 : " + count, timePosition);
                     mHandler.postDelayed(this, rest);
                 } else {
+                    mState = PlayState.STOPPED;
                     killMediaPlayer();
                     mAdapter.setTime("닫변 듣기", timePosition);
                 }
@@ -730,13 +754,22 @@ public class OtherFragment extends Fragment {
     public void onResume() {
         super.onResume();
         checkPayInfo();
+        mState = PlayState.STOPPED;
         mAdapter.setFlag(categoryType);
         mAdapter.setTabPosition(tabType);
         mAdapter.setTime("답변 듣기", timePosition);
     }
 
     private void showOtherPage(String id) {
-        ((TabHomeFragment) (getParentFragment())).showOther(id);
+        if(getParentFragment() instanceof TabMyFragment){
+            ((TabMyFragment) (getParentFragment())).showOther(id);
+        }else if(getParentFragment() instanceof TabHomeFragment){
+            ((TabHomeFragment) (getParentFragment())).showOther(id);
+        }else if(getParentFragment() instanceof TabRankFragment){
+            ((TabRankFragment) (getParentFragment())).showOther(id);
+        }else{
+            ((TabSearchFragment) (getParentFragment())).showOther(id);
+        }
     }
 
     private void showMyPage() {
@@ -781,5 +814,32 @@ public class OtherFragment extends Fragment {
                 f.setPayPosition(0);
             }
         }
+    }
+
+    private void startPlay(final Post post, int position){
+        killMediaPlayer();
+        timePosition = position;
+        startTime = -1;
+        ReplyListenRequest request = new ReplyListenRequest(getContext(), post.getAnswerId());
+        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<String>>() {
+            @Override
+            public void onSuccess(NetworkRequest<NetWorkResultType<String>> request, NetWorkResultType<String> result) {
+                endTime = post.getLength();
+                try {
+                    playAudio(result.getResult());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                mState = PlayState.STARTED;
+                startflag = true;
+                mHandler.removeCallbacks(countRunnable);
+                mHandler.post(countRunnable);
+            }
+
+            @Override
+            public void onFail(NetworkRequest<NetWorkResultType<String>> request, int errorCode, String errorMessage, Throwable e) {
+
+            }
+        });
     }
 }

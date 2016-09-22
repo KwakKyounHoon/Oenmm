@@ -15,7 +15,7 @@ import okhttp3.RequestBody;
 /**
  * Created by Tacademy on 2016-08-30.
  */
-public class QuestionsRequest extends AbstractRequest<NetWorkResultType> {
+public class QuestionsRequest extends AbstractRequest<NetWorkResultType<String>> {
     Request request;
     public QuestionsRequest(Context context, String price, String content, String answernerId){
         HttpUrl.Builder builder = getBaseUrlBuilder();
@@ -35,7 +35,7 @@ public class QuestionsRequest extends AbstractRequest<NetWorkResultType> {
     }
     @Override
     protected Type getType() {
-        return new TypeToken<NetWorkResultType>(){}.getType();
+        return new TypeToken<NetWorkResultType<String>>(){}.getType();
     }
 
     @Override

@@ -32,6 +32,20 @@ import butterknife.ButterKnife;
  */
 public class RankPopularFragment extends Fragment {
 
+    enum PlayState {
+        IDLE,
+        INITIALIED,
+        PREPARED,
+        STARTED,
+        PAUSED,
+        STOPPED,
+        ERROR,
+        RELEASED
+    }
+    PlayState mState = PlayState.STOPPED;
+
+    int pauseTime;
+
     @BindView(R.id.list)
     RecyclerView list;
 
@@ -82,28 +96,40 @@ public class RankPopularFragment extends Fragment {
             @Override
             public void onAdapterPlayClick(View view, final Post post, int position) {
                 if (post.getPayInfo().equals("1")) {
-                    timePosition = position;
-                    startTime = -1;
-                    ReplyListenRequest request = new ReplyListenRequest(getContext(), post.getAnswerId());
-                    NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<String>>() {
-                        @Override
-                        public void onSuccess(NetworkRequest<NetWorkResultType<String>> request, NetWorkResultType<String> result) {
-                            endTime = post.getLength();
-                            try {
-                                playAudio(result.getResult());
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                    switch (mState){
+                        case STOPPED : {
+                            startPlay(post, position);
+                            break;
+                        }
+                        case STARTED: {
+                            if(timePosition == position) {
+                                startflag = false;
+                                mHandler.removeCallbacks(countRunnable);
+                                player.pause();
+                                pauseTime = count;
+                                mState = PlayState.PAUSED;
+                            }else{
+                                startPlay(post, position);
                             }
-                            startflag = true;
-                            mHandler.removeCallbacks(countRunnable);
-                            mHandler.post(countRunnable);
+                            break;
                         }
 
-                        @Override
-                        public void onFail(NetworkRequest<NetWorkResultType<String>> request, int errorCode, String errorMessage, Throwable e) {
-
+                        case PAUSED:{
+                            if(timePosition == position) {
+                                startflag = true;
+                                player.start();
+                                endTime = String.valueOf(pauseTime);
+                                mState = PlayState.STARTED;
+                                startTime = -1;
+                                mHandler.removeCallbacks(countRunnable);
+                                mHandler.post(countRunnable);
+                                break;
+                            }else{
+                                startPlay(post, position);
+                                break;
+                            }
                         }
-                    });
+                    }
                 }else{
                     ((RankFragment) (getParentFragment())).showListenToOff(post, position);
                 }
@@ -200,7 +226,7 @@ public class RankPopularFragment extends Fragment {
         player.prepare();
         player.start();
     }
-
+    int count;
     long startTime = -1;
     String endTime = "";
     int timePosition;
@@ -216,13 +242,14 @@ public class RankPopularFragment extends Fragment {
                 }
                 int gap = (int) (time - startTime);
                 int endTimeV = Integer.parseInt(endTime);
-                int count = endTimeV - gap / 1000;
+                count = endTimeV - gap / 1000;
                 int rest = 1000 - gap % 1000;
                 if (count > 0) {
 //                listenView.("0 : " + count);
                     mAdapter.setTime("0 : " + count, timePosition);
                     mHandler.postDelayed(this, rest);
                 } else {
+                    mState = PlayState.STOPPED;
                     killMediaPlayer();
                     mAdapter.setTime("닫변 듣기", timePosition);
                 }
@@ -250,6 +277,7 @@ public class RankPopularFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mState = PlayState.STOPPED;
         mAdapter.clearRankPopular();
         mAdapter.setFlag(categoryFlag);
         mAdapter.setTime("답변 듣기", timePosition);
@@ -280,5 +308,32 @@ public class RankPopularFragment extends Fragment {
                 }
             });
         }
+    }
+
+    private void startPlay(final Post post, int position){
+        killMediaPlayer();
+        timePosition = position;
+        startTime = -1;
+        ReplyListenRequest request = new ReplyListenRequest(getContext(), post.getAnswerId());
+        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<String>>() {
+            @Override
+            public void onSuccess(NetworkRequest<NetWorkResultType<String>> request, NetWorkResultType<String> result) {
+                endTime = post.getLength();
+                try {
+                    playAudio(result.getResult());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                mState = PlayState.STARTED;
+                startflag = true;
+                mHandler.removeCallbacks(countRunnable);
+                mHandler.post(countRunnable);
+            }
+
+            @Override
+            public void onFail(NetworkRequest<NetWorkResultType<String>> request, int errorCode, String errorMessage, Throwable e) {
+
+            }
+        });
     }
 }

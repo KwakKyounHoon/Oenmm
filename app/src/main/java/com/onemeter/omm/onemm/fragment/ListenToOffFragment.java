@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.onemeter.omm.onemm.MyApplication;
@@ -32,6 +33,7 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
 public class ListenToOffFragment extends Fragment {
     public static String POST ="post";
     public static String PAYPOSITION = "payposition";
+    int payPosition;
     Post post;
     @BindView(R.id.text_questioner_name)
     TextView qNameView;
@@ -77,6 +79,7 @@ public class ListenToOffFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             post = (Post) getArguments().getSerializable(POST);
+            payPosition = getArguments().getInt(PAYPOSITION);
         }
 
 
@@ -139,14 +142,21 @@ public class ListenToOffFragment extends Fragment {
     public void payClick(View view){
         // 결제완료 버튼 누를 떄 구현 - > ListenToOnFragment로 View Chagne 및 답변듣기 버튼 활성화
         ListenPayRequest request = new ListenPayRequest(getContext(), post.getAnswerId());
-        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType>() {
+        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<String>>() {
             @Override
-            public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
-                popFragment();
+            public void onSuccess(NetworkRequest<NetWorkResultType<String>> request, NetWorkResultType<String> result) {
+                if(result.getResult().equals("0")){
+                    setPayPosition(payPosition);
+                    Toast.makeText(getContext(), "결제가 완료 되었습니다.", Toast.LENGTH_SHORT).show();
+                    popFragment();
+                }else{
+                    Toast.makeText(getContext(), "잔액이 부족 합니다..", Toast.LENGTH_SHORT).show();
+                }
+
             }
 
             @Override
-            public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
+            public void onFail(NetworkRequest<NetWorkResultType<String>> request, int errorCode, String errorMessage, Throwable e) {
 
             }
         });
@@ -197,4 +207,15 @@ public class ListenToOffFragment extends Fragment {
         }
     }
 
+    private void setPayPosition(int payPosition) {
+        if (getParentFragment() instanceof TabMyFragment) {
+            ((TabMyFragment) (getParentFragment())).setPayPosition(payPosition);
+        } else if (getParentFragment() instanceof TabHomeFragment) {
+            ((TabHomeFragment) (getParentFragment())).setPayPosition(payPosition);
+        } else if (getParentFragment() instanceof TabRankFragment) {
+            ((TabRankFragment) (getParentFragment())).setPayPosition(payPosition);
+        } else {
+            ((TabSearchFragment) (getParentFragment())).setPayPosition(payPosition);
+        }
+    }
 }

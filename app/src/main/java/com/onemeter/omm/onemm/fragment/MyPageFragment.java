@@ -50,6 +50,18 @@ import butterknife.OnClick;
  */
 public class MyPageFragment extends Fragment {
 
+    enum PlayState {
+        IDLE,
+        INITIALIED,
+        PREPARED,
+        STARTED,
+        PAUSED,
+        STOPPED,
+        ERROR,
+        RELEASED
+    }
+    PlayState mState = PlayState.STOPPED;
+
     @BindView(R.id.list)
     RecyclerView list;
 
@@ -67,8 +79,8 @@ public class MyPageFragment extends Fragment {
     private final int COUNT = 10;
 
     MediaPlayer player;
+    int pauseTime;
 
-    //    int type;
     int tabType = 1;
     boolean comFlag = true;
 
@@ -249,7 +261,7 @@ public class MyPageFragment extends Fragment {
 
             @Override
             public void onAdatperModyfiyClick(View view, MyData myData, int position) {
-               showModifyProfile(myData);
+                showModifyProfile(myData);
             }
 
             @Override
@@ -433,29 +445,63 @@ public class MyPageFragment extends Fragment {
 
             @Override
             public void onAdapterPlayItemClick(View view, final Post post, int position) {
-                timePosition = position;
-                startTime = -1;
-                if (comFlag || tabType == 3) {
-                    ReplyListenRequest request = new ReplyListenRequest(getContext(), post.getAnswerId());
-                    NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<String>>() {
-                        @Override
-                        public void onSuccess(NetworkRequest<NetWorkResultType<String>> request, NetWorkResultType<String> result) {
-                            endTime = post.getLength();
-                            try {
-                                playAudio(result.getResult());
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                switch (mState){
+                    case STOPPED : {
+                        startPlay(post, position);
+//                        timePosition = position;
+//                        startTime = -1;
+//                        if (comFlag || tabType == 3) {
+//                            ReplyListenRequest request = new ReplyListenRequest(getContext(), post.getAnswerId());
+//                            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<String>>() {
+//                                @Override
+//                                public void onSuccess(NetworkRequest<NetWorkResultType<String>> request, NetWorkResultType<String> result) {
+//                                    endTime = post.getLength();
+//                                    try {
+//                                        playAudio(result.getResult());
+//                                    } catch (Exception e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                    startflag = true;
+//                                    mHandler.removeCallbacks(countRunnable);
+//                                    mHandler.post(countRunnable);
+//                                }
+//
+//                                @Override
+//                                public void onFail(NetworkRequest<NetWorkResultType<String>> request, int errorCode, String errorMessage, Throwable e) {
+//
+//                                }
+//                            });
+//                        }
+                        break;
+                    }
+                    case STARTED: {
+                        if(timePosition == position) {
+                            startflag = false;
+                            mHandler.removeCallbacks(countRunnable);
+                            player.pause();
+                            pauseTime = count;
+                            mState = PlayState.PAUSED;
+                        }else{
+                            startPlay(post, position);
+                        }
+                        break;
+                    }
+
+                    case PAUSED:{
+                        if(timePosition == position) {
                             startflag = true;
+                            player.start();
+                            endTime = String.valueOf(pauseTime);
+                            mState = PlayState.STARTED;
+                            startTime = -1;
                             mHandler.removeCallbacks(countRunnable);
                             mHandler.post(countRunnable);
+                            break;
+                        }else{
+                            startPlay(post, position);
+                            break;
                         }
-
-                        @Override
-                        public void onFail(NetworkRequest<NetWorkResultType<String>> request, int errorCode, String errorMessage, Throwable e) {
-
-                        }
-                    });
+                    }
                 }
             }
 
@@ -469,13 +515,40 @@ public class MyPageFragment extends Fragment {
             @Override
             public void onAdapterAnswerClick(View view, Post post, int position) {
                 if (tabType == 2 || tabType == 3)
-                showOtherPage(post.getAnswernerId());
+                    showOtherPage(post.getAnswernerId());
             }
 
 
         });
 
         return view;
+    }
+
+    private void startPlay(final Post post, int position) {
+        killMediaPlayer();
+        timePosition = position;
+        startTime = -1;
+        ReplyListenRequest request = new ReplyListenRequest(getContext(), post.getAnswerId());
+        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<String>>() {
+            @Override
+            public void onSuccess(NetworkRequest<NetWorkResultType<String>> request, NetWorkResultType<String> result) {
+                endTime = post.getLength();
+                try {
+                    playAudio(result.getResult());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                mState = PlayState.STARTED;
+                startflag = true;
+                mHandler.removeCallbacks(countRunnable);
+                mHandler.post(countRunnable);
+            }
+
+            @Override
+            public void onFail(NetworkRequest<NetWorkResultType<String>> request, int errorCode, String errorMessage, Throwable e) {
+
+            }
+        });
     }
 
 
@@ -685,20 +758,6 @@ public class MyPageFragment extends Fragment {
         }
     }
 
-
-    void initInfo() {
-        MyData myData = new MyData();
-        myData.setDonationName("유니세프");
-        myData.setFollower("100");
-        myData.setFollowing("140");
-        myData.setName("곽견훈");
-        myData.setNickname("곽곽곽");
-        myData.setStateMessage("시작!");
-        myData.setUserId("me");
-        myData.setVoiceMessage("good");
-        mAdapter.addMyData(myData);
-    }
-
     @OnClick(R.id.btn_setting)
     public void settingClick(View view) {
         showSetting();
@@ -708,6 +767,7 @@ public class MyPageFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mState = PlayState.STOPPED;
         mAdapter.setFlag(comFlag);
         mAdapter.setTabPosition(tabType);
         mAdapter.setTime("답변 듣기", timePosition);
@@ -755,6 +815,7 @@ public class MyPageFragment extends Fragment {
     long startTime = -1;
     String endTime = "";
     int timePosition;
+    int count;
     Handler mHandler = new Handler(Looper.getMainLooper());
 
     Runnable countRunnable = new Runnable() {
@@ -767,12 +828,13 @@ public class MyPageFragment extends Fragment {
                 }
                 int gap = (int) (time - startTime);
                 int endTimeV = Integer.parseInt(endTime);
-                int count = endTimeV - gap / 1000;
+                count = endTimeV - gap / 1000;
                 int rest = 1000 - gap % 1000;
                 if (count > 0) {
                     mAdapter.setTime("0 : " + count, timePosition);
                     mHandler.postDelayed(this, rest);
                 } else {
+                    mState = PlayState.STOPPED;
                     killMediaPlayer();
                     mAdapter.setTime("닫변 듣기", timePosition);
                 }
