@@ -48,6 +48,9 @@ public class SettingDialog extends DialogFragment {
                     @Override
                     public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
                         Toast.makeText(MyApplication.getContext(), result.getMessage(), Toast.LENGTH_SHORT).show();
+                        if(listener != null){
+                            listener.onOkClick(true);
+                        }
                     }
 
                     @Override
@@ -106,5 +109,15 @@ public class SettingDialog extends DialogFragment {
     @Override
     public void onStop() {
         super.onStop();
+    }
+
+    public interface OnSettingListener {
+        public void onOkClick(boolean flag);
+    }
+
+    OnSettingListener listener;
+
+    public void setSettingListener(OnSettingListener listener) {
+        this.listener = listener;
     }
 }

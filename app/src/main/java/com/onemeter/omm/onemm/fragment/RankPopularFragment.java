@@ -75,34 +75,38 @@ public class RankPopularFragment extends Fragment {
             @Override
             public void onAdapterItemClick(View view, Post post, int position) {
                 if(post.getPayInfo().equals("0")){
-                    ((RankFragment) (getParentFragment())).showListenToOff(post);
+                    ((RankFragment) (getParentFragment())).showListenToOff(post, position);
                 }
             }
 
             @Override
-            public void onAdapterPlayClick(View view, final Post rankPopular, int position) {
-                timePosition = position;
-                startTime = -1;
-                ReplyListenRequest request = new ReplyListenRequest(getContext(), rankPopular.getAnswerId());
-                NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<String>>() {
-                    @Override
-                    public void onSuccess(NetworkRequest<NetWorkResultType<String>> request, NetWorkResultType<String> result) {
-                        endTime = rankPopular.getLength();
-                        try {
-                            playAudio(result.getResult());
-                        } catch (Exception e) {
-                            e.printStackTrace();
+            public void onAdapterPlayClick(View view, final Post post, int position) {
+                if (post.getPayInfo().equals("1")) {
+                    timePosition = position;
+                    startTime = -1;
+                    ReplyListenRequest request = new ReplyListenRequest(getContext(), post.getAnswerId());
+                    NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<String>>() {
+                        @Override
+                        public void onSuccess(NetworkRequest<NetWorkResultType<String>> request, NetWorkResultType<String> result) {
+                            endTime = post.getLength();
+                            try {
+                                playAudio(result.getResult());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            startflag = true;
+                            mHandler.removeCallbacks(countRunnable);
+                            mHandler.post(countRunnable);
                         }
-                        startflag = true;
-                        mHandler.removeCallbacks(countRunnable);
-                        mHandler.post(countRunnable);
-                    }
 
-                    @Override
-                    public void onFail(NetworkRequest<NetWorkResultType<String>> request, int errorCode, String errorMessage, Throwable e) {
+                        @Override
+                        public void onFail(NetworkRequest<NetWorkResultType<String>> request, int errorCode, String errorMessage, Throwable e) {
 
-                    }
-                });
+                        }
+                    });
+                }else{
+                    ((RankFragment) (getParentFragment())).showListenToOff(post, position);
+                }
             }
 
             @Override
@@ -246,6 +250,35 @@ public class RankPopularFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mAdapter.clearRankPopular();
         mAdapter.setFlag(categoryFlag);
+        mAdapter.setTime("답변 듣기", timePosition);
+        if(categoryFlag){
+            PopularPostListRequest request = new PopularPostListRequest(getContext(), 0);
+            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                @Override
+                public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                    mAdapter.addAll(result.getResult());
+                }
+
+                @Override
+                public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                }
+            });
+        }else{
+            PopularPostListRequest request = new PopularPostListRequest(getContext(), 1);
+            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                @Override
+                public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                    mAdapter.addAll(result.getResult());
+                }
+
+                @Override
+                public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                }
+            });
+        }
     }
 }

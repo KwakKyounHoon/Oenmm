@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.adapter.DonatingPlaceAdapter;
@@ -121,6 +122,7 @@ public class DonatingPlaceFragment extends Fragment {
         NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType>() {
             @Override
             public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
+                Toast.makeText(getContext(), result.getMessage(), Toast.LENGTH_SHORT).show();
                 popFagment();
             }
 

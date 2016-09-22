@@ -15,6 +15,7 @@ import com.onemeter.omm.onemm.viewholder.OtherPostViewHolder;
 import com.onemeter.omm.onemm.viewholder.OtherTabViewHolder;
 
 import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -27,6 +28,15 @@ public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     int tabType;
     boolean comFlag;
+
+    public void setPayPosition(int payPosition) {
+        int realPosition = payPosition-3;
+        List<Post> posts = otherPageData.getPostDatas();
+        Post post = posts.get(realPosition);
+        post.setPayInfo("1");
+        posts.add(realPosition, post);
+        notifyDataSetChanged();
+    }
 
     public void addOtherData(OtherData otherData) {
         this.otherPageData.setOtherData(otherData);
@@ -118,6 +128,7 @@ public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        int realPosition = position;
         if(otherPageData.getOtherData() != null) {
             if (position == 0) {
                 OtherHeaderViewHolder othvh = (OtherHeaderViewHolder) holder;
@@ -153,7 +164,7 @@ public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 OtherPostViewHolder otpvh = (OtherPostViewHolder) holder;
                 otpvh.setPost(otherPageData.getPostDatas().get(position));
                 otpvh.setOnOtherItemClickListener(this);
-                if(position == timePosition)  otpvh.setTime(time);
+                if(realPosition == timePosition)  otpvh.setTime(time);
                 return;
             }
             position -= otherPageData.getPostDatas().size();
@@ -235,6 +246,20 @@ public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
+    @Override
+    public void onAnswerClick(View view, Post post, int position) {
+        if(listener != null){
+            listener.onAdapterAnswerClick(view, post, position);
+        }
+    }
+
+    @Override
+    public void onQuestionerClick(View view, Post post, int position) {
+        if(listener != null){
+            listener.onAdapterQuestionerClick(view, post, position);
+        }
+    }
+
 
     public interface OnAdapterItemClickLIstener {
         public void onAdapterQuestionClick(View view, OtherData otherData);
@@ -246,6 +271,8 @@ public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         public void onAdapterItemClick(View view, Post post, int position);
         public void onAdapterPlayClick(View view, Post post, int position);
+        public void onAdapterAnswerClick(View view, Post post, int position);
+        public void onAdapterQuestionerClick(View view, Post post, int position);
 
         public void onAdapterTabType(View view, int type);
 

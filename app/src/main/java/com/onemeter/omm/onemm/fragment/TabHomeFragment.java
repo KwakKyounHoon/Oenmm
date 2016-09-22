@@ -31,6 +31,8 @@ public class TabHomeFragment extends BackKeyFragment {
 
     boolean isFirst = true;
 
+    int payPosition = 0;
+
 
     public TabHomeFragment() {
         // Required empty public constructor
@@ -86,13 +88,14 @@ public class TabHomeFragment extends BackKeyFragment {
         ft.commit();
     }
 
-    public void showListenToOff(Post post){
+    public void showListenToOff(Post post, int position){
         FragmentTransaction ft = getChildFragmentManager()
                 .beginTransaction();
-        ListenToOffFragment f = ListenToOffFragment.newInstance(post);
+        ListenToOffFragment f = ListenToOffFragment.newInstance(post, position);
         ft.replace(R.id.container,f , TAG_LISTEN_OFF).addToBackStack(null);
         ft.commit();
     }
+
 
     public void showListenToOn(Post post){
         FragmentTransaction ft = getChildFragmentManager()
@@ -153,6 +156,14 @@ public class TabHomeFragment extends BackKeyFragment {
         ft.replace(R.id.container, f, TAG_DONATION);
         ft.addToBackStack(TAG_DONATION);
         ft.commit();
+    }
+
+    public void setPayPosition(int payPosition){
+        this.payPosition = payPosition;
+    }
+
+    public int getPayPosition(){
+        return  this.payPosition;
     }
 
 }

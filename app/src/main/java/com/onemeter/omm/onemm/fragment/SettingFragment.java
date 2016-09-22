@@ -4,6 +4,7 @@ package com.onemeter.omm.onemm.fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,7 +36,7 @@ import butterknife.OnClick;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SettingFragment extends Fragment {
+public class SettingFragment extends Fragment implements SettingWithdrawDial.OnWithDrawListener, SettingDialog.OnSettingListener{
 
 
     public SettingFragment() {
@@ -47,12 +48,35 @@ public class SettingFragment extends Fragment {
     SettingAdapter mAdatper;
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mAdatper = new SettingAdapter();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        SettingSaveRequest settingSaveRequest = new SettingSaveRequest(getContext());
+        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, settingSaveRequest, new NetworkManager.OnResultListener<NetWorkResultType<SettingSave>>() {
+            @Override
+            public void onSuccess(NetworkRequest<NetWorkResultType<SettingSave>> request, NetWorkResultType<SettingSave> result) {
+                mAdatper.addSave(result.getResult());
+            }
+
+            @Override
+            public void onFail(NetworkRequest<NetWorkResultType<SettingSave>> request, int errorCode, String errorMessage, Throwable e) {
+
+            }
+        });
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_setting, container, false);
         ButterKnife.bind(this, view);
-        mAdatper = new SettingAdapter();
+
         list.setAdapter(mAdatper);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         list.setLayoutManager(manager);
@@ -65,18 +89,6 @@ public class SettingFragment extends Fragment {
 
             @Override
             public void onFail(NetworkRequest<NetWorkResultType<SettingDonate>> request, int errorCode, String errorMessage, Throwable e) {
-
-            }
-        });
-        SettingSaveRequest settingSaveRequest = new SettingSaveRequest(getContext());
-        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, settingSaveRequest, new NetworkManager.OnResultListener<NetWorkResultType<SettingSave>>() {
-            @Override
-            public void onSuccess(NetworkRequest<NetWorkResultType<SettingSave>> request, NetWorkResultType<SettingSave> result) {
-                mAdatper.addSave(result.getResult());
-            }
-
-            @Override
-            public void onFail(NetworkRequest<NetWorkResultType<SettingSave>> request, int errorCode, String errorMessage, Throwable e) {
 
             }
         });
@@ -95,6 +107,7 @@ public class SettingFragment extends Fragment {
             @Override
             public void onAdapterChargeClick(View view) {
                 SettingDialog settingDialog = new SettingDialog();
+                settingDialog.setSettingListener(SettingFragment.this);
                 settingDialog.show(getFragmentManager(), "CHARGE");
             }
 
@@ -134,9 +147,11 @@ public class SettingFragment extends Fragment {
             }
 
             @Override
-            public void onAdapterWithdrawClick(View view, SettingSave settingSave, int position) {
+            public void onAdapterWithdrawClick(View view, SettingSave settingSave, int position){
                 SettingWithdrawDial settingWithdrawDial = SettingWithdrawDial.newInstance(settingSave.getCurrentPoint());
+                settingWithdrawDial.setWithDrawListener(SettingFragment.this);
                 settingWithdrawDial.show(getFragmentManager(), "WIthDRWAL");
+
             }
 
             @Override
@@ -182,4 +197,21 @@ public class SettingFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onOkClick(boolean flag) {
+        if(flag) {
+            SettingSaveRequest settingSaveRequest = new SettingSaveRequest(getContext());
+            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, settingSaveRequest, new NetworkManager.OnResultListener<NetWorkResultType<SettingSave>>() {
+                @Override
+                public void onSuccess(NetworkRequest<NetWorkResultType<SettingSave>> request, NetWorkResultType<SettingSave> result) {
+                    mAdatper.addSave(result.getResult());
+                }
+
+                @Override
+                public void onFail(NetworkRequest<NetWorkResultType<SettingSave>> request, int errorCode, String errorMessage, Throwable e) {
+
+                }
+            });
+        }
+    }
 }

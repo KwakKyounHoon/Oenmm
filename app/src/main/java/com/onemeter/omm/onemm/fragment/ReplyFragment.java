@@ -305,8 +305,6 @@ public class ReplyFragment extends Fragment {
 
     private void playVoice(){
         try{
-//                    playAudio("http://ec2-52-78-124-76.ap-northeast-2.compute.amazonaws.com/images/recorded.mp4");
-//                    playAudio("https://drive.google.com/open?id=0Bw3ZvGKva8tGOG93U19Wam52YWc");
             playAudio(mSavedFile);
             Toast.makeText(getContext(), "음악파일 재생 시작됨.", Toast.LENGTH_SHORT).show();
         } catch(Exception e){
@@ -332,8 +330,6 @@ public class ReplyFragment extends Fragment {
                 });
         player.prepare();
         player.start();
-//        float a = player.getDuration();
-//        endTime = Math.round(a/1000);
         mHandler.removeCallbacks(countRunnable);
         mHandler.post(countRunnable);
     }

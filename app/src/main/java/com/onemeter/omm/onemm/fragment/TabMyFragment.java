@@ -30,6 +30,7 @@ public class TabMyFragment extends BackKeyFragment {
     public static String TAG_LISTEN_OFF = "listenoff";
     public static String TAG_QUESTION = "question";
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,13 +126,14 @@ public class TabMyFragment extends BackKeyFragment {
         ft.commit();
     }
 
-    public void showListenToOff(Post post) {
+    public void showListenToOff(Post post, int position){
         FragmentTransaction ft = getChildFragmentManager()
                 .beginTransaction();
-        ListenToOffFragment f = ListenToOffFragment.newInstance(post);
-        ft.replace(R.id.container, f, TAG_LISTEN_OFF).addToBackStack(null);
+        ListenToOffFragment f = ListenToOffFragment.newInstance(post, position);
+        ft.replace(R.id.container,f , TAG_LISTEN_OFF).addToBackStack(null);
         ft.commit();
     }
+
 
     public void showListenToOn(Post post) {
         FragmentTransaction ft = getChildFragmentManager()
@@ -159,6 +161,26 @@ public class TabMyFragment extends BackKeyFragment {
         SettingAgreeFragment f = new SettingAgreeFragment();
         ft.replace(R.id.container, f).addToBackStack(null);
         ft.commit();
+    }
+
+    int payPosition = 0;
+
+    public void setPayPosition(int payPosition){
+        this.payPosition = payPosition;
+    }
+
+    public int getPayPosition(){
+        return  this.payPosition;
+    }
+
+    boolean profileFlag = false;
+
+    public void setProfileFlag(boolean profileFlag){
+        this.profileFlag = profileFlag;
+    }
+
+    public boolean getProfileFlag(){
+        return this.profileFlag;
     }
     
 }

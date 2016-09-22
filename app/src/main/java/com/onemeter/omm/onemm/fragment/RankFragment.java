@@ -134,7 +134,7 @@ public class RankFragment extends Fragment {
         ((TabRankFragment) (getParentFragment())).showListenToOn(post);
     }
 
-    public void showListenToOff(Post post) {
-        ((TabRankFragment) (getParentFragment())).showListenToOff(post);
+    public void showListenToOff(Post post, int position) {
+        ((TabRankFragment) (getParentFragment())).showListenToOff(post, position);
     }
 }

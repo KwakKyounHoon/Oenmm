@@ -62,6 +62,10 @@ public class MyPageFragment extends Fragment {
     public static final String POST_TYPE_COM = "1";
     public static final String POST_TYPE_LISTEN = "3";
 
+    boolean isLastItem;
+    int pageNo = 1;
+    private final int COUNT = 10;
+
     MediaPlayer player;
 
     //    int type;
@@ -79,11 +83,12 @@ public class MyPageFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mAdapter = new MyAdapter();
 
-        MyPostRequest request = new MyPostRequest(getContext(), "from", "1", 1, 20);
+        MyPostRequest request = new MyPostRequest(getContext(), "from", "1", pageNo, COUNT);
         NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
             @Override
             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                 mAdapter.addAllPost(result.getResult());
+                pageNo++;
             }
 
             @Override
@@ -101,8 +106,105 @@ public class MyPageFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         list.setAdapter(mAdapter);
-        LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        final LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         list.setLayoutManager(manager);
+
+        list.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if(isLastItem && newState == RecyclerView.SCROLL_STATE_IDLE){
+                    if (tabType == 1) {
+                        if (comFlag) {
+                            MyPostRequest request = new MyPostRequest(getContext(), "from", "1", pageNo, COUNT);
+                            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                                @Override
+                                public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                    mAdapter.addAllPost(result.getResult());
+                                    pageNo++;
+                                }
+
+                                @Override
+                                public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                                }
+                            });
+                        } else {
+                            MyPostRequest request = new MyPostRequest(getContext(), "from", "0", pageNo, COUNT);
+                            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                                @Override
+                                public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                    mAdapter.addAllPost(result.getResult());
+                                    pageNo++;
+                                }
+
+                                @Override
+                                public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                                }
+                            });
+                        }
+                    } else if (tabType == 2) {
+                        if (comFlag) {
+                            MyPostRequest request = new MyPostRequest(getContext(), "to", "1", pageNo, COUNT);
+                            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                                @Override
+                                public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                    mAdapter.addAllPost(result.getResult());
+                                    pageNo++;
+                                }
+
+                                @Override
+                                public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                                }
+                            });
+                        } else {
+                            MyPostRequest request = new MyPostRequest(getContext(), "to", "0", pageNo, COUNT);
+                            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                                @Override
+                                public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                    mAdapter.addAllPost(result.getResult());
+                                    pageNo++;
+                                }
+
+                                @Override
+                                public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                                }
+                            });
+                        }
+                    } else if (tabType == 3) {
+                        MyListenRequest request = new MyListenRequest(getContext(), pageNo, COUNT);
+                        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                mAdapter.addAllPost(result.getResult());
+                                pageNo++;
+                            }
+
+                            @Override
+                            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                            }
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int totalItemCount = manager.getItemCount();
+                int lastVisibleItemPosition = manager.findLastCompletelyVisibleItemPosition();
+                if(totalItemCount >0 && lastVisibleItemPosition != RecyclerView.NO_POSITION && (totalItemCount -1 <= lastVisibleItemPosition)){
+                    isLastItem = true;
+                }else{
+                    isLastItem = false;
+                }
+            }
+        });
+
         mAdapter.setOnAdapterItemClickListener(new MyAdapter.OnAdapterItemClickLIstener() {
             @Override
             public void onAdapterDonateClick(View view, MyData myData, int position) {
@@ -152,20 +254,21 @@ public class MyPageFragment extends Fragment {
 
             @Override
             public void onAdapterCategory(boolean flag, int position) {
+                pageNo = 1;
                 mAdapter.setTime("답변 듣기", position);
                 killMediaPlayer();
                 startflag = false;
                 comFlag = flag;
                 if (comFlag) {
                     mAdapter.clearPost();
-//                    init();
                     switch (tabType) {
                         case 1: {
-                            MyPostRequest request = new MyPostRequest(getContext(), "from", "1", 1, 20);
+                            MyPostRequest request = new MyPostRequest(getContext(), "from", "1", pageNo, COUNT);
                             NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                                 @Override
                                 public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                                     mAdapter.addAllPost(result.getResult());
+                                    pageNo++;
                                 }
 
                                 @Override
@@ -176,11 +279,12 @@ public class MyPageFragment extends Fragment {
                         }
                         break;
                         case 2: {
-                            MyPostRequest request = new MyPostRequest(getContext(), "to", "1", 1, 20);
+                            MyPostRequest request = new MyPostRequest(getContext(), "to", "1", pageNo, COUNT);
                             NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                                 @Override
                                 public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                                     mAdapter.addAllPost(result.getResult());
+                                    pageNo++;
                                 }
 
                                 @Override
@@ -193,14 +297,14 @@ public class MyPageFragment extends Fragment {
                     }
                 } else {
                     mAdapter.clearPost();
-//                    init2();
                     switch (tabType) {
                         case 1: {
-                            MyPostRequest request = new MyPostRequest(getContext(), "from", "0", 1, 20);
+                            MyPostRequest request = new MyPostRequest(getContext(), "from", "0", pageNo, COUNT);
                             NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                                 @Override
                                 public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                                     mAdapter.addAllPost(result.getResult());
+                                    pageNo++;
                                 }
 
                                 @Override
@@ -211,11 +315,12 @@ public class MyPageFragment extends Fragment {
                         }
                         break;
                         case 2: {
-                            MyPostRequest request = new MyPostRequest(getContext(), "to", "0", 1, 20);
+                            MyPostRequest request = new MyPostRequest(getContext(), "to", "0", pageNo, COUNT);
                             NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                                 @Override
                                 public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                                     mAdapter.addAllPost(result.getResult());
+                                    pageNo++;
                                 }
 
                                 @Override
@@ -231,6 +336,7 @@ public class MyPageFragment extends Fragment {
 
             @Override
             public void onAdapterTabType(View view, int num, int position) {
+                pageNo = 1;
                 mAdapter.setTime("답변 듣기", position);
                 killMediaPlayer();
                 startflag = false;
@@ -238,11 +344,12 @@ public class MyPageFragment extends Fragment {
                 if (num == 1) {
                     mAdapter.clearPost();
                     if (comFlag) {
-                        MyPostRequest request = new MyPostRequest(getContext(), "from", "1", 1, 20);
+                        MyPostRequest request = new MyPostRequest(getContext(), "from", "1", pageNo, COUNT);
                         NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                                 mAdapter.addAllPost(result.getResult());
+                                pageNo++;
                             }
 
                             @Override
@@ -251,11 +358,12 @@ public class MyPageFragment extends Fragment {
                             }
                         });
                     } else {
-                        MyPostRequest request = new MyPostRequest(getContext(), "from", "0", 1, 20);
+                        MyPostRequest request = new MyPostRequest(getContext(), "from", "0", pageNo, COUNT);
                         NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                                 mAdapter.addAllPost(result.getResult());
+                                pageNo++;
                             }
 
                             @Override
@@ -267,11 +375,12 @@ public class MyPageFragment extends Fragment {
                 } else if (num == 2) {
                     mAdapter.clearPost();
                     if (comFlag) {
-                        MyPostRequest request = new MyPostRequest(getContext(), "to", "1", 1, 20);
+                        MyPostRequest request = new MyPostRequest(getContext(), "to", "1", pageNo, COUNT);
                         NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                                 mAdapter.addAllPost(result.getResult());
+                                pageNo++;
                             }
 
                             @Override
@@ -280,11 +389,12 @@ public class MyPageFragment extends Fragment {
                             }
                         });
                     } else {
-                        MyPostRequest request = new MyPostRequest(getContext(), "to", "0", 1, 20);
+                        MyPostRequest request = new MyPostRequest(getContext(), "to", "0", pageNo, COUNT);
                         NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                                 mAdapter.addAllPost(result.getResult());
+                                pageNo++;
                             }
 
                             @Override
@@ -295,11 +405,12 @@ public class MyPageFragment extends Fragment {
                     }
                 } else if (num == 3) {
                     mAdapter.clearPost();
-                    MyListenRequest request = new MyListenRequest(getContext(), 1, 20);
+                    MyListenRequest request = new MyListenRequest(getContext(), pageNo, COUNT);
                     NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                         @Override
                         public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                             mAdapter.addAllPost(result.getResult());
+                            pageNo++;
                         }
 
                         @Override
@@ -364,23 +475,6 @@ public class MyPageFragment extends Fragment {
 
         });
 
-
-        MyDataReqeust reqeust = new MyDataReqeust(getContext());
-        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,reqeust, new NetworkManager.OnResultListener<NetWorkResultType<MyData>>() {
-            @Override
-            public void onSuccess(NetworkRequest<NetWorkResultType<MyData>> request, NetWorkResultType<MyData> result) {
-                String nickName = "User NickName";
-                if(result.getResult().getNickname() != null) {
-                    nickName = result.getResult().getNickname();
-                }
-                mAdapter.addMyData(result.getResult());
-                nickNameView.setText(nickName);
-            }
-            @Override
-            public void onFail(NetworkRequest<NetWorkResultType<MyData>> request, int errorCode, String errorMessage, Throwable e) {
-
-            }
-        });
         return view;
     }
 
@@ -466,6 +560,7 @@ public class MyPageFragment extends Fragment {
                         @Override
                         public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
                             Toast.makeText(getContext(),result.getMessage(),Toast.LENGTH_SHORT).show();
+                            refresh();
                         }
 
                         @Override
@@ -482,6 +577,7 @@ public class MyPageFragment extends Fragment {
                     @Override
                     public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
                         Toast.makeText(getContext(),result.getMessage(),Toast.LENGTH_SHORT).show();
+                        refresh();
                     }
 
                     @Override
@@ -489,6 +585,103 @@ public class MyPageFragment extends Fragment {
                     }
                 });
             }
+        }
+    }
+
+    private void refresh(){
+        mAdapter.clearPost();
+        pageNo = 1;
+        MyDataReqeust reqeust = new MyDataReqeust(getContext());
+        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,reqeust, new NetworkManager.OnResultListener<NetWorkResultType<MyData>>() {
+            @Override
+            public void onSuccess(NetworkRequest<NetWorkResultType<MyData>> request, NetWorkResultType<MyData> result) {
+                String nickName = "User NickName";
+                if(result.getResult().getNickname() != null) {
+                    nickName = result.getResult().getNickname();
+                }
+                mAdapter.addMyData(result.getResult());
+                nickNameView.setText(nickName);
+            }
+            @Override
+            public void onFail(NetworkRequest<NetWorkResultType<MyData>> request, int errorCode, String errorMessage, Throwable e) {
+
+            }
+        });
+
+        if (tabType == 1) {
+            if (comFlag) {
+                MyPostRequest request = new MyPostRequest(getContext(), "from", "1", pageNo, COUNT);
+                NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                    @Override
+                    public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                        mAdapter.addAllPost(result.getResult());
+                        pageNo++;
+                    }
+
+                    @Override
+                    public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                    }
+                });
+            } else {
+                MyPostRequest request = new MyPostRequest(getContext(), "from", "0", pageNo, COUNT);
+                NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                    @Override
+                    public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                        mAdapter.addAllPost(result.getResult());
+                        pageNo++;
+                    }
+
+                    @Override
+                    public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                    }
+                });
+            }
+        } else if (tabType == 2) {
+            if (comFlag) {
+                MyPostRequest request = new MyPostRequest(getContext(), "to", "1", pageNo, COUNT);
+                NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                    @Override
+                    public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                        mAdapter.addAllPost(result.getResult());
+                        pageNo++;
+                    }
+
+                    @Override
+                    public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                    }
+                });
+            } else {
+                MyPostRequest request = new MyPostRequest(getContext(), "to", "0", pageNo, COUNT);
+                NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                    @Override
+                    public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                        mAdapter.addAllPost(result.getResult());
+                        pageNo++;
+                    }
+
+                    @Override
+                    public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                    }
+                });
+            }
+        } else if (tabType == 3) {
+            MyListenRequest request = new MyListenRequest(getContext(), pageNo, COUNT);
+            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                @Override
+                public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                    mAdapter.addAllPost(result.getResult());
+                    pageNo++;
+                }
+
+                @Override
+                public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                }
+            });
         }
     }
 
@@ -517,6 +710,23 @@ public class MyPageFragment extends Fragment {
         super.onResume();
         mAdapter.setFlag(comFlag);
         mAdapter.setTabPosition(tabType);
+        mAdapter.setTime("답변 듣기", timePosition);
+        MyDataReqeust reqeust = new MyDataReqeust(getContext());
+        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,reqeust, new NetworkManager.OnResultListener<NetWorkResultType<MyData>>() {
+            @Override
+            public void onSuccess(NetworkRequest<NetWorkResultType<MyData>> request, NetWorkResultType<MyData> result) {
+                String nickName = "User NickName";
+                if(result.getResult().getNickname() != null) {
+                    nickName = result.getResult().getNickname();
+                }
+                mAdapter.addMyData(result.getResult());
+                nickNameView.setText(nickName);
+            }
+            @Override
+            public void onFail(NetworkRequest<NetWorkResultType<MyData>> request, int errorCode, String errorMessage, Throwable e) {
+
+            }
+        });
     }
 
     @Override

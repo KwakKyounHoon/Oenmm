@@ -33,6 +33,7 @@ import com.onemeter.omm.onemm.data.OtherData;
 import com.onemeter.omm.onemm.data.Post;
 import com.onemeter.omm.onemm.manager.NetworkManager;
 import com.onemeter.omm.onemm.manager.NetworkRequest;
+import com.onemeter.omm.onemm.manager.PropertyManager;
 import com.onemeter.omm.onemm.request.AddFollowReqeust;
 import com.onemeter.omm.onemm.request.BlockRequest;
 import com.onemeter.omm.onemm.request.OtherDataRequest;
@@ -55,6 +56,9 @@ public class OtherFragment extends Fragment {
     private String id;
     int tabType = 1;
     boolean categoryType = true;
+    boolean isLastItem;
+    int pageNo = 1;
+    private final int COUNT = 10;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -91,11 +95,12 @@ public class OtherFragment extends Fragment {
             id = getArguments().getString(OTHER_ID);
         }
         mAdapter = new OtherAdapter();
-        OtherPostRequest otherPostRequest = new OtherPostRequest(getContext(),id,"from","0", 1, 20);
+        OtherPostRequest otherPostRequest = new OtherPostRequest(getContext(),id,"from","0", pageNo, COUNT);
         NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,otherPostRequest, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
             @Override
             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                 mAdapter.addAllPost(result.getResult());
+                pageNo++;
             }
 
             @Override
@@ -136,8 +141,89 @@ public class OtherFragment extends Fragment {
         final LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         list.setLayoutManager(manager);
 
-        mAdapter.setOnAdapterItemClickListener(new OtherAdapter.OnAdapterItemClickLIstener() {
+        list.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if(isLastItem && newState == RecyclerView.SCROLL_STATE_IDLE){
+                    if(tabType == 1){
+                        if(categoryType){
+                            OtherPostRequest request = new OtherPostRequest(getContext(), id, "from", "0", pageNo, COUNT);
+                            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                                @Override
+                                public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                    mAdapter.addAllPost(result.getResult());
+                                    pageNo++;
+                                }
 
+                                @Override
+                                public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                                }
+                            });
+                        }else{
+                            OtherPostRequest request = new OtherPostRequest(getContext(), id, "from", "1", pageNo, COUNT);
+                            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                                @Override
+                                public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                    mAdapter.addAllPost(result.getResult());
+                                    pageNo++;
+                                }
+
+                                @Override
+                                public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                                }
+                            });
+                        }
+                    }else{
+                        if(categoryType){
+                            OtherPostRequest request = new OtherPostRequest(getContext(), id, "to", "0", pageNo, COUNT);
+                            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                                @Override
+                                public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                    mAdapter.addAllPost(result.getResult());
+                                    pageNo++;
+                                }
+
+                                @Override
+                                public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                                }
+                            });
+                        }else{
+                            OtherPostRequest request = new OtherPostRequest(getContext(), id, "to", "1", pageNo, COUNT);
+                            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                                @Override
+                                public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                    mAdapter.addAllPost(result.getResult());
+                                    pageNo++;
+                                }
+
+                                @Override
+                                public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int totalItemCount = manager.getItemCount();
+                int lastVisibleItemPosition = manager.findLastCompletelyVisibleItemPosition();
+                if(totalItemCount >0 && lastVisibleItemPosition != RecyclerView.NO_POSITION && (totalItemCount -1 <= lastVisibleItemPosition)){
+                    isLastItem = true;
+                }else{
+                    isLastItem = false;
+                }
+            }
+        });
+
+        mAdapter.setOnAdapterItemClickListener(new OtherAdapter.OnAdapterItemClickLIstener() {
             @Override
             public void onAdapterQuestionClick(View view, OtherData otherData) {
                 if(getParentFragment() instanceof TabMyFragment){
@@ -236,17 +322,19 @@ public class OtherFragment extends Fragment {
 
             @Override
             public void onAdapterTabType(View view, int type) {
+                pageNo = 1;
                 killMediaPlayer();
-                startflag = false;
                 mAdapter.clearPost();
+                startflag = false;
                 tabType = type;
                 if(tabType == 1){
                     if(categoryType){
-                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "from", "0", 1, 20);
+                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "from", "0", pageNo, COUNT);
                         NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                                 mAdapter.addAllPost(result.getResult());
+                                pageNo++;
                             }
 
                             @Override
@@ -255,11 +343,12 @@ public class OtherFragment extends Fragment {
                             }
                         });
                     }else{
-                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "from", "1", 1, 20);
+                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "from", "1", pageNo, COUNT);
                         NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                                 mAdapter.addAllPost(result.getResult());
+                                pageNo++;
                             }
 
                             @Override
@@ -270,11 +359,12 @@ public class OtherFragment extends Fragment {
                     }
                 }else{
                     if(categoryType){
-                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "to", "0", 1, 20);
+                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "to", "0", pageNo, COUNT);
                         NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                                 mAdapter.addAllPost(result.getResult());
+                                pageNo++;
                             }
 
                             @Override
@@ -283,11 +373,12 @@ public class OtherFragment extends Fragment {
                             }
                         });
                     }else{
-                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "to", "1", 1, 20);
+                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "to", "1", pageNo, COUNT);
                         NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                                 mAdapter.addAllPost(result.getResult());
+                                pageNo++;
                             }
 
                             @Override
@@ -301,17 +392,19 @@ public class OtherFragment extends Fragment {
 
             @Override
             public void onAdapterCategoryItemClick(boolean flag) {
+                pageNo = 1;
                 killMediaPlayer();
-                startflag = false;
                 mAdapter.clearPost();
+                startflag = false;
                 categoryType = flag;
                 if(flag){
                     if(tabType == 1){
-                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "from", "0", 1, 20);
+                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "from", "0", pageNo, COUNT);
                         NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                                 mAdapter.addAllPost(result.getResult());
+                                pageNo++;
                             }
 
                             @Override
@@ -320,11 +413,12 @@ public class OtherFragment extends Fragment {
                             }
                         });
                     }else{
-                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "to", "0", 1, 20);
+                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "to", "0", pageNo, COUNT);
                         NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                                 mAdapter.addAllPost(result.getResult());
+                                pageNo++;
                             }
 
                             @Override
@@ -335,11 +429,12 @@ public class OtherFragment extends Fragment {
                     }
                 }else{
                     if(tabType == 1){
-                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "from", "1", 1, 20);
+                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "from", "1", pageNo, COUNT);
                         NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                                 mAdapter.addAllPost(result.getResult());
+                                pageNo++;
                             }
 
                             @Override
@@ -348,11 +443,12 @@ public class OtherFragment extends Fragment {
                             }
                         });
                     }else{
-                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "to", "1", 1, 20);
+                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "to", "1", pageNo, COUNT);
                         NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                                 mAdapter.addAllPost(result.getResult());
+                                pageNo++;
                             }
 
                             @Override
@@ -367,15 +463,7 @@ public class OtherFragment extends Fragment {
             @Override
             public void onAdapterItemClick(View view, Post post, int position) {
                 if(post.getPayInfo().equals("0")){
-                    if(getParentFragment() instanceof TabMyFragment){
-                        ((TabMyFragment) (getParentFragment())).showListenToOff(post);
-                    }else if(getParentFragment() instanceof TabHomeFragment){
-                        ((TabHomeFragment) (getParentFragment())).showListenToOff(post);
-                    }else if(getParentFragment() instanceof TabRankFragment){
-                        ((TabRankFragment) (getParentFragment())).showListenToOff(post);
-                    }else{
-                        ((TabSearchFragment) (getParentFragment())).showListenToOff(post);
-                    }
+                    showListenToOff(post, position);
                 }
             }
 
@@ -405,6 +493,26 @@ public class OtherFragment extends Fragment {
 
                         }
                     });
+                }else{
+                    showListenToOff(post, position);
+                }
+            }
+
+            @Override
+            public void onAdapterAnswerClick(View view, Post post, int position) {
+                if(!post.getAnswernerId().equals(PropertyManager.getInstance().getMyId())){
+                    showOtherPage(post.getAnswernerId());
+                }else{
+                    showMyPage();
+                }
+            }
+
+            @Override
+            public void onAdapterQuestionerClick(View view, Post post, int position){
+                if(!post.getQuestionerId().equals(PropertyManager.getInstance().getMyId())){
+                    showOtherPage(post.getQuestionerId());
+                }else{
+                    showMyPage();
                 }
             }
         });
@@ -427,37 +535,6 @@ public class OtherFragment extends Fragment {
 
         return view;
     }
-
-    void init(){
-        for(int i = 0; i < 5; i++){
-            Post post = new Post();
-            post.setAnswernerId(i+"1");
-            post.setAnswernerPhoto("");
-            post.setLength(i+"5");
-            post.setPrice(i+"10");
-            post.setQuestionerContent("GOOD"+i);
-            post.setQuestionerId(i+"2");
-            post.setQuestionerPhoto("");
-            post.setVoiceContent("yes"+i);
-            mAdapter.addPost(post);
-        }
-    }
-
-    void init2(){
-        for(int i = 5; i < 11; i++){
-            Post post = new Post();
-            post.setAnswernerId(i+"1");
-            post.setAnswernerPhoto("");
-            post.setLength(i+"5");
-            post.setPrice(i+"10");
-            post.setQuestionerContent("GOOD"+i);
-            post.setQuestionerId(i+"2");
-            post.setQuestionerPhoto("");
-            post.setVoiceContent("yes"+i);
-            mAdapter.addPost(post);
-        }
-    }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) { // 신고 차단 UI 구분
@@ -652,7 +729,57 @@ public class OtherFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        checkPayInfo();
         mAdapter.setFlag(categoryType);
         mAdapter.setTabPosition(tabType);
+        mAdapter.setTime("답변 듣기", timePosition);
+    }
+
+    private void showOtherPage(String id) {
+        ((TabHomeFragment) (getParentFragment())).showOther(id);
+    }
+
+    private void showMyPage() {
+        ((TabHomeFragment) (getParentFragment())).showMy();
+    }
+
+    private void showListenToOff(Post post, int payPosition){
+        if(getParentFragment() instanceof TabMyFragment){
+            ((TabMyFragment) (getParentFragment())).showListenToOff(post, payPosition);
+        }else if(getParentFragment() instanceof TabHomeFragment){
+            ((TabHomeFragment) (getParentFragment())).showListenToOff(post, payPosition);
+        }else if(getParentFragment() instanceof TabRankFragment){
+            ((TabRankFragment) (getParentFragment())).showListenToOff(post, payPosition);
+        }else{
+            ((TabSearchFragment) (getParentFragment())).showListenToOff(post, payPosition);
+        }
+    }
+
+    private void checkPayInfo(){
+        if(getParentFragment() instanceof TabMyFragment){
+            TabMyFragment f = (TabMyFragment) getParentFragment();
+            if(f.getPayPosition() != 0) {
+                mAdapter.setPayPosition(f.getPayPosition());
+                f.setPayPosition(0);
+            }
+        }else if(getParentFragment() instanceof TabHomeFragment){
+            TabHomeFragment f = (TabHomeFragment) getParentFragment();
+            if(f.getPayPosition() != 0) {
+                mAdapter.setPayPosition(f.getPayPosition());
+                f.setPayPosition(0);
+            }
+        }else if(getParentFragment() instanceof TabRankFragment){
+            TabRankFragment f = (TabRankFragment) getParentFragment();
+            if(f.getPayPosition() != 0) {
+                mAdapter.setPayPosition(f.getPayPosition());
+                f.setPayPosition(0);
+            }
+        }else{
+            TabSearchFragment f = (TabSearchFragment) getParentFragment();
+            if(f.getPayPosition() != 0) {
+                mAdapter.setPayPosition(f.getPayPosition());
+                f.setPayPosition(0);
+            }
+        }
     }
 }
