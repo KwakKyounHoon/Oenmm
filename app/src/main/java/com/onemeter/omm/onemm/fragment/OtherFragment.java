@@ -84,12 +84,13 @@ public class OtherFragment extends Fragment {
     @BindView(R.id.btn_back)
     ImageView backView;
     ShareActionProvider mShareActionProvider;
-    int pauseTime;
+
     MediaPlayer player;
 
     public OtherFragment() {
         // Required empty public constructor
     }
+
     OtherAdapter mAdapter;
 
     public static OtherFragment newInstance(String message) {
@@ -107,8 +108,8 @@ public class OtherFragment extends Fragment {
             id = getArguments().getString(OTHER_ID);
         }
         mAdapter = new OtherAdapter();
-        OtherPostRequest otherPostRequest = new OtherPostRequest(getContext(),id,"from","0", pageNo, COUNT);
-        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,otherPostRequest, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+        OtherPostRequest otherPostRequest = new OtherPostRequest(getContext(), id, "from", "0", pageNo, COUNT);
+        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, otherPostRequest, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
             @Override
             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                 mAdapter.addAllPost(result.getResult());
@@ -714,7 +715,6 @@ public class OtherFragment extends Fragment {
     long startTime = -1;
     String endTime = "";
     int timePosition;
-    int count;
     Handler mHandler = new Handler(Looper.getMainLooper());
 
     Runnable countRunnable = new Runnable() {
@@ -727,13 +727,12 @@ public class OtherFragment extends Fragment {
                 }
                 int gap = (int) (time - startTime);
                 int endTimeV = Integer.parseInt(endTime);
-                count = endTimeV - gap / 1000;
+                int count = endTimeV - gap / 1000;
                 int rest = 1000 - gap % 1000;
                 if (count > 0) {
                     mAdapter.setTime("0 : " + count, timePosition);
                     mHandler.postDelayed(this, rest);
                 } else {
-                    mState = PlayState.STOPPED;
                     killMediaPlayer();
                     mAdapter.setTime("닫변 듣기", timePosition);
                 }
@@ -754,22 +753,13 @@ public class OtherFragment extends Fragment {
     public void onResume() {
         super.onResume();
         checkPayInfo();
-        mState = PlayState.STOPPED;
         mAdapter.setFlag(categoryType);
         mAdapter.setTabPosition(tabType);
         mAdapter.setTime("답변 듣기", timePosition);
     }
 
     private void showOtherPage(String id) {
-        if(getParentFragment() instanceof TabMyFragment){
-            ((TabMyFragment) (getParentFragment())).showOther(id);
-        }else if(getParentFragment() instanceof TabHomeFragment){
-            ((TabHomeFragment) (getParentFragment())).showOther(id);
-        }else if(getParentFragment() instanceof TabRankFragment){
-            ((TabRankFragment) (getParentFragment())).showOther(id);
-        }else{
-            ((TabSearchFragment) (getParentFragment())).showOther(id);
-        }
+        ((TabHomeFragment) (getParentFragment())).showOther(id);
     }
 
     private void showMyPage() {
