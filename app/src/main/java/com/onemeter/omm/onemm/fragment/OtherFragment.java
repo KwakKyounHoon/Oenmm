@@ -704,7 +704,6 @@ public class OtherFragment extends Fragment {
         builder.show();
     }
 
-
     public void onListDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("신고하는 이유");
