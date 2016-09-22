@@ -103,12 +103,13 @@ public class SearchResultFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 keyword = charSequence.toString();
+                pageNo = 1;
                 if(charSequence.length()>1) {
-                    mAdapter.clear();
                     SearchRequest request = new SearchRequest(getContext(), keyword, pageNo, COUNT);
                     NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<SearchResult[]>>() {
                         @Override
                         public void onSuccess(NetworkRequest<NetWorkResultType<SearchResult[]>> request, NetWorkResultType<SearchResult[]> result) {
+                            mAdapter.clear();
                             mAdapter.addAll(result.getResult());
                             pageNo++;
                         }

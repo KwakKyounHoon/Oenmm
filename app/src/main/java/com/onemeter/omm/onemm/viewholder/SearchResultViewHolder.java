@@ -42,14 +42,15 @@ public class SearchResultViewHolder extends RecyclerView.ViewHolder {
 
     SearchResult searchResult;
     public void setSearchResult(SearchResult searchResult) {
-            this.searchResult = searchResult;
-            nameView.setText(searchResult.getName());
-            nicknameView.setText(searchResult.getNickname());
-            Glide.with(photoView.getContext())
-                    .load(searchResult.getPhoto())
-                    .bitmapTransform(new CropCircleTransformation(MyApplication.getContext()))
-                    .error(R.drawable.ic_profile_image_default)
-                    .into(photoView);
+        this.searchResult = searchResult;
+        nameView.setText(searchResult.getName());
+        nicknameView.setText(searchResult.getNickname());
+        Glide.with(photoView.getContext())
+                .load(searchResult.getPhoto())
+                .skipMemoryCache(true)
+                .bitmapTransform(new CropCircleTransformation(MyApplication.getContext()))
+                .error(R.drawable.ic_profile_image_default)
+                .into(photoView);
         if(searchResult.getCelebrity().equals("1")){
             startView.setVisibility(View.VISIBLE);
         }else{

@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,8 @@ public class PostFragment extends Fragment {
     boolean isLastItem;
     int pageNo = 1;
     private final int COUNT = 10;
+    private final int STOPING = 0;
+    private final int LISTENING = 1;
     public PostFragment() {
 
     }
@@ -216,6 +219,13 @@ public class PostFragment extends Fragment {
         player.setDataSource(getContext(), uri, NetworkManager.getInstance().getCookieHeader(url));
         player.prepare();
         player.start();
+        player.setOnInfoListener(new MediaPlayer.OnInfoListener() {
+            @Override
+            public boolean onInfo(MediaPlayer mediaPlayer, int i, int i1) {
+                Log.i("test",""+mediaPlayer.isPlaying());
+                return true;
+            }
+        });
     }
 
     long startTime = -1;

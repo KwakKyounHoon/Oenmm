@@ -34,7 +34,7 @@ public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         List<Post> posts = otherPageData.getPostDatas();
         Post post = posts.get(realPosition);
         post.setPayInfo("1");
-        posts.add(realPosition, post);
+        posts.set(realPosition, post);
         notifyDataSetChanged();
     }
 
