@@ -1,33 +1,38 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.onemeter.omm.onemm.MultiSwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/refresh_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.onemeter.omm.onemm.fragment.FollowingFragment">
-
-    <android.support.v7.widget.Toolbar
-        android:background="@drawable/toolbar_under"
+    tools:context="com.onemeter.omm.onemm.fragment.PostFragment">
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_height"
-        android:id="@+id/toolbar">
+        android:layout_height="match_parent"
+        >
 
-        <include
-            android:layout_height="wrap_content"
+        <android.support.v7.widget.Toolbar
+            android:background="@drawable/toolbar_under"
             android:layout_width="match_parent"
-            layout="@layout/view_following_toolbar"
-            android:background="@color/colorWhite"/>
+            android:layout_height="@dimen/toolbar_height"
+            android:id="@+id/toolbar">
 
-    </android.support.v7.widget.Toolbar>
-    <!-- TODO: Update blank fragment layout -->
+            <include
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                layout="@layout/view_following_toolbar"
+                android:background="@color/colorWhite"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/list"
-        android:layout_below="@+id/toolbar"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"></android.support.v7.widget.RecyclerView>
+        </android.support.v7.widget.Toolbar>
+        <!-- TODO: Update blank fragment layout -->
 
-</RelativeLayout>
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/list"
+            android:layout_below="@+id/toolbar"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"></android.support.v7.widget.RecyclerView>
+    </RelativeLayout>
+</com.onemeter.omm.onemm.MultiSwipeRefreshLayout>

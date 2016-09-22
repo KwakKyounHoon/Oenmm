@@ -28,6 +28,7 @@ public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     int tabType;
     boolean comFlag;
+    boolean headerPlayInfo = false;
 
     public void setPayPosition(int payPosition) {
         int realPosition = payPosition-3;
@@ -133,7 +134,7 @@ public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             if (position == 0) {
                 OtherHeaderViewHolder othvh = (OtherHeaderViewHolder) holder;
                 othvh.setOnOtherDataItemClickListener(this);
-                othvh.setOtherInof(otherPageData.getOtherData());
+                othvh.setOtherInof(otherPageData.getOtherData(), headerPlayInfo);
                 return;
             }
             position--;
@@ -258,6 +259,11 @@ public class OtherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if(listener != null){
             listener.onAdapterQuestionerClick(view, post, position);
         }
+    }
+
+    public void setHeaderPlayInfo(boolean headerPlayInfo) {
+        this.headerPlayInfo = headerPlayInfo;
+        notifyDataSetChanged();
     }
 
 

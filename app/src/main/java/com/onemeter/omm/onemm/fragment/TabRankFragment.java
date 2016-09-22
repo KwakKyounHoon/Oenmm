@@ -160,5 +160,4 @@ public class TabRankFragment extends BackKeyFragment {
     public int getPayPosition(){
         return  this.payPosition;
     }
-
 }

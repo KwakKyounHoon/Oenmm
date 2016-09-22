@@ -1,5 +1,6 @@
 package com.onemeter.omm.onemm;
 
+import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
@@ -16,6 +17,7 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -81,6 +83,7 @@ public class ProfileActivity extends AppCompatActivity {
         nicknameView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
+                checkView.setVisibility(View.GONE);
                 if(!b){
                     String nickname = "";
                     if(!TextUtils.isEmpty(nicknameView.getText().toString())) {
@@ -99,7 +102,6 @@ public class ProfileActivity extends AppCompatActivity {
                                     checkIdFlag = false;
                                 }
                             }
-
                             @Override
                             public void onFail(NetworkRequest<NetWorkResultType<String>> request, int errorCode, String errorMessage, Throwable e) {
 
@@ -163,7 +165,7 @@ public class ProfileActivity extends AppCompatActivity {
             String nickname = nicknameView.getText().toString();
             String message = messageView.getText().toString();
             if (TextUtils.isEmpty(nameVIew.getText().toString())) {
-                Toast.makeText(this, "닉네임을 입력하세요.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "아이디를 입력하세요.", Toast.LENGTH_SHORT).show();
             } else if (TextUtils.isEmpty(nicknameView.getText().toString())) {
                 Toast.makeText(this, "이름을 입력하세요.", Toast.LENGTH_SHORT).show();
             } else if (!checkIdFlag) {
@@ -173,6 +175,10 @@ public class ProfileActivity extends AppCompatActivity {
                 NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType>() {
                     @Override
                     public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(messageView.getWindowToken(), 0);
+                        imm.hideSoftInputFromWindow(nameVIew.getWindowToken(), 0);
+                        imm.hideSoftInputFromWindow(nicknameView.getWindowToken(), 0);
                         Intent intent = new Intent(ProfileActivity.this, FollowActivity.class);
                         startActivity(intent);
                         finish();
@@ -409,5 +415,15 @@ public class ProfileActivity extends AppCompatActivity {
         }
     };
 
-
+    @Override
+    public void onDestroy() {
+        state = STOPPING;
+        if(recorder != null) {
+            recorder.stop();
+            recorder.release();
+            recorder = null;
+        }
+        killMediaPlayer();
+        super.onDestroy();
+    }
 }

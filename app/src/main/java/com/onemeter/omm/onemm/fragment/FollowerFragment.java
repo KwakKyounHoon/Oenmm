@@ -2,9 +2,11 @@ package com.onemeter.omm.onemm.fragment;
 
 
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.onemeter.omm.onemm.MainActivity;
+import com.onemeter.omm.onemm.MultiSwipeRefreshLayout;
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.adapter.FollowerAdatper;
 import com.onemeter.omm.onemm.data.Follower;
@@ -34,7 +37,8 @@ import butterknife.OnClick;
  * A simple {@link Fragment} subclass.
  */
 public class FollowerFragment extends Fragment {
-
+    @BindView(R.id.refresh_view)
+    MultiSwipeRefreshLayout refreshLayout;
     @BindView(R.id.list)
     RecyclerView list;
     FollowerAdatper mAdapter;
@@ -102,6 +106,46 @@ public class FollowerFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_follower, container, false);
         ButterKnife.bind(this, view);
+        refreshLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE);
+        refreshLayout.setScrollChild(R.id.list);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mAdapter.clearData();
+                pageNo = 1;
+                if(id.equals("-1")){
+                    MyFollowerRequest request = new MyFollowerRequest(getContext(), pageNo, COUNT);
+                    NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<Follower[]>>() {
+                        @Override
+                        public void onSuccess(NetworkRequest<NetWorkResultType<Follower[]>> request, NetWorkResultType<Follower[]> result) {
+                            mAdapter.addAll(result.getResult());
+                            pageNo++;
+                            refreshLayout.setRefreshing(false);
+                        }
+
+                        @Override
+                        public void onFail(NetworkRequest<NetWorkResultType<Follower[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                        }
+                    });
+                }else{
+                    OtherFollowerRequest request = new OtherFollowerRequest(getContext(), id, pageNo, COUNT);
+                    NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<Follower[]>>() {
+                        @Override
+                        public void onSuccess(NetworkRequest<NetWorkResultType<Follower[]>> request, NetWorkResultType<Follower[]> result) {
+                            mAdapter.addAll(result.getResult());
+                            pageNo++;
+                            refreshLayout.setRefreshing(false);
+                        }
+
+                        @Override
+                        public void onFail(NetworkRequest<NetWorkResultType<Follower[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                        }
+                    });
+                }
+            }
+        });
 
         list.setAdapter(mAdapter);
         final LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);

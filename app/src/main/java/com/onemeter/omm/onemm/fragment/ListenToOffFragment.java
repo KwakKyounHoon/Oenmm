@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.onemeter.omm.onemm.MyApplication;
@@ -139,26 +140,28 @@ public class ListenToOffFragment extends Fragment {
 
     @OnClick(R.id.btn_pay)
     public void payClick(View view){
-        // 결제완료 버튼 누를 떄 구현 - > ListenToOnFragment로 View Chagne 및 답변듣기 버튼 활성화
-        ListenPayRequest request = new ListenPayRequest(getContext(), post.getAnswerId());
-        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<String>>() {
-            @Override
-            public void onSuccess(NetworkRequest<NetWorkResultType<String>> request, NetWorkResultType<String> result) {
-                if(result.getResult().equals("0")){
-                    setPayPosition(payPosition);
-                    Toast.makeText(getContext(), "결제가 완료 되었습니다.", Toast.LENGTH_SHORT).show();
-                    popFragment();
-                }else{
-                    Toast.makeText(getContext(), "잔액이 부족 합니다..", Toast.LENGTH_SHORT).show();
+        if(info && use) {
+            // 결제완료 버튼 누를 떄 구현 - > ListenToOnFragment로 View Chagne 및 답변듣기 버튼 활성화
+            ListenPayRequest request = new ListenPayRequest(getContext(), post.getAnswerId());
+            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<String>>() {
+                @Override
+                public void onSuccess(NetworkRequest<NetWorkResultType<String>> request, NetWorkResultType<String> result) {
+                    if (result.getResult().equals("0")) {
+                        setPayPosition(payPosition);
+                        Toast.makeText(getContext(), "결제가 완료 되었습니다.", Toast.LENGTH_SHORT).show();
+                        popFragment();
+                    } else {
+                        Toast.makeText(getContext(), "잔액이 부족 합니다..", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
 
-            }
+                @Override
+                public void onFail(NetworkRequest<NetWorkResultType<String>> request, int errorCode, String errorMessage, Throwable e) {
 
-            @Override
-            public void onFail(NetworkRequest<NetWorkResultType> request, int errorCode, String errorMessage, Throwable e) {
-
-            }
-        });
+                }
+            });
+        }
     }
 
     public void init(){

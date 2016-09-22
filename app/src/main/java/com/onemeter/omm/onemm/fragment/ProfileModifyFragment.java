@@ -1,6 +1,7 @@
 package com.onemeter.omm.onemm.fragment;
 
 
+import android.content.Context;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.media.audiofx.Visualizer;
@@ -20,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -118,6 +120,7 @@ public class ProfileModifyFragment extends Fragment {
         nicknameView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
+                checkView.setVisibility(View.GONE);
                 if(!b){
                     idCheck();
                 }else{
@@ -213,7 +216,7 @@ public class ProfileModifyFragment extends Fragment {
             String nickname = nicknameView.getText().toString();
             String message = messageView.getText().toString();
             if (TextUtils.isEmpty(nameView.getText().toString())) {
-                Toast.makeText(getContext(), "닉네임을 입력하세요.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "아이디를 입력하세요.", Toast.LENGTH_SHORT).show();
             } else if (TextUtils.isEmpty(nicknameView.getText().toString())) {
                 Toast.makeText(getContext(), "이름을 입력하세요.", Toast.LENGTH_SHORT).show();
             } else if (!checkIdFlag) {
@@ -223,6 +226,10 @@ public class ProfileModifyFragment extends Fragment {
                 NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType>() {
                     @Override
                     public void onSuccess(NetworkRequest<NetWorkResultType> request, NetWorkResultType result) {
+                        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(messageView.getWindowToken(), 0);
+                        imm.hideSoftInputFromWindow(nameView.getWindowToken(), 0);
+                        imm.hideSoftInputFromWindow(nicknameView.getWindowToken(), 0);
                         popFragment();
                         Toast.makeText(getContext(), result.getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -491,4 +498,27 @@ public class ProfileModifyFragment extends Fragment {
         }
     };
 
+    @Override
+    public void onDestroy() {
+        state = STOPPING;
+        if(recorder != null) {
+            recorder.stop();
+            recorder.release();
+            recorder = null;
+        }
+        killMediaPlayer();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onDetach() {
+        state = STOPPING;
+        if(recorder != null) {
+            recorder.stop();
+            recorder.release();
+            recorder = null;
+        }
+        killMediaPlayer();
+        super.onDetach();
+    }
 }

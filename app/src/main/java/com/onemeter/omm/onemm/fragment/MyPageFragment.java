@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.onemeter.omm.onemm.MultiSwipeRefreshLayout;
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.adapter.MyAdapter;
 import com.onemeter.omm.onemm.data.MyData;
@@ -67,6 +70,8 @@ public class MyPageFragment extends Fragment {
 
     @BindView(R.id.text_nickname)
     TextView nickNameView;
+
+    MultiSwipeRefreshLayout refreshLayout;
 
     public static final String POST_TYPE_RECEIVE = "from";
     public static final String POST_TYPE_INCOM = "0";
@@ -116,7 +121,117 @@ public class MyPageFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_my_page, container, false);
         ButterKnife.bind(this, view);
+        refreshLayout = (MultiSwipeRefreshLayout)view.findViewById(R.id.refresh_view);
+        refreshLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE);
+        refreshLayout.setScrollChild(R.id.list);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mAdapter.setHeaderPlayInfo(false);
+                killMediaPlayer();
+                startflag = false;
+                mState = PlayState.STOPPED;
+                mAdapter.setTime("답변 듣기", timePosition);
+                mAdapter.clearPost();
+                pageNo = 1;
+                MyDataReqeust reqeust = new MyDataReqeust(getContext());
+                NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,reqeust, new NetworkManager.OnResultListener<NetWorkResultType<MyData>>() {
+                    @Override
+                    public void onSuccess(NetworkRequest<NetWorkResultType<MyData>> request, NetWorkResultType<MyData> result) {
+                        String nickName = "User NickName";
+                        if(result.getResult().getNickname() != null) {
+                            nickName = result.getResult().getNickname();
+                        }
+                        mAdapter.addMyData(result.getResult());
+                        nickNameView.setText(nickName);
+                    }
+                    @Override
+                    public void onFail(NetworkRequest<NetWorkResultType<MyData>> request, int errorCode, String errorMessage, Throwable e) {
 
+                    }
+                });
+                if (tabType == 1) {
+                    if (comFlag) {
+                        MyPostRequest request = new MyPostRequest(getContext(), "from", "1", pageNo, COUNT);
+                        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                mAdapter.addAllPost(result.getResult());
+                                pageNo++;
+                                refreshLayout.setRefreshing(false);
+                            }
+
+                            @Override
+                            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                            }
+                        });
+                    } else {
+                        MyPostRequest request = new MyPostRequest(getContext(), "from", "0", pageNo, COUNT);
+                        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                mAdapter.addAllPost(result.getResult());
+                                pageNo++;
+                                refreshLayout.setRefreshing(false);
+                            }
+
+                            @Override
+                            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                            }
+                        });
+                    }
+                } else if (tabType == 2) {
+                    if (comFlag) {
+                        MyPostRequest request = new MyPostRequest(getContext(), "to", "1", pageNo, COUNT);
+                        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                mAdapter.addAllPost(result.getResult());
+                                pageNo++;
+                                refreshLayout.setRefreshing(false);
+                            }
+
+                            @Override
+                            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                            }
+                        });
+                    } else {
+                        MyPostRequest request = new MyPostRequest(getContext(), "to", "0", pageNo, COUNT);
+                        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                mAdapter.addAllPost(result.getResult());
+                                pageNo++;
+                                refreshLayout.setRefreshing(false);
+                            }
+
+                            @Override
+                            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                            }
+                        });
+                    }
+                } else if (tabType == 3) {
+                    MyListenRequest request = new MyListenRequest(getContext(), pageNo, COUNT);
+                    NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                        @Override
+                        public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                            mAdapter.addAllPost(result.getResult());
+                            pageNo++;
+                            refreshLayout.setRefreshing(false);
+                        }
+
+                        @Override
+                        public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                        }
+                    });
+                }
+            }
+        });
         list.setAdapter(mAdapter);
         final LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         list.setLayoutManager(manager);
@@ -241,6 +356,7 @@ public class MyPageFragment extends Fragment {
                     public void onSuccess(NetworkRequest<NetWorkResultType<String>> request, NetWorkResultType<String> result) {
                         try {
                             playAudio(result.getResult());
+                            mAdapter.setHeaderPlayInfo(true);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -448,30 +564,6 @@ public class MyPageFragment extends Fragment {
                 switch (mState){
                     case STOPPED : {
                         startPlay(post, position);
-//                        timePosition = position;
-//                        startTime = -1;
-//                        if (comFlag || tabType == 3) {
-//                            ReplyListenRequest request = new ReplyListenRequest(getContext(), post.getAnswerId());
-//                            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<String>>() {
-//                                @Override
-//                                public void onSuccess(NetworkRequest<NetWorkResultType<String>> request, NetWorkResultType<String> result) {
-//                                    endTime = post.getLength();
-//                                    try {
-//                                        playAudio(result.getResult());
-//                                    } catch (Exception e) {
-//                                        e.printStackTrace();
-//                                    }
-//                                    startflag = true;
-//                                    mHandler.removeCallbacks(countRunnable);
-//                                    mHandler.post(countRunnable);
-//                                }
-//
-//                                @Override
-//                                public void onFail(NetworkRequest<NetWorkResultType<String>> request, int errorCode, String errorMessage, Throwable e) {
-//
-//                                }
-//                            });
-//                        }
                         break;
                     }
                     case STARTED: {
@@ -767,6 +859,7 @@ public class MyPageFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mAdapter.setHeaderPlayInfo(false);
         mState = PlayState.STOPPED;
         mAdapter.setFlag(comFlag);
         mAdapter.setTabPosition(tabType);
@@ -810,6 +903,12 @@ public class MyPageFragment extends Fragment {
         player.setDataSource(url);
         player.prepare();
         player.start();
+        player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                mAdapter.setHeaderPlayInfo(false);
+            }
+        });
     }
 
     long startTime = -1;

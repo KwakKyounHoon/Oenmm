@@ -1,8 +1,13 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.onemeter.omm.onemm.MultiSwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/refresh_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.onemeter.omm.onemm.fragment.OtherFragment">
+    tools:context="com.onemeter.omm.onemm.fragment.PostFragment">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:background="@drawable/toolbar_under"
@@ -24,3 +29,4 @@
         android:layout_below="@+id/toolbar"></android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>
+</com.onemeter.omm.onemm.MultiSwipeRefreshLayout>

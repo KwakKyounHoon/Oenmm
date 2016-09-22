@@ -122,7 +122,9 @@ public class SettingWithdrawDial extends DialogFragment {
                         }
                     });
                     dismiss();
-                } else {
+                } else if(Integer.parseInt(finalPoint) < 10000) {
+                    Toast.makeText(getContext(), " 10000이상 부터 출금 가능합니다. ", Toast.LENGTH_SHORT).show();
+                }else{
                     Toast.makeText(getContext(), " 금액이 부족합니다. ", Toast.LENGTH_SHORT).show();
                 }
             }

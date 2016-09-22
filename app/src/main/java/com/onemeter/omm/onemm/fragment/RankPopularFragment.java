@@ -1,6 +1,7 @@
 package com.onemeter.omm.onemm.fragment;
 
 
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,12 +9,14 @@ import android.os.Looper;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.onemeter.omm.onemm.MultiSwipeRefreshLayout;
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.adapter.RankPopularAdapter;
 import com.onemeter.omm.onemm.data.NetWorkResultType;
@@ -48,6 +51,9 @@ public class RankPopularFragment extends Fragment {
 
     @BindView(R.id.list)
     RecyclerView list;
+
+    @BindView(R.id.refresh_view)
+    MultiSwipeRefreshLayout refreshLayout;
 
     RankPopularAdapter mAdapter;
 
@@ -84,11 +90,54 @@ public class RankPopularFragment extends Fragment {
         list.setAdapter(mAdapter);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         list.setLayoutManager(manager);
+        refreshLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE);
+        refreshLayout.setScrollChild(R.id.list);
 
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mAdapter.clearRankPopular();
+                killMediaPlayer();
+                mState = PlayState.STOPPED;
+                startflag = false;
+                mAdapter.setTime("답변 듣기", timePosition);
+                if (categoryFlag) {
+                    mAdapter.clearRankPopular();
+                    PopularPostListRequest request = new PopularPostListRequest(getContext(), 0);
+                    NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                        @Override
+                        public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                            mAdapter.addAll(result.getResult());
+                            refreshLayout.setRefreshing(false);
+                        }
+
+                        @Override
+                        public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                        }
+                    });
+                } else {
+                    mAdapter.clearRankPopular();
+                    PopularPostListRequest request = new PopularPostListRequest(getContext(), 1);
+                    NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                        @Override
+                        public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                            mAdapter.addAll(result.getResult());
+                            refreshLayout.setRefreshing(false);
+                        }
+
+                        @Override
+                        public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                        }
+                    });
+                }
+            }
+        });
         mAdapter.setOnAdapterItemClickListener(new RankPopularAdapter.OnAdapterItemClickLIstener() {
             @Override
             public void onAdapterItemClick(View view, Post post, int position) {
-                if(post.getPayInfo().equals("0")){
+                if (post.getPayInfo().equals("0")) {
                     ((RankFragment) (getParentFragment())).showListenToOff(post, position);
                 }
             }
@@ -96,26 +145,26 @@ public class RankPopularFragment extends Fragment {
             @Override
             public void onAdapterPlayClick(View view, final Post post, int position) {
                 if (post.getPayInfo().equals("1")) {
-                    switch (mState){
-                        case STOPPED : {
+                    switch (mState) {
+                        case STOPPED: {
                             startPlay(post, position);
                             break;
                         }
                         case STARTED: {
-                            if(timePosition == position) {
+                            if (timePosition == position) {
                                 startflag = false;
                                 mHandler.removeCallbacks(countRunnable);
                                 player.pause();
                                 pauseTime = count;
                                 mState = PlayState.PAUSED;
-                            }else{
+                            } else {
                                 startPlay(post, position);
                             }
                             break;
                         }
 
-                        case PAUSED:{
-                            if(timePosition == position) {
+                        case PAUSED: {
+                            if (timePosition == position) {
                                 startflag = true;
                                 player.start();
                                 endTime = String.valueOf(pauseTime);
@@ -124,13 +173,13 @@ public class RankPopularFragment extends Fragment {
                                 mHandler.removeCallbacks(countRunnable);
                                 mHandler.post(countRunnable);
                                 break;
-                            }else{
+                            } else {
                                 startPlay(post, position);
                                 break;
                             }
                         }
                     }
-                }else{
+                } else {
                     ((RankFragment) (getParentFragment())).showListenToOff(post, position);
                 }
             }
@@ -141,10 +190,10 @@ public class RankPopularFragment extends Fragment {
                 killMediaPlayer();
                 startflag = false;
                 categoryFlag = flag;
-                if(categoryFlag){
+                if (categoryFlag) {
                     mAdapter.clearRankPopular();
                     PopularPostListRequest request = new PopularPostListRequest(getContext(), 0);
-                    NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                    NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                         @Override
                         public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                             mAdapter.addAll(result.getResult());
@@ -155,10 +204,10 @@ public class RankPopularFragment extends Fragment {
 
                         }
                     });
-                }else{
+                } else {
                     mAdapter.clearRankPopular();
                     PopularPostListRequest request = new PopularPostListRequest(getContext(), 1);
-                    NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                    NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
                         @Override
                         public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                             mAdapter.addAll(result.getResult());
@@ -174,34 +223,22 @@ public class RankPopularFragment extends Fragment {
 
             @Override
             public void onAdapterAnswerClick(View view, Post post, int position) {
-                if(!post.getAnswernerId().equals(PropertyManager.getInstance().getMyId())){
+                if (!post.getAnswernerId().equals(PropertyManager.getInstance().getMyId())) {
                     showOtherPage(post.getAnswernerId());
-                }else{
+                } else {
                     showMyPage();
                 }
             }
 
             @Override
-            public void onAdapterQuestionerClick(View view, Post post, int position){
-                if(!post.getQuestionerId().equals(PropertyManager.getInstance().getMyId())){
+            public void onAdapterQuestionerClick(View view, Post post, int position) {
+                if (!post.getQuestionerId().equals(PropertyManager.getInstance().getMyId())) {
                     showOtherPage(post.getQuestionerId());
-                }else{
+                } else {
                     showMyPage();
                 }
             }
         });
-//        PopularPostListRequest request = new PopularPostListRequest(getContext(), 0);
-//        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
-//            @Override
-//            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
-//                mAdapter.addAll(result.getResult());
-//            }
-//
-//            @Override
-//            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
-//
-//            }
-//        });
 
         return view;
     }
@@ -278,36 +315,13 @@ public class RankPopularFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mState = PlayState.STOPPED;
-        mAdapter.clearRankPopular();
+        RankFragment fc = (RankFragment) getParentFragment();
+        if(fc.getPayPosition() != 0) {
+            mAdapter.setPayPosition(fc.getPayPosition());
+            fc.setPayPosition(0);
+        }
         mAdapter.setFlag(categoryFlag);
         mAdapter.setTime("답변 듣기", timePosition);
-        if(categoryFlag){
-            PopularPostListRequest request = new PopularPostListRequest(getContext(), 0);
-            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
-                @Override
-                public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
-                    mAdapter.addAll(result.getResult());
-                }
-
-                @Override
-                public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
-
-                }
-            });
-        }else{
-            PopularPostListRequest request = new PopularPostListRequest(getContext(), 1);
-            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
-                @Override
-                public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
-                    mAdapter.addAll(result.getResult());
-                }
-
-                @Override
-                public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
-
-                }
-            });
-        }
     }
 
     private void startPlay(final Post post, int position){

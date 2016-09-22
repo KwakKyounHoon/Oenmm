@@ -135,4 +135,15 @@ public class RankFragment extends Fragment {
     public void showListenToOff(Post post, int position) {
         ((TabRankFragment) (getParentFragment())).showListenToOff(post, position);
     }
+
+
+    int payPosition;
+
+    public int getPayPosition() {
+        return  ((TabRankFragment) (getParentFragment())).getPayPosition();
+    }
+
+    public void setPayPosition(int payPosition) {
+        ((TabRankFragment) (getParentFragment())).setPayPosition(payPosition);
+    }
 }

@@ -1,6 +1,7 @@
 package com.onemeter.omm.onemm.viewholder;
 
 import android.media.MediaPlayer;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -32,6 +33,8 @@ public class MyHeaderViewHolder extends RecyclerView.ViewHolder {
     TextView followingView;
     @BindView(R.id.image_profile)
     ImageView profileView;
+    @BindView(R.id.btn_sound)
+    ImageView soundView;
 
     MediaPlayer player;
 
@@ -70,11 +73,6 @@ public class MyHeaderViewHolder extends RecyclerView.ViewHolder {
     public void onSoundClick(View view){
         if (listener != null) {
             listener.onSoundItemClick(view, mydata, getAdapterPosition());
-            try {
-//                playAudio(mydata.getVoiceMessage());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -94,18 +92,30 @@ public class MyHeaderViewHolder extends RecyclerView.ViewHolder {
 
 
     MyData mydata;
-    public void setUserInof(MyData myData){
+    boolean headerPlayInfo = false;
+    public void setUserInof(MyData myData, boolean headerPlayInfo){
         this.mydata = myData;
+        this.headerPlayInfo = headerPlayInfo;
         nameView.setText(myData.getName());
         followerView.setText(myData.getFollower());
         followingView.setText(myData.getFollowing());
         messageView.setText(myData.getStateMessage());
-        donateView.setText(myData.getDonationName());
+        if(myData.getDonationName() != null || myData.getDonationName() != ""){
+            donateView.setText(myData.getDonationName());
+        }else{
+            donateView.setText("없 음");
+        }
+
         Glide.with(profileView.getContext())
                 .load(myData.getPhoto())
                 .bitmapTransform(new CropCircleTransformation(MyApplication.getContext()))
                 .error(R.drawable.ic_profile_image_default)
                 .into(profileView);
+        if(headerPlayInfo){
+            soundView.setImageDrawable(ContextCompat.getDrawable(MyApplication.getContext(), R.drawable.ic_speaker_on));
+        }else{
+            soundView.setImageDrawable(ContextCompat.getDrawable(MyApplication.getContext(), R.drawable.ic_speaker));
+        }
     }
 
     public interface OnMyDataItemClickListener {

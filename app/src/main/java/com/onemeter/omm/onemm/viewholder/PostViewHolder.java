@@ -47,7 +47,6 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
             }
         });
     }
-
     Post post;
     public void setPost(Post post){
         this.post = post;

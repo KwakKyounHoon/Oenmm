@@ -31,6 +31,13 @@ public class RankPopularAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         this.categoryFlag = categoryFlag;
     }
 
+    public void setPayPosition(int payPosition) {
+        Post post = posts.get(payPosition-1);
+        post.setPayInfo("1");
+        posts.set(payPosition-1, post);
+        notifyDataSetChanged();
+    }
+
     public void addRankPopular(Post rankPopular){
         this.posts.add(rankPopular);
         notifyDataSetChanged();

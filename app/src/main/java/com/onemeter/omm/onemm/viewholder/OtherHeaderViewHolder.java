@@ -1,5 +1,6 @@
 package com.onemeter.omm.onemm.viewholder;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -37,6 +38,8 @@ public class OtherHeaderViewHolder extends RecyclerView.ViewHolder {
     ImageView profileView;
     @BindView(R.id.image_like)
     CheckBox likeView;
+    @BindView(R.id.btn_sound)
+    ImageView soundView;
     public OtherHeaderViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
@@ -78,28 +81,27 @@ public class OtherHeaderViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
-//    @OnClick(R.id.btn_like)
-//    public void onSoundClick(View view){
-//        if (listener != null) {
-//            listener.onSoundItemClick(view, otherData, getAdapterPosition());
-//        }
-//    }
-
     @OnClick(R.id.btn_question)
     public void onQuestionClick(View view){
         if(listener != null){
             listener.onQuestionClick(view, otherData);
         }
     }
-
+    boolean headerPlayInfo;
     OtherData otherData;
-    public void setOtherInof(OtherData otherData){
+    public void setOtherInof(OtherData otherData, boolean headerPlayInfo){
+        this.headerPlayInfo = headerPlayInfo;
         this.otherData = otherData;
         nameView.setText(otherData.getName());
         followerView.setText(otherData.getFollower());
         followingView.setText(otherData.getFollowing());
         messageView.setText(otherData.getStateMessage());
-        donateView.setText(otherData.getDonationName());
+        if(otherData.getDonationName() != null || otherData.getDonationName() != ""){
+            donateView.setText(otherData.getDonationName());
+        }else{
+            donateView.setText("없 음");
+        }
+
         Glide.with(profileView.getContext())
                 .load(otherData.getPhoto())
                 .bitmapTransform(new CropCircleTransformation(MyApplication.getContext()))
@@ -113,6 +115,11 @@ public class OtherHeaderViewHolder extends RecyclerView.ViewHolder {
             isForced = true;
             likeView.setChecked(false);
             isForced = false;
+        }
+        if(headerPlayInfo){
+            soundView.setImageDrawable(ContextCompat.getDrawable(MyApplication.getContext(), R.drawable.ic_speaker_on));
+        }else{
+            soundView.setImageDrawable(ContextCompat.getDrawable(MyApplication.getContext(), R.drawable.ic_speaker));
         }
     }
 

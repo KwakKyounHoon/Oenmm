@@ -29,6 +29,7 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
 
     int tabPosition;
     boolean comFlag;
+    boolean headerPlayInfo = false;
 
     File file;
 
@@ -37,6 +38,11 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
         if(tabPosition == 3){
             this.comFlag = false;
         }
+    }
+
+    public void setHeaderPlayInfo(boolean headerPlayInfo){
+        this.headerPlayInfo = headerPlayInfo;
+        notifyDataSetChanged();
     }
 
     public void setTabPosition(int tabType) {
@@ -127,7 +133,7 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
             if (position == 0) {
                 MyHeaderViewHolder mhvh = (MyHeaderViewHolder) holder;
                 mhvh.setOnMyDataItemClickListener(this);
-                mhvh.setUserInof(myPageData.getMyData());
+                mhvh.setUserInof(myPageData.getMyData(),headerPlayInfo);
                 return;
             }
             position--;

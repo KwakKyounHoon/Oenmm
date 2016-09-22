@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -132,29 +131,29 @@ public class QuestionFragment extends Fragment {
     @OnClick(R.id.btn_pay)
     public void payClick(View view) {
         String cost = costView.getText().toString();
-        String content = questionView.getText().toString();
-        Log.i(cost , cost);
-        if (!TextUtils.isEmpty(cost) && !TextUtils.isEmpty(content) && Integer.parseInt(cost) >= 5000) {
-            QuestionsRequest request = new QuestionsRequest(getContext(), cost, content, otherData.getUserId());
-            NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<String>>() {
-                @Override
-                public void onSuccess(NetworkRequest<NetWorkResultType<String>> request, NetWorkResultType<String> result) {
-                    if(result.getResult().equals("0")){
-                        Toast.makeText(getContext(), "결제가 완료 되었습니다.", Toast.LENGTH_SHORT).show();
-                        popFragment();
-                    }else{
-                        Toast.makeText(getContext(), "잔액이 부족합니다.", Toast.LENGTH_SHORT).show();
+        if (check) {
+            String content = questionView.getText().toString();
+            if (!TextUtils.isEmpty(cost) && !TextUtils.isEmpty(content) && Integer.parseInt(cost) >= 5000) {
+                QuestionsRequest request = new QuestionsRequest(getContext(), cost, content, otherData.getUserId());
+                NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, request, new NetworkManager.OnResultListener<NetWorkResultType<String>>() {
+                    @Override
+                    public void onSuccess(NetworkRequest<NetWorkResultType<String>> request, NetWorkResultType<String> result) {
+                        if (result.getResult().equals("0")) {
+                            Toast.makeText(getContext(), "결제가 완료 되었습니다.", Toast.LENGTH_SHORT).show();
+                            popFragment();
+                        } else {
+                            Toast.makeText(getContext(), "잔액이 부족합니다.", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                }
 
-                @Override
-                public void onFail(NetworkRequest<NetWorkResultType<String>> request, int errorCode, String errorMessage, Throwable e) {
+                    @Override
+                    public void onFail(NetworkRequest<NetWorkResultType<String>> request, int errorCode, String errorMessage, Throwable e) {
 
-                }
-            });
-        } else {
-            Toast.makeText(getContext(), " 질문비용이 부족합니다. ", Toast.LENGTH_SHORT).show();
-            // 질문비용설정(현재보유금보다 많은금액시X)이 안되있을경우 , 질문내용이 없을시
+                    }
+                });
+            }else if(Integer.parseInt(cost) < 5000) {
+                Toast.makeText(getContext(), " 최소 5000원 이상의 금액을 설정 하세요. ", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -195,7 +194,6 @@ public class QuestionFragment extends Fragment {
     }
 
     String finalMoney;
-
     public boolean agreeCheck() {
         if (check) {
             pay.setBackgroundColor(Color.parseColor("#f82040"));
@@ -204,6 +202,4 @@ public class QuestionFragment extends Fragment {
         }
         return true;
     }
-
-
 }

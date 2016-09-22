@@ -2,6 +2,7 @@ package com.onemeter.omm.onemm.fragment;
 
 
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +11,7 @@ import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.onemeter.omm.onemm.MultiSwipeRefreshLayout;
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.adapter.OtherAdapter;
 import com.onemeter.omm.onemm.data.NetWorkResultType;
@@ -83,14 +86,16 @@ public class OtherFragment extends Fragment {
 
     @BindView(R.id.btn_back)
     ImageView backView;
-    ShareActionProvider mShareActionProvider;
 
+    @BindView(R.id.refresh_view)
+    MultiSwipeRefreshLayout refreshLayout;
+    ShareActionProvider mShareActionProvider;
+    int pauseTime;
     MediaPlayer player;
 
     public OtherFragment() {
         // Required empty public constructor
     }
-
     OtherAdapter mAdapter;
 
     public static OtherFragment newInstance(String message) {
@@ -108,8 +113,8 @@ public class OtherFragment extends Fragment {
             id = getArguments().getString(OTHER_ID);
         }
         mAdapter = new OtherAdapter();
-        OtherPostRequest otherPostRequest = new OtherPostRequest(getContext(), id, "from", "0", pageNo, COUNT);
-        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP, otherPostRequest, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+        OtherPostRequest otherPostRequest = new OtherPostRequest(getContext(),id,"from","0", pageNo, COUNT);
+        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,otherPostRequest, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
             @Override
             public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
                 mAdapter.addAllPost(result.getResult());
@@ -141,7 +146,6 @@ public class OtherFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -149,7 +153,98 @@ public class OtherFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_other, container, false);
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
+        refreshLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE);
+        refreshLayout.setScrollChild(R.id.list);
 
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mAdapter.clearPost();
+                killMediaPlayer();
+                mState = PlayState.STOPPED;
+                startflag = false;
+                mAdapter.setTime("답변 듣기", timePosition);
+                OtherPostRequest otherPostRequest = new OtherPostRequest(getContext(),id,"from","0", pageNo, COUNT);
+                NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,otherPostRequest, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                    @Override
+                    public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                        mAdapter.addAllPost(result.getResult());
+                        pageNo++;
+                    }
+
+                    @Override
+                    public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                    }
+                });
+                pageNo = 1;
+                if(tabType == 1){
+                    if(categoryType){
+                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "from", "0", pageNo, COUNT);
+                        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                mAdapter.addAllPost(result.getResult());
+                                pageNo++;
+                                refreshLayout.setRefreshing(false);
+                            }
+
+                            @Override
+                            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                            }
+                        });
+                    }else{
+                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "from", "1", pageNo, COUNT);
+                        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                mAdapter.addAllPost(result.getResult());
+                                pageNo++;
+                                refreshLayout.setRefreshing(false);
+                            }
+
+                            @Override
+                            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                            }
+                        });
+                    }
+                }else{
+                    if(categoryType){
+                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "to", "0", pageNo, COUNT);
+                        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                mAdapter.addAllPost(result.getResult());
+                                pageNo++;
+                                refreshLayout.setRefreshing(false);
+                            }
+
+                            @Override
+                            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                            }
+                        });
+                    }else{
+                        OtherPostRequest request = new OtherPostRequest(getContext(), id, "to", "1", pageNo, COUNT);
+                        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                                mAdapter.addAllPost(result.getResult());
+                                pageNo++;
+                                refreshLayout.setRefreshing(false);
+                            }
+
+                            @Override
+                            public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                            }
+                        });
+                    }
+                }
+            }
+        });
         list.setAdapter(mAdapter);
         final LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         list.setLayoutManager(manager);
@@ -315,6 +410,7 @@ public class OtherFragment extends Fragment {
                     public void onSuccess(NetworkRequest<NetWorkResultType<String>> request, NetWorkResultType<String> result) {
                         try {
                             playAudio(result.getResult());
+                            mAdapter.setHeaderPlayInfo(true);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -524,7 +620,7 @@ public class OtherFragment extends Fragment {
             @Override
             public void onAdapterAnswerClick(View view, Post post, int position) {
                 if(!post.getAnswernerId().equals(PropertyManager.getInstance().getMyId())){
-                    showOtherPage(post.getAnswernerId());
+                    if (id != post.getAnswernerId()) showOtherPage(post.getAnswernerId());
                 }else{
                     showMyPage();
                 }
@@ -532,8 +628,8 @@ public class OtherFragment extends Fragment {
 
             @Override
             public void onAdapterQuestionerClick(View view, Post post, int position){
-                if(!post.getQuestionerId().equals(PropertyManager.getInstance().getMyId())){
-                    showOtherPage(post.getQuestionerId());
+                if(!post.getQuestionerId().equals(PropertyManager.getInstance().getMyId())) {
+                    if (id != post.getQuestionerId()) showOtherPage(post.getQuestionerId());
                 }else{
                     showMyPage();
                 }
@@ -715,6 +811,7 @@ public class OtherFragment extends Fragment {
     long startTime = -1;
     String endTime = "";
     int timePosition;
+    int count;
     Handler mHandler = new Handler(Looper.getMainLooper());
 
     Runnable countRunnable = new Runnable() {
@@ -727,12 +824,13 @@ public class OtherFragment extends Fragment {
                 }
                 int gap = (int) (time - startTime);
                 int endTimeV = Integer.parseInt(endTime);
-                int count = endTimeV - gap / 1000;
+                count = endTimeV - gap / 1000;
                 int rest = 1000 - gap % 1000;
                 if (count > 0) {
                     mAdapter.setTime("0 : " + count, timePosition);
                     mHandler.postDelayed(this, rest);
                 } else {
+                    mState = PlayState.STOPPED;
                     killMediaPlayer();
                     mAdapter.setTime("닫변 듣기", timePosition);
                 }
@@ -753,17 +851,34 @@ public class OtherFragment extends Fragment {
     public void onResume() {
         super.onResume();
         checkPayInfo();
+        mState = PlayState.STOPPED;
         mAdapter.setFlag(categoryType);
         mAdapter.setTabPosition(tabType);
         mAdapter.setTime("답변 듣기", timePosition);
     }
 
     private void showOtherPage(String id) {
-        ((TabHomeFragment) (getParentFragment())).showOther(id);
+        if(getParentFragment() instanceof TabMyFragment){
+            ((TabMyFragment) (getParentFragment())).showOther(id);
+        }else if(getParentFragment() instanceof TabHomeFragment){
+            ((TabHomeFragment) (getParentFragment())).showOther(id);
+        }else if(getParentFragment() instanceof TabRankFragment){
+            ((TabRankFragment) (getParentFragment())).showOther(id);
+        }else{
+            ((TabSearchFragment) (getParentFragment())).showOther(id);
+        }
     }
 
     private void showMyPage() {
-        ((TabHomeFragment) (getParentFragment())).showMy();
+        if(getParentFragment() instanceof TabMyFragment){
+            ((TabMyFragment) (getParentFragment())).showMy();
+        }else if(getParentFragment() instanceof TabHomeFragment){
+            ((TabHomeFragment) (getParentFragment())).showMy();
+        }else if(getParentFragment() instanceof TabRankFragment){
+            ((TabRankFragment) (getParentFragment())).showMy();
+        }else{
+            ((TabSearchFragment) (getParentFragment())).showMy();
+        }
     }
 
     private void showListenToOff(Post post, int payPosition){

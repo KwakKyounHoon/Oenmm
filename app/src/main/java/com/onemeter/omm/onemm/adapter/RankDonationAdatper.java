@@ -20,6 +20,10 @@ public class RankDonationAdatper extends RecyclerView.Adapter<RankDonationViewHo
 
     List<DonationRank> donationRanks = new ArrayList<>();
 
+    public void clear(){
+        donationRanks.clear();
+    }
+
     public void addDonationRank(DonationRank donationRank){
         donationRanks.add(donationRank);
         notifyDataSetChanged();

@@ -1,9 +1,11 @@
 package com.onemeter.omm.onemm.fragment;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.onemeter.omm.onemm.MainActivity;
+import com.onemeter.omm.onemm.MultiSwipeRefreshLayout;
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.adapter.FollowingAdapter;
 import com.onemeter.omm.onemm.data.Following;
@@ -28,7 +31,8 @@ import butterknife.OnClick;
  * A simple {@link Fragment} subclass.
  */
 public class FollowingFragment extends Fragment {
-
+    @BindView(R.id.refresh_view)
+    MultiSwipeRefreshLayout refreshLayout;
     @BindView(R.id.list)
     RecyclerView list;
     FollowingAdapter mAdapter;
@@ -96,6 +100,46 @@ public class FollowingFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_following, container, false);
         ButterKnife.bind(this, view);
+        refreshLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE);
+        refreshLayout.setScrollChild(R.id.list);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mAdapter.clearData();
+                pageNo = 1;
+                    if(id != "-1"){
+                        OtherFollowingListRequest request = new OtherFollowingListRequest(getContext(), id, pageNo, COUNT);
+                        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Following[]>>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetWorkResultType<Following[]>> request, NetWorkResultType<Following[]> result) {
+                                mAdapter.addAll(result.getResult());
+                                pageNo++;
+                                refreshLayout.setRefreshing(false);
+                            }
+
+                            @Override
+                            public void onFail(NetworkRequest<NetWorkResultType<Following[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                            }
+                        });
+                    }else{
+                        MyFollowingRequest request = new MyFollowingRequest(getContext(), pageNo, COUNT);
+                        NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Following[]>>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetWorkResultType<Following[]>> request, NetWorkResultType<Following[]> result) {
+                                mAdapter.addAll(result.getResult());
+                                pageNo++;
+                                refreshLayout.setRefreshing(false);
+                            }
+
+                            @Override
+                            public void onFail(NetworkRequest<NetWorkResultType<Following[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                            }
+                        });
+                    }
+                }
+        });
         list.setAdapter(mAdapter);
         final LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         list.setLayoutManager(manager);

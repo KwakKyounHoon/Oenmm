@@ -1,6 +1,7 @@
 package com.onemeter.omm.onemm.fragment;
 
 
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.os.Looper;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.onemeter.omm.onemm.MainActivity;
+import com.onemeter.omm.onemm.MultiSwipeRefreshLayout;
 import com.onemeter.omm.onemm.R;
 import com.onemeter.omm.onemm.adapter.PostAdapter;
 import com.onemeter.omm.onemm.data.NetWorkResultType;
@@ -45,8 +48,6 @@ public class PostFragment extends Fragment {
         RELEASED
     }
 
-
-
     @BindView(R.id.list)
     RecyclerView list;
     PostAdapter mAdapter;
@@ -55,6 +56,7 @@ public class PostFragment extends Fragment {
     private final int COUNT = 10;
     PlayState mState = PlayState.STOPPED;
     int pauseTime;
+    MultiSwipeRefreshLayout refreshLayout;
     public PostFragment() {
 
     }
@@ -87,6 +89,34 @@ public class PostFragment extends Fragment {
         list.setAdapter(mAdapter);
         final LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         list.setLayoutManager(manager);
+        refreshLayout = (MultiSwipeRefreshLayout)view.findViewById(R.id.refresh_view);
+        refreshLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE);
+        refreshLayout.setScrollChild(R.id.list);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mState = PlayState.STOPPED;
+                killMediaPlayer();
+                mAdapter.setTime("답변 듣기", timePosition);
+                pageNo = 1;
+                startflag = false;
+                mAdapter.clearPost();
+                FollowPostListRequest request = new FollowPostListRequest(getContext(), pageNo, COUNT);
+                NetworkManager.getInstance().getNetworkData(NetworkManager.MYOKHTTP,request, new NetworkManager.OnResultListener<NetWorkResultType<Post[]>>() {
+                    @Override
+                    public void onSuccess(NetworkRequest<NetWorkResultType<Post[]>> request, NetWorkResultType<Post[]> result) {
+                        mAdapter.addAll(result.getResult());
+                        pageNo++;
+                        refreshLayout.setRefreshing(false);
+                    }
+
+                    @Override
+                    public void onFail(NetworkRequest<NetWorkResultType<Post[]>> request, int errorCode, String errorMessage, Throwable e) {
+
+                    }
+                });
+            }
+        });
 
         list.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -192,23 +222,7 @@ public class PostFragment extends Fragment {
                 }
             }
         });
-
         return view;
-    }
-
-    void init() {
-        for (int i = 0; i < 5; i++) {
-            Post post = new Post();
-            post.setAnswernerId(i + "1");
-            post.setAnswernerPhoto("");
-            post.setLength(i + "5");
-            post.setPrice(i + "10");
-            post.setQuestionerContent("GOOD" + i);
-            post.setQuestionerId(i + "2");
-            post.setQuestionerPhoto("");
-            post.setVoiceContent("yes" + i);
-            mAdapter.addPost(post);
-        }
     }
 
     @Override
@@ -318,4 +332,6 @@ public class PostFragment extends Fragment {
             }
         });
     }
+
+
 }
